@@ -1,18 +1,50 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+const ENTER = 13;
+
 class App extends Component {
+  state = {
+    search: "",
+    notes: [],
+  };
+
+  handleChangeSearch = ({ target }) => {
+    this.setState({ search: target.value });
+  };
+
+  handleKeyDown = evt => {
+    switch (evt.keyCode) {
+      case ENTER:
+        this.setState({
+          notes: this.state.notes.concat({ title: this.state.search }),
+          search: "",
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
   render() {
+    const { search, notes } = this.state;
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <div>
+        <input
+          value={search}
+          type="text"
+          onChange={this.handleChangeSearch}
+          onKeyDown={this.handleKeyDown}
+        />
+        <div>
+          {notes.map((note, index) => (
+            <div key={index}>
+              {note.title}
+            </div>
+          ))}
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
