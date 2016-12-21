@@ -1,51 +1,22 @@
 import React, { Component } from 'react';
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import reducer from "./reducer.js";
+import Search from "./components/Search.js";
+import Notes from "./components/Notes.js";
 import './App.css';
 
-const ENTER = 13;
+const store = createStore(reducer);
 
 class App extends Component {
-  state = {
-    search: "",
-    notes: [],
-  };
-
-  handleChangeSearch = ({ target }) => {
-    this.setState({ search: target.value });
-  };
-
-  handleKeyDown = evt => {
-    switch (evt.keyCode) {
-      case ENTER:
-        this.setState({
-          notes: this.state.notes.concat({ title: this.state.search }),
-          search: "",
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  render() {
-    const { search, notes } = this.state;
-
+  render () {
     return (
-      <div>
-        <input
-          value={search}
-          type="text"
-          onChange={this.handleChangeSearch}
-          onKeyDown={this.handleKeyDown}
-        />
+      <Provider store={store}>
         <div>
-          {notes.map((note, index) => (
-            <div key={index}>
-              {note.title}
-            </div>
-          ))}
+          <Search />
+          <Notes />
         </div>
-      </div>
+      </Provider>
     );
   }
 }
