@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import reducer from "./reducer.js";
 import Search from "./components/Search.js";
 import Notes from "./components/Notes.js";
+import Editor from "./components/Editor.js";
 import './App.css';
 
 const store = createStore(reducer);
@@ -15,6 +16,7 @@ class App extends Component {
         <div>
           <Search />
           <Notes />
+          <Editor />
         </div>
       </Provider>
     );

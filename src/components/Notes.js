@@ -4,9 +4,9 @@ import { getNotes } from "../reducer";
 
 const Notes = ({ notes }) => (
   <div>
-    {notes.map((note, index) => (
-      <div key={index}>
-        {note.title}
+    {notes.map(note => (
+      <div key={note.id}>
+        {note.title} - {note.body}
       </div>
     ))}
   </div>
@@ -14,6 +14,7 @@ const Notes = ({ notes }) => (
 
 Notes.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
   })).isRequired,
 };
