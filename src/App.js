@@ -10,8 +10,13 @@ import Editor from "./components/Editor";
 import './App.css';
 
 const sagaMiddleware = createSagaMiddleware();
+const middleware = [sagaMiddleware];
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+if (process.env.NODE_ENV === "development") {
+  middleware.push(require("./utils/reduxLogger").default);
+}
+
+const store = createStore(reducer, applyMiddleware(...middleware));
 
 sagas.forEach(saga => { sagaMiddleware.run(saga); });
 
