@@ -1,31 +1,30 @@
-let id = 1;
-
 export const updateSearch = search => ({
-  type: "updateSearch",
+  type: "UPDATE_SEARCH",
   payload: search,
 });
 
 export const loadNotes = ({ notes }) => ({
-  type: "loadNotes",
+  type: "LOAD_NOTES",
   payload: { notes },
 });
 
-export const addNote = title => ({
-  type: "addNote",
-  payload: {
-    title,
-    id: id++,
-    body: "",
-  }
+export const requestAddNote = ({ title }) => ({
+  type: "REQUEST_ADD_NOTE",
+  payload: { title },
+});
+
+export const addNote = ({ note }) => ({
+  type: "ADD_NOTE",
+  payload: { note },
 });
 
 export const updateNoteBody = ({ id, body }) => ({
-  type: "updateNoteBody",
+  type: "UPDATE_NOTE_BODY",
   payload: { id, body },
 });
 
 export const selectNote = id => ({
-  type: "selectNote",
+  type: "SELECT_NOTE",
   payload: { id },
 });
 
@@ -39,13 +38,13 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "updateSearch":
+    case "UPDATE_SEARCH":
       return {
         ...state,
         isEditing: false,
         search: action.payload,
       };
-    case "loadNotes":
+    case "LOAD_NOTES":
       return {
         ...state,
         notes: action.payload.notes.reduce((acc, curr) => ({
@@ -54,19 +53,19 @@ const reducer = (state = initialState, action) => {
         }), {}),
         noteIds: action.payload.notes.map(note => note.id),
       };
-    case "addNote":
+    case "ADD_NOTE":
       return {
         ...state,
         notes: {
           ...state.notes,
-          [action.payload.id]: action.payload,
+          [action.payload.note.id]: action.payload.note,
         },
-        noteIds: state.noteIds.concat(action.payload.id),
+        noteIds: state.noteIds.concat(action.payload.note.id),
         search: "",
         isEditing: true,
-        activeNoteId: action.payload.id,
+        activeNoteId: action.payload.note.id,
       };
-    case "updateNoteBody":
+    case "UPDATE_NOTE_BODY":
       return {
         ...state,
         notes: {
@@ -77,7 +76,7 @@ const reducer = (state = initialState, action) => {
           }
         },
       };
-    case "selectNote":
+    case "SELECT_NOTE":
       return {
         ...state,
         activeNoteId: action.payload.id,

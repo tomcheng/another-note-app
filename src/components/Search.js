@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { updateSearch, addNote, getSearch } from "../reducer";
+import { updateSearch, requestAddNote, getSearch } from "../reducer";
 import { connect } from "react-redux";
 
 const ENTER = 13;
@@ -18,7 +18,7 @@ class Search extends Component {
   handleKeyDown = evt => {
     switch (evt.keyCode) {
       case ENTER:
-        this.props.onAddNote(this.props.search);
+        this.props.onAddNote({ title: this.props.search });
         break;
 
       default:
@@ -46,6 +46,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onAddNote: addNote,
+  onAddNote: requestAddNote,
   onUpdateSearch: updateSearch,
 })(Search);

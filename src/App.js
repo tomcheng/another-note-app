@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import reducer from "./reducer.js";
-import Search from "./components/Search.js";
-import Notes from "./components/Notes.js";
-import Editor from "./components/Editor.js";
+import createSagaMiddleware from "redux-saga";
+import reducer from "./reducer";
+import sagas from "./sagas";
+import Search from "./components/Search";
+import Notes from "./components/Notes";
+import Editor from "./components/Editor";
 import './App.css';
 
-const store = createStore(reducer);
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+
+sagas.forEach(saga => { sagaMiddleware.run(saga); });
 
 class App extends Component {
   render () {

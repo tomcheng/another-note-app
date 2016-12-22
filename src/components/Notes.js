@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 import { connect } from "react-redux";
-import { getNotes, getActiveNote, selectNote } from "../reducer";
+import { getNotes, getActiveNote, getSearch, selectNote } from "../reducer";
 
 const Notes = ({ notes, onSelectNote, activeNote }) => (
   <div>
@@ -32,6 +32,7 @@ Notes.propTypes = {
 const mapStateToProps = state => ({
   notes: getNotes(state),
   activeNote: getActiveNote(state),
+  search: getSearch(state),
 });
 
 export default connect(mapStateToProps, {
