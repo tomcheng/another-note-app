@@ -5,6 +5,11 @@ export const updateSearch = search => ({
   payload: search,
 });
 
+export const loadNotes = ({ notes }) => ({
+  type: "loadNotes",
+  payload: { notes },
+});
+
 export const addNote = title => ({
   type: "addNote",
   payload: {
@@ -17,6 +22,11 @@ export const addNote = title => ({
 export const updateNoteBody = ({ id, body }) => ({
   type: "updateNoteBody",
   payload: { id, body },
+});
+
+export const selectNote = id => ({
+  type: "selectNote",
+  payload: { id },
 });
 
 const initialState = {
@@ -34,6 +44,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         isEditing: false,
         search: action.payload,
+      };
+    case "loadNotes":
+      return {
+        ...state,
+        notes: action.payload.notes.reduce((acc, curr) => ({
+          ...acc,
+          [curr.id]: curr,
+        }), {}),
+        noteIds: action.payload.notes.map(note => note.id),
       };
     case "addNote":
       return {
@@ -57,6 +76,11 @@ const reducer = (state = initialState, action) => {
             body: action.payload.body,
           }
         },
+      };
+    case "selectNote":
+      return {
+        ...state,
+        activeNoteId: action.payload.id,
       };
     default:
       return state;

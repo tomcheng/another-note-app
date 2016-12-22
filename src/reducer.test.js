@@ -37,3 +37,35 @@ it("updates a note body", () => {
 
   expect(getNotes(after)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
 });
+
+it("loads notes", () => {
+  const after = reducer(undefined, {
+    type: "loadNotes",
+    payload: { notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+    ] },
+  });
+
+  expect(getNotes(after)).toEqual([
+    { id: 1, title: "foo", body: "" },
+    { id: 2, title: "bar", body: "" },
+  ]);
+});
+
+it("selects an active note", () => {
+  const before = reducer(undefined, {
+    type: "loadNotes",
+    payload: { notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+    ] },
+  });
+  const action = {
+    type: "selectNote",
+    payload: { id: 2 },
+  };
+  const after = reducer(before, action);
+
+  expect(getActiveNote(after)).toEqual({ id: 2, title: "bar", body: "" });
+});
