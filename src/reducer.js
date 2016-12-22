@@ -1,29 +1,33 @@
-export const updateSearch = search => ({
+export const actions = {};
+
+actions.updateSearch = search => ({
   type: "UPDATE_SEARCH",
   payload: search,
 });
 
-export const loadNotes = ({ notes }) => ({
+actions.requestNotes = () => ({ type: "REQUEST_NOTES" });
+
+actions.loadNotes = ({ notes }) => ({
   type: "LOAD_NOTES",
   payload: { notes },
 });
 
-export const requestAddNote = ({ title }) => ({
+actions.requestAddNote = ({ title }) => ({
   type: "REQUEST_ADD_NOTE",
   payload: { title },
 });
 
-export const addNote = ({ note }) => ({
+actions.addNote = ({ note }) => ({
   type: "ADD_NOTE",
   payload: { note },
 });
 
-export const updateNoteBody = ({ id, body }) => ({
+actions.updateNoteBody = ({ id, body }) => ({
   type: "UPDATE_NOTE_BODY",
   payload: { id, body },
 });
 
-export const selectNote = id => ({
+actions.selectNote = id => ({
   type: "SELECT_NOTE",
   payload: { id },
 });
@@ -33,6 +37,7 @@ const initialState = {
   isEditing: false,
   notes: {},
   noteIds: [],
+  notesLoaded: false,
   search: "",
 };
 
@@ -52,6 +57,7 @@ const reducer = (state = initialState, action) => {
           [curr.id]: curr,
         }), {}),
         noteIds: action.payload.notes.map(note => note.id),
+        notesLoaded: true,
       };
     case "ADD_NOTE":
       return {
@@ -86,12 +92,12 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export const getIsEditing = state => state.isEditing;
+export const selectors = {};
 
-export const getSearch = state => state.search;
-
-export const getNotes = state => state.noteIds.map(id => state.notes[id]);
-
-export const getActiveNote = state => state.notes[state.activeNoteId];
+selectors.getActiveNote = state => state.notes[state.activeNoteId];
+selectors.getIsEditing = state => state.isEditing;
+selectors.getNotes = state => state.noteIds.map(id => state.notes[id]);
+selectors.getNotesLoaded = state => state.notesLoaded;
+selectors.getSearch = state => state.search;
 
 export default reducer;

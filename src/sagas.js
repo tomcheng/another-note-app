@@ -1,14 +1,22 @@
 import { takeEvery } from "redux-saga";
-import { put } from "redux-saga/effects";
-import { addNote } from "./reducer";
+import { put, call } from "redux-saga/effects";
+import { actions } from "./reducer";
+import * as api from "./repo";
 
 const sagas = [];
-let id = 1;
 
 sagas.push(function* () {
-  yield* takeEvery("REQUEST_ADD_NOTE", function* (action) {
-    yield put(addNote({ note: { title: action.payload.title, body: "", id: id++ } }));
+  yield* takeEvery("REQUEST_ADD_NOTE", function* ({ payload }) {
+    const response = yield call(api.addNote, payload);
+    yield put(actions.addNote(response));
   })
-})
+});
+
+sagas.push(function* () {
+  yield* takeEvery("REQUEST_NOTES", function* () {
+    const response = yield call(api.getNotes);
+    yield put(actions.loadNotes(response));
+  })
+});
 
 export default sagas;

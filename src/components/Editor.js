@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { getActiveNote, getIsEditing, updateNoteBody } from "../reducer";
+import { actions, selectors } from "../reducer";
 
 class Editor extends Component {
   static propTypes = {
@@ -41,10 +41,10 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-  activeNote: getActiveNote(state),
-  isEditing: getIsEditing(state),
+  activeNote: selectors.getActiveNote(state),
+  isEditing: selectors.getIsEditing(state),
 });
 
 export default connect(mapStateToProps, {
-  onUpdateNoteBody: updateNoteBody,
+  onUpdateNoteBody: actions.updateNoteBody,
 })(Editor);

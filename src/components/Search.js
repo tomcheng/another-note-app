@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { updateSearch, requestAddNote, getSearch } from "../reducer";
+import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 
 const ENTER = 13;
@@ -42,10 +42,10 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
-  search: getSearch(state),
+  search: selectors.getSearch(state),
 });
 
 export default connect(mapStateToProps, {
-  onAddNote: requestAddNote,
-  onUpdateSearch: updateSearch,
+  onAddNote: actions.requestAddNote,
+  onUpdateSearch: actions.updateSearch,
 })(Search);

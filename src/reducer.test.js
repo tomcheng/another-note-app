@@ -1,34 +1,13 @@
-import reducer, { addNote, getNotes, getActiveNote } from "./reducer";
+import reducer, { actions, selectors } from "./reducer";
 
 it("initializes with a list of empty notes", () => {
   const initial = reducer(undefined, {});
-  expect(getNotes(initial)).toEqual([]);
+  expect(selectors.getNotes(initial)).toEqual([]);
 });
 
-it("adds a note", () => {
-  const before = reducer(undefined, {});
-  const action = {
-    type: "ADD_NOTE",
-    payload: { note: { title: "foo", id: 1, body: "" } },
-  };
-  const after = reducer(before, action);
-
-  expect(getNotes(after)).toEqual([{ id: 1, title: "foo", body: "" }]);
-  expect(getActiveNote(after)).toEqual({ id: 1, title: "foo", body: "" });
-});
-
-it("updates a note body", () => {
-  const before = reducer(undefined, {
-    type: "ADD_NOTE",
-    payload: { note: { title: "foo", id: 1, body: "" } },
-  });
-  const action = {
-    type: "UPDATE_NOTE_BODY",
-    payload: { id: 1, body: "bar" },
-  };
-  const after = reducer(before, action);
-
-  expect(getNotes(after)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
+it("initializes with notes not loaded", () => {
+  const initial = reducer(undefined, {});
+  expect(selectors.getNotesLoaded(initial)).toBe(false);
 });
 
 it("loads notes", () => {
@@ -40,10 +19,28 @@ it("loads notes", () => {
     ] },
   });
 
-  expect(getNotes(after)).toEqual([
+  expect(selectors.getNotes(after)).toEqual([
     { id: 1, title: "foo", body: "" },
     { id: 2, title: "bar", body: "" },
   ]);
+  expect(selectors.getNotesLoaded(after)).toBe(true);
+});
+
+it("adds a note", () => {
+  const before = reducer(undefined, {});
+  const action = actions.addNote({ note: { title: "foo", id: 1, body: "" } });
+  const after = reducer(before, action);
+
+  expect(selectors.getNotes(after)).toEqual([{ id: 1, title: "foo", body: "" }]);
+  expect(selectors.getActiveNote(after)).toEqual({ id: 1, title: "foo", body: "" });
+});
+
+it("updates a note body", () => {
+  const before = reducer(undefined, actions.addNote({ note: { title: "foo", id: 1, body: "" } }));
+  const action = actions.updateNoteBody({ id: 1, body: "bar" });
+  const after = reducer(before, action);
+
+  expect(selectors.getNotes(after)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
 });
 
 it("selects an active note", () => {
@@ -60,5 +57,5 @@ it("selects an active note", () => {
   };
   const after = reducer(before, action);
 
-  expect(getActiveNote(after)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getActiveNote(after)).toEqual({ id: 2, title: "bar", body: "" });
 });
