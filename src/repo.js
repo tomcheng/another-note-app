@@ -1,3 +1,5 @@
+import findIndex from "lodash/findIndex";
+
 const saveLocalNotes = notes => { localStorage.setItem("notes", JSON.stringify(notes)); };
 
 const getLocalNotes = () => {
@@ -18,4 +20,16 @@ export const addNote = ({ title }) => {
   saveLocalNotes(notes.concat(note));
 
   return { note };
+};
+
+export const updateNote = ({ id, updates }) => {
+  const notes = getLocalNotes();
+  const noteIndex = findIndex(notes, { id });
+  const newNote = { ...notes[noteIndex], ...updates };
+
+  notes[noteIndex] = newNote;
+
+  saveLocalNotes(notes);
+
+  return { note: newNote };
 };

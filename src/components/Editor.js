@@ -5,7 +5,7 @@ import { actions, selectors } from "../reducer";
 class Editor extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
-    onUpdateNoteBody: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired,
     activeNote: PropTypes.shape({
       body: PropTypes.string,
     }),
@@ -20,9 +20,12 @@ class Editor extends Component {
   }
 
   handleChange = ({ target }) => {
-    const { activeNote, onUpdateNoteBody } = this.props;
+    const { activeNote, onUpdateNote } = this.props;
 
-    onUpdateNoteBody({ id: activeNote.id, body: target.value });
+    onUpdateNote({
+      id: activeNote.id,
+      updates: { body: target.value }
+    });
   };
 
   render () {
@@ -46,5 +49,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onUpdateNoteBody: actions.updateNoteBody,
+  onUpdateNote: actions.requestUpdateNote,
 })(Editor);

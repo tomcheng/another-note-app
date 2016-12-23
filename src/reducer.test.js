@@ -32,15 +32,15 @@ it("loads notes", () => {
 });
 
 it("adds a note", () => {
-  const state = reducer(undefined, actions.addNote({ note: { title: "foo", id: 1, body: "" } }));
+  const state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
 
   expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "" }]);
   expect(selectors.getActiveNote(state)).toEqual({ id: 1, title: "foo", body: "" });
 });
 
-it("updates a note body", () => {
-  const before = reducer(undefined, actions.addNote({ note: { title: "foo", id: 1, body: "" } }));
-  const action = actions.updateNoteBody({ id: 1, body: "bar" });
+it("updates a note", () => {
+  const before = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
+  const action = actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } });
   const state = reducer(before, action);
 
   expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "bar" }]);

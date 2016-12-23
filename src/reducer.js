@@ -1,12 +1,13 @@
 export const actions = {};
 
-actions.updateSearch   = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.requestNotes   = ()      => ({ type: "REQUEST_NOTES" });
-actions.loadNotes      = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestAddNote = payload => ({ type: "REQUEST_ADD_NOTE", payload });
-actions.addNote        = payload => ({ type: "ADD_NOTE", payload });
-actions.updateNoteBody = payload => ({ type: "UPDATE_NOTE_BODY", payload });
-actions.selectNote     = payload => ({ type: "SELECT_NOTE", payload });
+actions.updateSearch      = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.requestNotes      = ()      => ({ type: "REQUEST_NOTES" });
+actions.loadNotes         = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddNote    = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote           = payload => ({ type: "ADD_NOTE", payload });
+actions.requestUpdateNote = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
+actions.updateNote        = payload => ({ type: "UPDATE_NOTE", payload });
+actions.selectNote        = payload => ({ type: "SELECT_NOTE", payload });
 
 const initialState = {
   activeNoteId: null,
@@ -49,15 +50,12 @@ const reducer = (state = initialState, action) => {
         isEditing: true,
         activeNoteId: payload.note.id,
       };
-    case "UPDATE_NOTE_BODY":
+    case "UPDATE_NOTE":
       return {
         ...state,
         notes: {
           ...state.notes,
-          [payload.id]: {
-            ...state.notes[payload.id],
-            body: payload.body,
-          }
+          [payload.note.id]: payload.note,
         },
       };
     case "SELECT_NOTE":
