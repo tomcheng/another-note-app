@@ -3,6 +3,7 @@ import find from "lodash/find";
 export const actions = {};
 
 actions.updateSearch      = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.deleteSearch      = payload => ({ type: "DELETE_SEARCH", payload });
 actions.requestNotes      = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes         = payload => ({ type: "LOAD_NOTES", payload });
 actions.requestAddNote    = payload => ({ type: "REQUEST_ADD_NOTE", payload });
@@ -41,6 +42,13 @@ const reducer = (state = initialState, action) => {
         isEditing: false,
         search: payload.search,
         selectedNoteId: matchedNote ? matchedNote.id : null,
+      };
+    case "DELETE_SEARCH":
+      return {
+        ...state,
+        isEditing: false,
+        search: payload.search,
+        selectedNoteId: null,
       };
     case "LOAD_NOTES":
       return {

@@ -6,6 +6,17 @@ it("updates search", () => {
   expect(selectors.getSearch(state)).toBe("foo");
 });
 
+it("clears selected note when updating from delete", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [ { id: 1, title: "foo", body: "" } ],
+  }));
+  state = reducer(state, actions.selectNote({ id: 1 }));
+  state = reducer(state, actions.deleteSearch({ search: "f" }));
+
+  expect(selectors.getSearch(state)).toBe("f");
+  expect(selectors.getSelectedNote(state)).toBeFalsy();
+});
+
 it("selects a note based on search", () => {
   const before = reducer(undefined, actions.loadNotes({
     notes: [
