@@ -1,15 +1,12 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import moment from "moment";
+import Note from "./Note";
 
 class Notes extends Component {
   static propTypes = {
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
     })).isRequired,
     notesLoaded: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
@@ -33,16 +30,13 @@ class Notes extends Component {
     return (
       <div>
         {notes.map(note => (
-          <div
+          <Note
             key={note.id}
-            onClick={() => onSelectNote({ id: note.id })}
-            style={{
-              backgroundColor: (selectedNote && note.id === selectedNote.id) ? "#ddd" : null,
-              display: visibleNoteIds.includes(note.id) ? "block" : "none",
-            }}
-          >
-            {note.title} - {note.body} - {moment(note.updatedAt).fromNow()}
-          </div>
+            note={note}
+            onSelectNote={onSelectNote}
+            isSelected={!!selectedNote && note.id === selectedNote.id}
+            isVisible={visibleNoteIds.includes(note.id)}
+          />
         ))}
       </div>
     );
