@@ -38,6 +38,15 @@ class Editor extends Component {
         ref={el => { this.textarea = el; }}
         onChange={this.handleChange}
         onBlur={onBlurEdit}
+        style={{
+          fontFamily: "inherit",
+          lineHeight: "inherit",
+          fontSize: "inherit",
+          color: "inherit",
+          padding: "8px",
+          height: 180,
+          width: "100%",
+        }}
       />
     ) : (
       <div>No note selected</div>
