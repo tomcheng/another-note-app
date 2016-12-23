@@ -68,3 +68,9 @@ it("selects an active note", () => {
 
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
+
+it("sets the editing flag", () => {
+  const state = reducer(undefined, actions.editNote());
+
+  expect(selectors.getIsEditing(state)).toBe(true);
+});

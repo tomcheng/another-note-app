@@ -10,6 +10,7 @@ actions.addNote           = payload => ({ type: "ADD_NOTE", payload });
 actions.requestUpdateNote = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
 actions.updateNote        = payload => ({ type: "UPDATE_NOTE", payload });
 actions.selectNote        = payload => ({ type: "SELECT_NOTE", payload });
+actions.editNote          = ()      => ({ type: "EDIT_NOTE" });
 
 const initialState = {
   isEditing: false,
@@ -75,6 +76,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedNoteId: payload.id,
+      };
+    case "EDIT_NOTE":
+      return {
+        ...state,
+        isEditing: true,
       };
     default:
       return state;

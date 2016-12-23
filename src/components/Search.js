@@ -8,7 +8,11 @@ class Search extends Component {
   static propTypes = {
     search: PropTypes.string.isRequired,
     onAddNote: PropTypes.func.isRequired,
+    onEditNote: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
+    selectedNote: PropTypes.shape({
+      id: PropTypes.number,
+    }),
   };
 
   handleChangeSearch = ({ target }) => {
@@ -16,9 +20,15 @@ class Search extends Component {
   };
 
   handleKeyDown = evt => {
+    const { search, selectedNote, onAddNote, onEditNote } = this.props;
+
     switch (evt.keyCode) {
       case ENTER:
-        this.props.onAddNote({ title: this.props.search });
+        if (selectedNote) {
+          onEditNote();
+        } else {
+          onAddNote({ title: search });
+        }
         break;
 
       default:
@@ -43,9 +53,11 @@ class Search extends Component {
 
 const mapStateToProps = state => ({
   search: selectors.getSearch(state),
+  selectedNote: selectors.getSelectedNote(state),
 });
 
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
+  onEditNote: actions.editNote,
   onUpdateSearch: actions.updateSearch,
 })(Search);
