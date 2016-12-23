@@ -2,6 +2,13 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 
+export const matches = (search, note) => {
+  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  return processedTitle.indexOf(processedSearch) !== -1;
+};
+
 class Notes extends Component {
   static propTypes = {
     notes: PropTypes.arrayOf(PropTypes.shape({
@@ -9,6 +16,7 @@ class Notes extends Component {
       title: PropTypes.string.isRequired,
     })).isRequired,
     notesLoaded: PropTypes.bool.isRequired,
+    search: PropTypes.string.isRequired,
     onRequestNotes: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
     activeNote: PropTypes.shape({
@@ -21,7 +29,7 @@ class Notes extends Component {
   }
 
   render () {
-    const { notes, onSelectNote, activeNote, notesLoaded } = this.props;
+    const { notes, onSelectNote, activeNote, notesLoaded, search } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
 
@@ -33,6 +41,7 @@ class Notes extends Component {
             onClick={() => onSelectNote({ id: note.id })}
             style={{
               backgroundColor: (activeNote && note.id === activeNote.id) ? "#ddd" : null,
+              display: matches(search, note) ? "block" : "none",
             }}
           >
             {note.title} - {note.body}
