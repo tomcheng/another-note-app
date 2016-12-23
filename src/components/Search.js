@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
+import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
@@ -83,6 +84,8 @@ class Search extends Component {
   render () {
     return (
       <input
+        placeholder="Search or create a new note"
+        className="SearchInput"
         ref={el => { this.input = el; }}
         value={this.getValue()}
         type="text"
