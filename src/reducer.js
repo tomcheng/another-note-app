@@ -96,6 +96,15 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+const matches = (note, search) => {
+  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody = note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  return processedTitle.indexOf(processedSearch) !== -1 ||
+    processedBody.indexOf(processedSearch) !== -1;
+};
+
 export const selectors = {};
 
 selectors.getNotesById    = state => state.notes;
@@ -108,6 +117,11 @@ selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
   (notesById, noteIds) => noteIds.map(id => notesById[id])
+);
+selectors.getVisibleNoteIds = createSelector(
+  selectors.getNotes,
+  selectors.getSearch,
+  (notes, search) => notes.filter(note => matches(note, search)).map(note => note.id)
 );
 
 export default reducer;

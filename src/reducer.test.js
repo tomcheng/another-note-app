@@ -29,6 +29,19 @@ it("selects a note based on search", () => {
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
 
+it("updates visible notes based on search", () => {
+  const before = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+      { id: 3, title: "foo", body: "bar" },
+    ],
+  }));
+  const state = reducer(before, actions.updateSearch({ search: "b" }));
+
+  expect(selectors.getVisibleNoteIds(state)).toEqual([2, 3]);
+});
+
 it("takes into account special characters when matching", () => {
   const before = reducer(undefined, actions.loadNotes({
     notes: [

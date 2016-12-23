@@ -2,15 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 
-export const matches = (search, note) => {
-  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedBody = note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
-
-  return processedTitle.indexOf(processedSearch) !== -1 ||
-    processedBody.indexOf(processedSearch) !== -1;
-};
-
 class Notes extends Component {
   static propTypes = {
     notes: PropTypes.arrayOf(PropTypes.shape({
@@ -19,6 +10,7 @@ class Notes extends Component {
     })).isRequired,
     notesLoaded: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
+    visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
     onRequestNotes: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
@@ -31,7 +23,7 @@ class Notes extends Component {
   }
 
   render () {
-    const { notes, onSelectNote, selectedNote, notesLoaded, search } = this.props;
+    const { notes, onSelectNote, selectedNote, notesLoaded, visibleNoteIds } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
 
@@ -43,7 +35,7 @@ class Notes extends Component {
             onClick={() => onSelectNote({ id: note.id })}
             style={{
               backgroundColor: (selectedNote && note.id === selectedNote.id) ? "#ddd" : null,
-              display: matches(search, note) ? "block" : "none",
+              display: visibleNoteIds.includes(note.id) ? "block" : "none",
             }}
           >
             {note.title} - {note.body}
@@ -59,6 +51,7 @@ const mapStateToProps = state => ({
   notes: selectors.getNotes(state),
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
+  visibleNoteIds: selectors.getVisibleNoteIds(state),
 });
 
 export default connect(mapStateToProps, {
