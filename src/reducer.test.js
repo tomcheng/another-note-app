@@ -1,9 +1,11 @@
 import reducer, { actions, selectors } from "./reducer";
 
 it("updates search", () => {
-  const state = reducer(undefined, actions.updateSearch({ search: "foo" }));
+  let state = reducer(undefined, actions.selectNextNote());
+  state = reducer(state, actions.updateSearch({ search: "foo" }));
 
   expect(selectors.getSearch(state)).toBe("foo");
+  expect(selectors.getIsNavigating(state)).toBe(false);
 });
 
 it("clears selected note when updating from delete", () => {
@@ -11,45 +13,47 @@ it("clears selected note when updating from delete", () => {
     notes: [ { id: 1, title: "foo", body: "" } ],
   }));
   state = reducer(state, actions.selectNote({ id: 1 }));
+  state = reducer(state, actions.selectNextNote());
   state = reducer(state, actions.deleteSearch({ search: "f" }));
 
   expect(selectors.getSearch(state)).toBe("f");
   expect(selectors.getSelectedNote(state)).toBeFalsy();
+  expect(selectors.getIsNavigating(state)).toBe(false);
 });
 
 it("selects a note based on search", () => {
-  const before = reducer(undefined, actions.loadNotes({
+  let state = reducer(undefined, actions.loadNotes({
     notes: [
       { id: 1, title: "foo", body: "" },
       { id: 2, title: "bar", body: "" },
     ],
   }));
-  const state = reducer(before, actions.updateSearch({ search: "b" }));
+  state = reducer(state, actions.updateSearch({ search: "b" }));
 
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
 
 it("updates visible notes based on search", () => {
-  const before = reducer(undefined, actions.loadNotes({
+  let state = reducer(undefined, actions.loadNotes({
     notes: [
       { id: 1, title: "foo", body: "" },
       { id: 2, title: "bar", body: "" },
       { id: 3, title: "foo", body: "bar" },
     ],
   }));
-  const state = reducer(before, actions.updateSearch({ search: "b" }));
+  state = reducer(state, actions.updateSearch({ search: "b" }));
 
   expect(selectors.getVisibleNoteIds(state)).toEqual([2, 3]);
 });
 
 it("takes into account special characters when matching", () => {
-  const before = reducer(undefined, actions.loadNotes({
+  let state = reducer(undefined, actions.loadNotes({
     notes: [
       { id: 1, title: "foo", body: "" },
       { id: 2, title: "bar", body: "" },
     ],
   }));
-  const state = reducer(before, actions.updateSearch({ search: "b'" }));
+  state = reducer(state, actions.updateSearch({ search: "b'" }));
 
   expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
@@ -79,6 +83,13 @@ it("loads notes", () => {
   expect(selectors.getNotesLoaded(state)).toBe(true);
 });
 
+it("memoizes notes", () => {
+  const state1 = reducer(undefined, {});
+  const state2 = reducer(state1, {});
+
+  expect(selectors.getNotes(state1)).toBe(selectors.getNotes(state2));
+});
+
 it("adds a note", () => {
   const state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
 
@@ -87,20 +98,20 @@ it("adds a note", () => {
 });
 
 it("updates a note", () => {
-  const before = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
-  const state = reducer(before, actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } }));
+  let state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
+  state = reducer(state, actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } }));
 
   expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
 });
 
-it("selects an active note", () => {
-  const before = reducer(undefined, actions.loadNotes({
+it("selects a note", () => {
+  let state = reducer(undefined, actions.loadNotes({
     notes: [
       { id: 1, title: "foo", body: "" },
       { id: 2, title: "bar", body: "" },
     ],
   }));
-  const state = reducer(before, actions.selectNote({ id: 2 }));
+  state = reducer(state, actions.selectNote({ id: 2 }));
 
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
@@ -111,9 +122,60 @@ it("sets the editing flag", () => {
   expect(selectors.getIsEditing(state)).toBe(true);
 });
 
-it("memoizes notes", () => {
-  const state1 = reducer(undefined, {});
-  const state2 = reducer(state1, {});
+it("unsets the editing flag", () => {
+  let state = reducer(undefined, actions.editNote());
+  state = reducer(state, actions.blurEdit());
 
-  expect(selectors.getNotes(state1)).toBe(selectors.getNotes(state2));
+  expect(selectors.getIsEditing(state)).toBe(false);
+});
+
+it("selects the first visible note as next if none is selected", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+    ],
+  }));
+  state = reducer(state, actions.selectNextNote());
+
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+});
+
+it("selects the next visible note if a note is selected", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+    ],
+  }));
+  state = reducer(state, actions.selectNote({ id: 1 }));
+  state = reducer(state, actions.selectNextNote());
+
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+});
+
+it("it selects the previous note", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+    ],
+  }));
+  state = reducer(state, actions.selectNote({ id: 2 }));
+  state = reducer(state, actions.selectPreviousNote());
+
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+});
+
+it("it sets isNavigating when selecting next", () => {
+  let state = reducer(undefined, actions.updateSearch({ search: "foo" }));
+  state = reducer(state, actions.selectNextNote());
+
+  expect(selectors.getIsNavigating(state)).toEqual(true);
+});
+
+it("it sets isNavigating when selecting previous", () => {
+  let state = reducer(undefined, actions.updateSearch({ search: "foo" }));
+  state = reducer(state, actions.selectPreviousNote());
+
+  expect(selectors.getIsNavigating(state)).toEqual(true);
 });

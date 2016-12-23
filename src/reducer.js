@@ -2,20 +2,25 @@ import { createSelector } from "reselect";
 import find from "lodash/find";
 
 export const actions = {};
+export const selectors = {};
 
-actions.updateSearch      = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.deleteSearch      = payload => ({ type: "DELETE_SEARCH", payload });
-actions.requestNotes      = ()      => ({ type: "REQUEST_NOTES" });
-actions.loadNotes         = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestAddNote    = payload => ({ type: "REQUEST_ADD_NOTE", payload });
-actions.addNote           = payload => ({ type: "ADD_NOTE", payload });
-actions.requestUpdateNote = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
-actions.updateNote        = payload => ({ type: "UPDATE_NOTE", payload });
-actions.selectNote        = payload => ({ type: "SELECT_NOTE", payload });
-actions.editNote          = ()      => ({ type: "EDIT_NOTE" });
+actions.updateSearch       = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.deleteSearch       = payload => ({ type: "DELETE_SEARCH", payload });
+actions.requestNotes       = ()      => ({ type: "REQUEST_NOTES" });
+actions.loadNotes          = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddNote     = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote            = payload => ({ type: "ADD_NOTE", payload });
+actions.requestUpdateNote  = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
+actions.updateNote         = payload => ({ type: "UPDATE_NOTE", payload });
+actions.selectNote         = payload => ({ type: "SELECT_NOTE", payload });
+actions.selectNextNote     = ()      => ({ type: "SELECT_NEXT_NOTE" });
+actions.selectPreviousNote = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
+actions.editNote           = ()      => ({ type: "EDIT_NOTE" });
+actions.blurEdit           = ()      => ({ type: "BLUR_EDIT" });
 
 const initialState = {
   isEditing: false,
+  isNavigating: false,
   notes: {},
   noteIds: [],
   notesLoaded: false,
@@ -27,8 +32,8 @@ const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "UPDATE_SEARCH":
-      const notes = state.noteIds.map(id => state.notes[id]);
+    case "UPDATE_SEARCH": {
+      const notes = selectors.getNotes(state);
       const matchedNote = find(notes, note => {
         const processedSearch = payload.search.toLowerCase();
         const processedTitle = note.title.toLowerCase();
@@ -41,13 +46,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isEditing: false,
+        isNavigating: false,
         search: payload.search,
         selectedNoteId: matchedNote ? matchedNote.id : null,
       };
+    }
     case "DELETE_SEARCH":
       return {
         ...state,
         isEditing: false,
+        isNavigating: false,
         search: payload.search,
         selectedNoteId: null,
       };
@@ -82,15 +90,29 @@ const reducer = (state = initialState, action) => {
         },
       };
     case "SELECT_NOTE":
-      return {
-        ...state,
-        selectedNoteId: payload.id,
-      };
+      return { ...state, selectedNoteId: payload.id };
+    case "SELECT_NEXT_NOTE": {
+      const visibleIds = selectors.getVisibleNoteIds(state);
+      const currentId = state.selectedNoteId;
+      const selectedNoteId = currentId
+        ? visibleIds[Math.min(visibleIds.length - 1, visibleIds.indexOf(currentId) + 1)]
+        : visibleIds[0];
+
+      return { ...state, selectedNoteId, isNavigating: true };
+    }
+    case "SELECT_PREVIOUS_NOTE": {
+      const visibleIds = selectors.getVisibleNoteIds(state);
+      const currentId = state.selectedNoteId;
+      const selectedNoteId = currentId
+        ? visibleIds[Math.max(0, visibleIds.indexOf(currentId) - 1)]
+        : visibleIds[visibleIds.length - 1];
+
+      return { ...state, selectedNoteId, isNavigating: true };
+    }
     case "EDIT_NOTE":
-      return {
-        ...state,
-        isEditing: true,
-      };
+      return { ...state, isEditing: true };
+    case "BLUR_EDIT":
+      return { ...state, isEditing: false };
     default:
       return state;
   }
@@ -105,12 +127,11 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
-export const selectors = {};
-
 selectors.getNotesById    = state => state.notes;
 selectors.getNoteIds      = state => state.noteIds;
 selectors.getSelectedNote = state => state.notes[state.selectedNoteId];
 selectors.getIsEditing    = state => state.isEditing;
+selectors.getIsNavigating = state => state.isNavigating;
 selectors.getNotesLoaded  = state => state.notesLoaded;
 selectors.getSearch       = state => state.search;
 selectors.getNotes = createSelector(

@@ -5,6 +5,7 @@ import { actions, selectors } from "../reducer";
 class Editor extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
+    onBlurEdit: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
@@ -29,13 +30,14 @@ class Editor extends Component {
   };
 
   render () {
-    const { selectedNote } = this.props;
+    const { selectedNote, onBlurEdit } = this.props;
 
     return selectedNote ? (
       <textarea
         value={selectedNote.body}
         ref={el => { this.textarea = el; }}
         onChange={this.handleChange}
+        onBlur={onBlurEdit}
       />
     ) : (
       <div>No note selected</div>
@@ -49,5 +51,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+  onBlurEdit: actions.blurEdit,
   onUpdateNote: actions.requestUpdateNote,
 })(Editor);
