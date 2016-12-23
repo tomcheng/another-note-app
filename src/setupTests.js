@@ -1,4 +1,8 @@
-const localStorageMock = (function() {
+import MockDate from "mockdate";
+
+MockDate.set(1434319925275);
+
+global.localStorage = (function() {
   let store = {};
 
   return {
@@ -13,5 +17,3 @@ const localStorageMock = (function() {
     },
   };
 })();
-
-global.localStorage = localStorageMock;
