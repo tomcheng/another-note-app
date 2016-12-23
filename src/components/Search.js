@@ -26,9 +26,16 @@ class Search extends Component {
     if (isNavigating) {
       this.input.select();
     } else if (selectedNote) {
-      this.input.setSelectionRange(search.length, selectedNote.title.length);
+      // Set timeout to get it working for mobile
+      setTimeout(() => {
+        this.input.setSelectionRange(search.length, selectedNote.title.length, "forward");
+      }, 0);
     }
   }
+
+  handleFocus = () => {
+    this.input.select();
+  };
 
   handleChangeSearch = ({ target }) => {
     const { search, selectedNote, onUpdateSearch, onDeleteSearch } = this.props;
@@ -91,6 +98,7 @@ class Search extends Component {
         type="text"
         onChange={this.handleChangeSearch}
         onKeyDown={this.handleKeyDown}
+        onFocus={this.handleFocus}
       />
     );
   }
