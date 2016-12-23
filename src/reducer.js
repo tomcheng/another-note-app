@@ -1,3 +1,4 @@
+import { createSelector } from "reselect";
 import find from "lodash/find";
 
 export const actions = {};
@@ -97,10 +98,16 @@ const reducer = (state = initialState, action) => {
 
 export const selectors = {};
 
+selectors.getNotesById    = state => state.notes;
+selectors.getNoteIds      = state => state.noteIds;
 selectors.getSelectedNote = state => state.notes[state.selectedNoteId];
 selectors.getIsEditing    = state => state.isEditing;
-selectors.getNotes        = state => state.noteIds.map(id => state.notes[id]);
 selectors.getNotesLoaded  = state => state.notesLoaded;
 selectors.getSearch       = state => state.search;
+selectors.getNotes = createSelector(
+  selectors.getNotesById,
+  selectors.getNoteIds,
+  (notesById, noteIds) => noteIds.map(id => notesById[id])
+);
 
 export default reducer;

@@ -97,3 +97,10 @@ it("sets the editing flag", () => {
 
   expect(selectors.getIsEditing(state)).toBe(true);
 });
+
+it("memoizes notes", () => {
+  const state1 = reducer(undefined, {});
+  const state2 = reducer(state1, {});
+
+  expect(selectors.getNotes(state1)).toBe(selectors.getNotes(state2));
+});

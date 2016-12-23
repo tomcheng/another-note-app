@@ -34,7 +34,6 @@ class Search extends Component {
 
   handleKeyDown = evt => {
     const { search, selectedNote, onAddNote, onEditNote } = this.props;
-    console.log(Object.assign({}, evt));
 
     switch (evt.key) {
       case "Enter":
