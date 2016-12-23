@@ -16,7 +16,6 @@ it("saves a note", () => {
     { id: 1, title: "foo", body: "", updatedAt: moment().format() },
   ] });
   expect(response).toEqual({ note: { id: 1, title: "foo", body: "", updatedAt: moment().format() } });
-  console.log(">> moment().format():", moment().format());
 });
 
 it("save multiple notes", () => {

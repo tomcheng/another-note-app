@@ -1,12 +1,15 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
+import moment from "moment";
 
 class Notes extends Component {
   static propTypes = {
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
     })).isRequired,
     notesLoaded: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
@@ -38,7 +41,7 @@ class Notes extends Component {
               display: visibleNoteIds.includes(note.id) ? "block" : "none",
             }}
           >
-            {note.title} - {note.body}
+            {note.title} - {note.body} - {moment(note.updatedAt).fromNow()}
           </div>
         ))}
       </div>
