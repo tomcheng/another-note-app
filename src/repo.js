@@ -1,4 +1,5 @@
 import findIndex from "lodash/findIndex";
+import max from "lodash/max";
 import moment from "moment"
 
 const saveLocalNotes = notes => { localStorage.setItem("notes", JSON.stringify(notes)); };
@@ -15,7 +16,7 @@ export const getNotes = () => ({ notes: getLocalNotes() });
 
 export const addNote = ({ title }) => {
   const notes = getLocalNotes();
-  const id = notes.length ? notes[notes.length - 1].id + 1 : 1;
+  const id = (max(notes.map(note => note.id)) || 0) + 1;
   const note = { id, title, body: "", updatedAt: moment().format() };
 
   saveLocalNotes([note].concat(notes));

@@ -28,6 +28,18 @@ it("save multiple notes and puts latest ones first", () => {
   ] })
 });
 
+it("increments ids properly", () => {
+  api.addNote({ title: "foo" });
+  api.addNote({ title: "bar" });
+  api.addNote({ title: "baz" });
+
+  expect(api.getNotes()).toEqual({ notes: [
+    { id: 3, title: "baz", body: "", updatedAt: moment().format() },
+    { id: 2, title: "bar", body: "", updatedAt: moment().format() },
+    { id: 1, title: "foo", body: "", updatedAt: moment().format() },
+  ] })
+});
+
 it("updates a note", () => {
   api.addNote({ title: "foo" });
   const response = api.updateNote({ id: 1, updates: { body: "bar" } });
