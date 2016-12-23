@@ -35,7 +35,7 @@ it("adds a note", () => {
   const state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
 
   expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "" }]);
-  expect(selectors.getActiveNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
 });
 
 it("updates a note", () => {
@@ -55,5 +55,5 @@ it("selects an active note", () => {
   }));
   const state = reducer(before, actions.selectNote({ id: 2 }));
 
-  expect(selectors.getActiveNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });

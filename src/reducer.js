@@ -10,7 +10,7 @@ actions.updateNote        = payload => ({ type: "UPDATE_NOTE", payload });
 actions.selectNote        = payload => ({ type: "SELECT_NOTE", payload });
 
 const initialState = {
-  activeNoteId: null,
+  selectedNoteId: null,
   isEditing: false,
   notes: {},
   noteIds: [],
@@ -48,7 +48,7 @@ const reducer = (state = initialState, action) => {
         noteIds: state.noteIds.concat(payload.note.id),
         search: "",
         isEditing: true,
-        activeNoteId: payload.note.id,
+        selectedNoteId: payload.note.id,
       };
     case "UPDATE_NOTE":
       return {
@@ -61,7 +61,7 @@ const reducer = (state = initialState, action) => {
     case "SELECT_NOTE":
       return {
         ...state,
-        activeNoteId: payload.id,
+        selectedNoteId: payload.id,
       };
     default:
       return state;
@@ -70,10 +70,10 @@ const reducer = (state = initialState, action) => {
 
 export const selectors = {};
 
-selectors.getActiveNote  = state => state.notes[state.activeNoteId];
-selectors.getIsEditing   = state => state.isEditing;
-selectors.getNotes       = state => state.noteIds.map(id => state.notes[id]);
-selectors.getNotesLoaded = state => state.notesLoaded;
-selectors.getSearch      = state => state.search;
+selectors.getSelectedNote = state => state.notes[state.selectedNoteId];
+selectors.getIsEditing    = state => state.isEditing;
+selectors.getNotes        = state => state.noteIds.map(id => state.notes[id]);
+selectors.getNotesLoaded  = state => state.notesLoaded;
+selectors.getSearch       = state => state.search;
 
 export default reducer;

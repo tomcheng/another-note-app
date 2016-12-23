@@ -6,7 +6,7 @@ class Editor extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
-    activeNote: PropTypes.shape({
+    selectedNote: PropTypes.shape({
       body: PropTypes.string,
     }),
   };
@@ -20,20 +20,20 @@ class Editor extends Component {
   }
 
   handleChange = ({ target }) => {
-    const { activeNote, onUpdateNote } = this.props;
+    const { selectedNote, onUpdateNote } = this.props;
 
     onUpdateNote({
-      id: activeNote.id,
+      id: selectedNote.id,
       updates: { body: target.value }
     });
   };
 
   render () {
-    const { activeNote } = this.props;
+    const { selectedNote } = this.props;
 
-    return activeNote ? (
+    return selectedNote ? (
       <textarea
-        value={activeNote.body}
+        value={selectedNote.body}
         ref={el => { this.textarea = el; }}
         onChange={this.handleChange}
       />
@@ -44,7 +44,7 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-  activeNote: selectors.getActiveNote(state),
+  selectedNote: selectors.getSelectedNote(state),
   isEditing: selectors.getIsEditing(state),
 });
 

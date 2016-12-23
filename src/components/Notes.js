@@ -21,7 +21,7 @@ class Notes extends Component {
     search: PropTypes.string.isRequired,
     onRequestNotes: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
-    activeNote: PropTypes.shape({
+    selectedNote: PropTypes.shape({
       id: PropTypes.number,
     }),
   };
@@ -31,7 +31,7 @@ class Notes extends Component {
   }
 
   render () {
-    const { notes, onSelectNote, activeNote, notesLoaded, search } = this.props;
+    const { notes, onSelectNote, selectedNote, notesLoaded, search } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
 
@@ -42,7 +42,7 @@ class Notes extends Component {
             key={note.id}
             onClick={() => onSelectNote({ id: note.id })}
             style={{
-              backgroundColor: (activeNote && note.id === activeNote.id) ? "#ddd" : null,
+              backgroundColor: (selectedNote && note.id === selectedNote.id) ? "#ddd" : null,
               display: matches(search, note) ? "block" : "none",
             }}
           >
@@ -55,7 +55,7 @@ class Notes extends Component {
 }
 
 const mapStateToProps = state => ({
-  activeNote: selectors.getActiveNote(state),
+  selectedNote: selectors.getSelectedNote(state),
   notes: selectors.getNotes(state),
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
