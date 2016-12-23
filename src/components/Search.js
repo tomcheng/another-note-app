@@ -2,9 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 
-const ENTER = 13;
-const DELETE = 8;
-
 class Search extends Component {
   static propTypes = {
     search: PropTypes.string.isRequired,
@@ -25,28 +22,26 @@ class Search extends Component {
     }
   }
 
-  handleChangeSearch = evt => {
-    this.props.onUpdateSearch({ search: evt.target.value });
+  handleChangeSearch = ({ target }) => {
+    const { search, selectedNote, onUpdateSearch, onDeleteSearch } = this.props;
+
+    if (target.value.length < search.length || (selectedNote && target.value === search)) {
+      onDeleteSearch({ search: target.value });
+    } else {
+      onUpdateSearch({ search: target.value });
+    }
   };
 
   handleKeyDown = evt => {
-    const { search, selectedNote, onAddNote, onEditNote, onDeleteSearch } = this.props;
+    const { search, selectedNote, onAddNote, onEditNote } = this.props;
+    console.log(Object.assign({}, evt));
 
-    switch (evt.keyCode) {
-      case ENTER:
+    switch (evt.key) {
+      case "Enter":
         if (selectedNote) {
           onEditNote();
         } else {
           onAddNote({ title: search });
-        }
-        break;
-      case DELETE:
-        evt.preventDefault();
-
-        if (!selectedNote || selectedNote.title.length === search.length) {
-          onDeleteSearch({ search: search.slice(0, Math.max(search.length - 1, 0)) });
-        } else {
-          onDeleteSearch({ search });
         }
         break;
       default:
