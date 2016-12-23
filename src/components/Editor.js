@@ -32,7 +32,9 @@ class Editor extends Component {
   render () {
     const { selectedNote, onBlurEdit } = this.props;
 
-    return selectedNote ? (
+    if (!selectedNote) { return <noscript />; }
+
+    return (
       <textarea
         value={selectedNote.body}
         ref={el => { this.textarea = el; }}
@@ -52,16 +54,6 @@ class Editor extends Component {
           borderColor: "#ccc",
         }}
       />
-    ) : (
-      <div style={{
-        textAlign: "center",
-        padding: "8px 0",
-        borderTop: "1px solid #ccc",
-      }}>
-        <span style={{ opacity: 0.3 }}>
-          No note selected
-        </span>
-      </div>
     );
   }
 }
