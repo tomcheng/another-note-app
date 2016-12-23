@@ -38,9 +38,9 @@ class Search extends Component {
   };
 
   handleChangeSearch = ({ target }) => {
-    const { search, selectedNote, onUpdateSearch, onDeleteSearch } = this.props;
+    const { search, onUpdateSearch, onDeleteSearch } = this.props;
 
-    if (target.value.length < search.length || (selectedNote && target.value === search)) {
+    if (target.value.length < search.length) {
       onDeleteSearch({ search: target.value });
     } else {
       onUpdateSearch({ search: target.value });
@@ -78,23 +78,15 @@ class Search extends Component {
     }
   };
 
-  getValue = () => {
-    const { selectedNote, search, isNavigating } = this.props;
-
-    if (isNavigating) {
-      return selectedNote ? selectedNote.title : search;
-    }
-
-    return selectedNote ? search + selectedNote.title.slice(search.length) : search;
-  };
-
   render () {
+    const { search } = this.props;
+
     return (
       <input
         placeholder="Search or create a new note"
         className="SearchInput"
         ref={el => { this.input = el; }}
-        value={this.getValue()}
+        value={search}
         type="text"
         onChange={this.handleChangeSearch}
         onKeyDown={this.handleKeyDown}
