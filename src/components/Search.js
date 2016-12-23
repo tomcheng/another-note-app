@@ -20,6 +20,8 @@ class Search extends Component {
   componentDidUpdate () {
     const { selectedNote, search, isNavigating } = this.props;
 
+    if (this.input !== document.activeElement) { return; }
+
     if (isNavigating) {
       this.input.select();
     } else if (selectedNote) {
@@ -79,8 +81,6 @@ class Search extends Component {
   };
 
   render () {
-    const { search, selectedNote } = this.props;
-
     return (
       <input
         ref={el => { this.input = el; }}
