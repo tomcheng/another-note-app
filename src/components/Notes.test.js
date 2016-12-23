@@ -10,3 +10,7 @@ it("does basic matching", () => {
   expect(matches("Fo", { title: "foo", body: "" })).toBe(true);
   expect(matches("a", { title: "foo", body: "" })).toBe(false);
 });
+
+it("searches body", () => {
+  expect(matches("fo", { title: "bar", body: "foo" })).toBe(true);
+});

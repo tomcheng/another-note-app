@@ -5,8 +5,10 @@ import { actions, selectors } from "../reducer";
 export const matches = (search, note) => {
   const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody = note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-  return processedTitle.indexOf(processedSearch) !== -1;
+  return processedTitle.indexOf(processedSearch) !== -1 ||
+    processedBody.indexOf(processedSearch) !== -1;
 };
 
 class Notes extends Component {
