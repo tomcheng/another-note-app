@@ -117,15 +117,23 @@ it("updates a note", () => {
 });
 
 it("selects a note", () => {
-  let state = reducer(undefined, actions.loadNotes({
-    notes: [
-      { id: 1, title: "foo", body: "" },
-      { id: 2, title: "bar", body: "" },
-    ],
-  }));
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", body: "" },
+    { id: 2, title: "bar", body: "" },
+  ] }));
   state = reducer(state, actions.selectNote({ id: 2 }));
 
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+});
+
+it("deselects a note", () => {
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", body: "" },
+  ] }));
+  state = reducer(state, actions.selectNote({ id: 1 }));
+  state = reducer(state, actions.deselectNote());
+
+  expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
 
 it("sets the editing flag", () => {

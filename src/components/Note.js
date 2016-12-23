@@ -27,11 +27,11 @@ class Note extends Component {
       <div
         onClick={this.handleClick}
         style={{
-          backgroundColor: isSelected ? "#eee" : null,
+          backgroundColor: isSelected ? "#fcfcd4" : null,
           height: 40,
           display: isVisible ? "flex" : "none",
           alignItems: "center",
-          padding: "0 8px",
+          padding: "0 10px",
           whiteSpace: "nowrap",
         }}
       >

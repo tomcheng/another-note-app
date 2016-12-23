@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
-import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
@@ -9,6 +8,7 @@ class Search extends Component {
     search: PropTypes.string.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
+    onDeselectNote: PropTypes.func.isRequired,
     onEditNote: PropTypes.func.isRequired,
     onSelectNextNote: PropTypes.func.isRequired,
     onSelectPreviousNote: PropTypes.func.isRequired,
@@ -34,7 +34,13 @@ class Search extends Component {
   }
 
   handleFocus = () => {
+    const { search, onDeselectNote } = this.props;
+
     this.input.select();
+
+    if (search === "") {
+      onDeselectNote();
+    }
   };
 
   handleChangeSearch = ({ target }) => {
@@ -84,10 +90,16 @@ class Search extends Component {
     return (
       <input
         placeholder="Search or create a new note"
-        className="SearchInput"
         ref={el => { this.input = el; }}
-        value={search}
         type="text"
+        style={{
+          width: "100%",
+          padding: "0 10px",
+          height: 40,
+          borderWidth: "0 0 1px 0",
+          borderColor: "#ccc",
+        }}
+        value={search}
         onChange={this.handleChangeSearch}
         onKeyDown={this.handleKeyDown}
         onFocus={this.handleFocus}
@@ -105,6 +117,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onDeleteSearch: actions.deleteSearch,
+  onDeselectNote: actions.deselectNote,
   onEditNote: actions.editNote,
   onSelectNextNote: actions.selectNextNote,
   onSelectPreviousNote: actions.selectPreviousNote,

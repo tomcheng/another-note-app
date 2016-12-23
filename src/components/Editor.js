@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
+import Textarea from "react-textarea-autosize";
 
 class Editor extends Component {
   static propTypes = {
@@ -20,7 +21,16 @@ class Editor extends Component {
     }
   }
 
-  handleChange = ({ target }) => {
+  handleChangeTitle = ({ target }) => {
+    const { selectedNote, onUpdateNote } = this.props;
+
+    onUpdateNote({
+      id: selectedNote.id,
+      updates: { title: target.value }
+    });
+  };
+
+  handleChangeBody = ({ target }) => {
     const { selectedNote, onUpdateNote } = this.props;
 
     onUpdateNote({
@@ -35,25 +45,44 @@ class Editor extends Component {
     if (!selectedNote) { return <noscript />; }
 
     return (
-      <textarea
-        value={selectedNote.body}
-        ref={el => { this.textarea = el; }}
-        onChange={this.handleChange}
-        onBlur={onBlurEdit}
-        style={{
-          display: "block",
-          fontFamily: "inherit",
-          lineHeight: "inherit",
-          fontSize: "inherit",
-          color: "inherit",
-          padding: "8px",
-          height: 180,
-          width: "100%",
-          resize: "none",
-          borderWidth: "1px 0 0",
-          borderColor: "#ccc",
-        }}
-      />
+      <div style={{
+        borderTop: "1px solid #ccc",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+      }}>
+        <input
+          value={selectedNote.title}
+          style={{
+            padding: "0 5px",
+            margin: "5px 5px 0",
+            fontSize: 16,
+            fontWeight: 600,
+            lineHeight: "30px",
+            border: 0,
+          }}
+          onChange={this.handleChangeTitle}
+        />
+        <Textarea
+          placeholder="Add to this note"
+          value={selectedNote.body}
+          ref={el => { this.textarea = el; }}
+          onChange={this.handleChangeBody}
+          onBlur={onBlurEdit}
+          style={{
+            display: "block",
+            fontFamily: "inherit",
+            lineHeight: "inherit",
+            fontSize: "inherit",
+            color: "inherit",
+            padding: "2px 5px 5px",
+            margin: "0 5px 10px",
+            width: "100%",
+            resize: "none",
+            border: "0",
+          }}
+        />
+      </div>
     );
   }
 }

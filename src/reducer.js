@@ -13,6 +13,7 @@ actions.addNote            = payload => ({ type: "ADD_NOTE", payload });
 actions.requestUpdateNote  = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
 actions.updateNote         = payload => ({ type: "UPDATE_NOTE", payload });
 actions.selectNote         = payload => ({ type: "SELECT_NOTE", payload });
+actions.deselectNote       = ()      => ({ type: "DESELECT_NOTE" });
 actions.selectNextNote     = ()      => ({ type: "SELECT_NEXT_NOTE" });
 actions.selectPreviousNote = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
 actions.editNote           = ()      => ({ type: "EDIT_NOTE" });
@@ -92,6 +93,8 @@ const reducer = (state = initialState, action) => {
       };
     case "SELECT_NOTE":
       return { ...state, selectedNoteId: payload.id };
+    case "DESELECT_NOTE":
+      return { ...state, selectedNoteId: null };
     case "SELECT_NEXT_NOTE": {
       const visibleIds = selectors.getVisibleNoteIds(state);
       const currentId = state.selectedNoteId;
