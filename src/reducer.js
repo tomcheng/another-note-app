@@ -29,8 +29,8 @@ const reducer = (state = initialState, action) => {
     case "UPDATE_SEARCH":
       const notes = state.noteIds.map(id => state.notes[id]);
       const matchedNote = find(notes, note => {
-        const processedSearch = payload.search.toLowerCase().replace(/[^a-z0-9]/g, "");
-        const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const processedSearch = payload.search.toLowerCase();
+        const processedTitle = note.title.toLowerCase();
 
         if (processedSearch === "") { return false; }
 
