@@ -25,10 +25,9 @@ class Note extends Component {
 
     return (
       <div
-        className="NoteContainer"
         onClick={this.handleClick}
         style={{
-          backgroundColor: isSelected ? "#ddd" : null,
+          backgroundColor: isSelected ? "#eee" : null,
           height: 40,
           display: isVisible ? "flex" : "none",
           alignItems: "center",
@@ -48,7 +47,10 @@ class Note extends Component {
         }}>
           {note.body}
         </div>
-        <div className="NoteUpdatedAt">
+        <div style={{
+          fontSize: 11,
+          opacity: 0.3,
+        }}>
           {moment(note.updatedAt).fromNow()}
         </div>
       </div>
