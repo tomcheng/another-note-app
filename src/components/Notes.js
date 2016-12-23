@@ -30,7 +30,7 @@ class Notes extends Component {
         {notes.map(note => (
           <div
             key={note.id}
-            onClick={() => onSelectNote(note.id)}
+            onClick={() => onSelectNote({ id: note.id })}
             style={{
               backgroundColor: (activeNote && note.id === activeNote.id) ? "#ddd" : null,
             }}

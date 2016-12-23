@@ -1,36 +1,12 @@
 export const actions = {};
 
-actions.updateSearch = search => ({
-  type: "UPDATE_SEARCH",
-  payload: search,
-});
-
-actions.requestNotes = () => ({ type: "REQUEST_NOTES" });
-
-actions.loadNotes = ({ notes }) => ({
-  type: "LOAD_NOTES",
-  payload: { notes },
-});
-
-actions.requestAddNote = ({ title }) => ({
-  type: "REQUEST_ADD_NOTE",
-  payload: { title },
-});
-
-actions.addNote = ({ note }) => ({
-  type: "ADD_NOTE",
-  payload: { note },
-});
-
-actions.updateNoteBody = ({ id, body }) => ({
-  type: "UPDATE_NOTE_BODY",
-  payload: { id, body },
-});
-
-actions.selectNote = id => ({
-  type: "SELECT_NOTE",
-  payload: { id },
-});
+actions.updateSearch   = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.requestNotes   = ()      => ({ type: "REQUEST_NOTES" });
+actions.loadNotes      = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddNote = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote        = payload => ({ type: "ADD_NOTE", payload });
+actions.updateNoteBody = payload => ({ type: "UPDATE_NOTE_BODY", payload });
+actions.selectNote     = payload => ({ type: "SELECT_NOTE", payload });
 
 const initialState = {
   activeNoteId: null,
@@ -42,21 +18,23 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case "UPDATE_SEARCH":
       return {
         ...state,
         isEditing: false,
-        search: action.payload,
+        search: payload.search,
       };
     case "LOAD_NOTES":
       return {
         ...state,
-        notes: action.payload.notes.reduce((acc, curr) => ({
+        notes: payload.notes.reduce((acc, curr) => ({
           ...acc,
           [curr.id]: curr,
         }), {}),
-        noteIds: action.payload.notes.map(note => note.id),
+        noteIds: payload.notes.map(note => note.id),
         notesLoaded: true,
       };
     case "ADD_NOTE":
@@ -64,28 +42,28 @@ const reducer = (state = initialState, action) => {
         ...state,
         notes: {
           ...state.notes,
-          [action.payload.note.id]: action.payload.note,
+          [payload.note.id]: payload.note,
         },
-        noteIds: state.noteIds.concat(action.payload.note.id),
+        noteIds: state.noteIds.concat(payload.note.id),
         search: "",
         isEditing: true,
-        activeNoteId: action.payload.note.id,
+        activeNoteId: payload.note.id,
       };
     case "UPDATE_NOTE_BODY":
       return {
         ...state,
         notes: {
           ...state.notes,
-          [action.payload.id]: {
-            ...state.notes[action.payload.id],
-            body: action.payload.body,
+          [payload.id]: {
+            ...state.notes[payload.id],
+            body: payload.body,
           }
         },
       };
     case "SELECT_NOTE":
       return {
         ...state,
-        activeNoteId: action.payload.id,
+        activeNoteId: payload.id,
       };
     default:
       return state;

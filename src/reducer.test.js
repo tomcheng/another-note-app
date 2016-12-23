@@ -1,12 +1,20 @@
 import reducer, { actions, selectors } from "./reducer";
 
+it("updates search", () => {
+  const state = reducer(undefined, actions.updateSearch({ search: "foo" }));
+
+  expect(selectors.getSearch(state)).toBe("foo");
+});
+
 it("initializes with a list of empty notes", () => {
   const initial = reducer(undefined, {});
+
   expect(selectors.getNotes(initial)).toEqual([]);
 });
 
 it("initializes with notes not loaded", () => {
   const initial = reducer(undefined, {});
+
   expect(selectors.getNotesLoaded(initial)).toBe(false);
 });
 
@@ -44,18 +52,13 @@ it("updates a note body", () => {
 });
 
 it("selects an active note", () => {
-  const before = reducer(undefined, {
-    type: "LOAD_NOTES",
-    payload: { notes: [
+  const before = reducer(undefined, actions.loadNotes({
+    notes: [
       { id: 1, title: "foo", body: "" },
       { id: 2, title: "bar", body: "" },
-    ] },
-  });
-  const action = {
-    type: "SELECT_NOTE",
-    payload: { id: 2 },
-  };
-  const after = reducer(before, action);
+    ],
+  }));
+  const after = reducer(before, actions.selectNote({ id: 2 }));
 
   expect(selectors.getActiveNote(after)).toEqual({ id: 2, title: "bar", body: "" });
 });

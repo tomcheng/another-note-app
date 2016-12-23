@@ -12,7 +12,7 @@ class Search extends Component {
   };
 
   handleChangeSearch = ({ target }) => {
-    this.props.onUpdateSearch(target.value);
+    this.props.onUpdateSearch({ search: target.value });
   };
 
   handleKeyDown = evt => {
