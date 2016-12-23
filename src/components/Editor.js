@@ -39,6 +39,7 @@ class Editor extends Component {
         onChange={this.handleChange}
         onBlur={onBlurEdit}
         style={{
+          display: "block",
           fontFamily: "inherit",
           lineHeight: "inherit",
           fontSize: "inherit",
@@ -46,10 +47,21 @@ class Editor extends Component {
           padding: "8px",
           height: 180,
           width: "100%",
+          resize: "none",
+          borderWidth: "1px 0 0",
+          borderColor: "#ccc",
         }}
       />
     ) : (
-      <div>No note selected</div>
+      <div style={{
+        textAlign: "center",
+        padding: "8px 0",
+        borderTop: "1px solid #ccc",
+      }}>
+        <span style={{ opacity: 0.3 }}>
+          No note selected
+        </span>
+      </div>
     );
   }
 }

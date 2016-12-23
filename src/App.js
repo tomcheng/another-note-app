@@ -21,13 +21,41 @@ const store = createStore(reducer, applyMiddleware(...middleware));
 sagas.forEach(saga => { sagaMiddleware.run(saga); });
 
 class App extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      appHeight: window.innerHeight,
+    };
+  }
+  componentDidMount () {
+    window.addEventListener("resize", () => {
+      this.setState({ appHeight: window.innerHeight });
+    })
+  };
+
   render () {
+    const { appHeight } = this.state;
+
     return (
       <Provider store={store}>
-        <div className="AppContainer">
-          <Search />
-          <Notes />
-          <Editor />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            height: appHeight,
+          }}
+        >
+          <div style={{ flexShrink: 0 }}>
+            <Search />
+          </div>
+          <div style={{ flexShrink: 1, flexGrow: 1, overflow: "auto" }}>
+            <Notes />
+          </div>
+          <div style={{ flexShrink: 0 }}>
+            <Editor />
+          </div>
         </div>
       </Provider>
     );
