@@ -6,6 +6,18 @@ it("updates search", () => {
   expect(selectors.getSearch(state)).toBe("foo");
 });
 
+it("selects a note based on search", () => {
+  const before = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+      { id: 2, title: "bar", body: "" },
+    ],
+  }));
+  const state = reducer(before, actions.updateSearch({ search: "b" }));
+
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+});
+
 it("initializes with a list of empty notes", () => {
   const state = reducer(undefined, {});
 
@@ -40,8 +52,7 @@ it("adds a note", () => {
 
 it("updates a note", () => {
   const before = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
-  const action = actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } });
-  const state = reducer(before, action);
+  const state = reducer(before, actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } }));
 
   expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
 });

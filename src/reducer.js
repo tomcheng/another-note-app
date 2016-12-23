@@ -1,3 +1,5 @@
+import find from "lodash/find";
+
 export const actions = {};
 
 actions.updateSearch      = payload => ({ type: "UPDATE_SEARCH", payload });
@@ -10,12 +12,12 @@ actions.updateNote        = payload => ({ type: "UPDATE_NOTE", payload });
 actions.selectNote        = payload => ({ type: "SELECT_NOTE", payload });
 
 const initialState = {
-  selectedNoteId: null,
   isEditing: false,
   notes: {},
   noteIds: [],
   notesLoaded: false,
   search: "",
+  selectedNoteId: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,10 +25,21 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case "UPDATE_SEARCH":
+      const notes = state.noteIds.map(id => state.notes[id]);
+      const matchedNote = find(notes, note => {
+        const processedSearch = payload.search.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+        if (processedSearch === "") { return false; }
+
+        return processedTitle.indexOf(processedSearch) === 0;
+      });
+
       return {
         ...state,
         isEditing: false,
         search: payload.search,
+        selectedNoteId: matchedNote ? matchedNote.id : null,
       };
     case "LOAD_NOTES":
       return {
