@@ -25,13 +25,32 @@ class Note extends Component {
 
     return (
       <div
+        className="NoteContainer"
         onClick={this.handleClick}
         style={{
           backgroundColor: isSelected ? "#ddd" : null,
-          display: isVisible ? "block" : "none",
+          height: 40,
+          display: isVisible ? "flex" : "none",
+          alignItems: "center",
+          padding: "0 8px",
+          whiteSpace: "nowrap",
         }}
       >
-        {note.title} - {note.body} - {moment(note.updatedAt).fromNow()}
+        <div style={{ paddingRight: 8 }}>
+          {note.title}
+        </div>
+        <div style={{
+          flexGrow: 1,
+          flexShrink: 1,
+          opacity: 0.3,
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+        }}>
+          {note.body}
+        </div>
+        <div className="NoteUpdatedAt">
+          {moment(note.updatedAt).fromNow()}
+        </div>
       </div>
     );
   }
