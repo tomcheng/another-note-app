@@ -72,10 +72,10 @@ const reducer = (state = initialState, action) => {
 
 export const selectors = {};
 
-selectors.getActiveNote = state => state.notes[state.activeNoteId];
-selectors.getIsEditing = state => state.isEditing;
-selectors.getNotes = state => state.noteIds.map(id => state.notes[id]);
+selectors.getActiveNote  = state => state.notes[state.activeNoteId];
+selectors.getIsEditing   = state => state.isEditing;
+selectors.getNotes       = state => state.noteIds.map(id => state.notes[id]);
 selectors.getNotesLoaded = state => state.notesLoaded;
-selectors.getSearch = state => state.search;
+selectors.getSearch      = state => state.search;
 
 export default reducer;
