@@ -32,7 +32,7 @@ class Notes extends Component {
             key={note.id}
             onClick={() => onSelectNote(note.id)}
             style={{
-              backgroundColor: note.id === activeNote.id ? "#ddd" : null,
+              backgroundColor: (activeNote && note.id === activeNote.id) ? "#ddd" : null,
             }}
           >
             {note.title} - {note.body}
