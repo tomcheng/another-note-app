@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => {
           ...state.notes,
           [payload.note.id]: payload.note,
         },
-        noteIds: state.noteIds.concat(payload.note.id),
+        noteIds: [payload.note.id].concat(state.noteIds),
         search: "",
         isEditing: true,
         selectedNoteId: payload.note.id,
@@ -88,6 +88,7 @@ const reducer = (state = initialState, action) => {
           ...state.notes,
           [payload.note.id]: payload.note,
         },
+        noteIds: [payload.note.id].concat(state.noteIds.filter(id => id !== payload.note.id)),
       };
     case "SELECT_NOTE":
       return { ...state, selectedNoteId: payload.id };

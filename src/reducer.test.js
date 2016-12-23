@@ -90,18 +90,30 @@ it("memoizes notes", () => {
   expect(selectors.getNotes(state1)).toBe(selectors.getNotes(state2));
 });
 
-it("adds a note", () => {
-  const state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
+it("adds a note to the beginning of the list", () => {
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", body: "" },
+  ] }));
+  state = reducer(state, actions.addNote({ note: { id: 2, title: "bar", body: "" } }));
 
-  expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "" }]);
-  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+  expect(selectors.getNotes(state)).toEqual([
+    { id: 2, title: "bar", body: "" },
+    { id: 1, title: "foo", body: "" },
+  ]);
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
 
 it("updates a note", () => {
-  let state = reducer(undefined, actions.addNote({ note: { id: 1, title: "foo", body: "" } }));
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 2, title: "bar", body: "" },
+    { id: 1, title: "foo", body: "" },
+  ] }));
   state = reducer(state, actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } }));
 
-  expect(selectors.getNotes(state)).toEqual([{ id: 1, title: "foo", body: "bar" }]);
+  expect(selectors.getNotes(state)).toEqual([
+    { id: 1, title: "foo", body: "bar" },
+    { id: 2, title: "bar", body: "" },
+  ]);
 });
 
 it("selects a note", () => {
