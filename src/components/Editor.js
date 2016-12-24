@@ -7,6 +7,7 @@ import FullWidthButton from "./FullWidthButton";
 
 class Editor extends Component {
   static propTypes = {
+    containerStyle: PropTypes.object.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
     isEditingNoteTitle: PropTypes.bool.isRequired,
     onAddNote: PropTypes.func.isRequired,
@@ -94,6 +95,7 @@ class Editor extends Component {
 
   render () {
     const {
+      containerStyle,
       selectedNote,
       isEditingNoteBody,
       isEditingNoteTitle,
@@ -118,70 +120,75 @@ class Editor extends Component {
 
     return (
       <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        position: "relative",
+        ...containerStyle,
         boxShadow: "0 -1px 4px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.12)",
-        backgroundColor: "#fff",
+        position: "relative",
       }}>
-        {!isEditing && (
-          <div style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 1,
-          }}>
-            <NoteMenu
-              selectedNote={selectedNote}
-              onDeleteNote={onDeleteNote}
-            />
-          </div>
-        )}
-        <Textarea
-          name="title"
-          value={title}
-          style={{
-            padding: "3px 5px",
-            margin: "8px 7px 0",
-            fontSize: 16,
-            fontWeight: 600,
-            fontFamily: "inherit",
-            lineHeight: "inherit",
-            border: 0,
-            resize: "none",
-          }}
-          onFocus={onEditNoteTitle}
-          onBlur={this.handleBlurTitle}
-          onChange={this.handleChangeField}
-          onKeyDown={this.handleKeyDownTitle}
-        />
-        <Textarea
-          name="body"
-          value={body}
-          placeholder="Add to this note"
-          ref={el => { this.textarea = el; }}
-          onChange={this.handleChangeField}
-          onBlur={this.handleBlurBody}
-          onFocus={onEditNoteBody}
-          minRows={3}
-          style={{
-            display: "block",
-            fontFamily: "inherit",
-            lineHeight: "inherit",
-            fontSize: "inherit",
-            color: "inherit",
-            padding: "2px 5px",
-            margin: "0 7px 12px",
-            resize: "none",
-            border: "0",
-          }}
-        />
-        {isEditing && (
-          <FullWidthButton>
-            Done
-          </FullWidthButton>
-        )}
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          position: "relative",
+          backgroundColor: "#fff",
+        }}>
+          {!isEditing && (
+            <div style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              zIndex: 1,
+            }}>
+              <NoteMenu
+                selectedNote={selectedNote}
+                onDeleteNote={onDeleteNote}
+              />
+            </div>
+          )}
+          <Textarea
+            name="title"
+            value={title}
+            style={{
+              padding: "3px 5px",
+              margin: "8px 7px 0",
+              fontSize: 16,
+              fontWeight: 600,
+              fontFamily: "inherit",
+              lineHeight: "inherit",
+              border: 0,
+              resize: "none",
+            }}
+            onFocus={onEditNoteTitle}
+            onBlur={this.handleBlurTitle}
+            onChange={this.handleChangeField}
+            onKeyDown={this.handleKeyDownTitle}
+          />
+          <Textarea
+            name="body"
+            value={body}
+            placeholder="Add to this note"
+            ref={el => { this.textarea = el; }}
+            onChange={this.handleChangeField}
+            onBlur={this.handleBlurBody}
+            onFocus={onEditNoteBody}
+            minRows={3}
+            style={{
+              display: "block",
+              fontFamily: "inherit",
+              lineHeight: "inherit",
+              fontSize: "inherit",
+              color: "inherit",
+              padding: "2px 5px",
+              margin: "0 7px 12px",
+              resize: "none",
+              border: "0",
+            }}
+          />
+          {isEditing && (
+            <FullWidthButton>
+              Done
+            </FullWidthButton>
+          )}
+        </div>
       </div>
     );
   }
