@@ -19,17 +19,12 @@ class Search extends Component {
   };
 
   componentDidUpdate () {
-    const { selectedNote, search, isNavigating } = this.props;
+    const { isNavigating } = this.props;
 
     if (this.input !== document.activeElement) { return; }
 
     if (isNavigating) {
       this.input.select();
-    } else if (selectedNote) {
-      // Set timeout to get it working for mobile
-      setTimeout(() => {
-        this.input.setSelectionRange(search.length, selectedNote.title.length, "forward");
-      }, 0);
     }
   }
 
@@ -89,7 +84,7 @@ class Search extends Component {
 
     return (
       <input
-        placeholder="Search or create a new note"
+        placeholder="Search or add notes"
         ref={el => { this.input = el; }}
         type="text"
         style={{

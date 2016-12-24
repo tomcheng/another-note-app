@@ -3,16 +3,19 @@ import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Textarea from "react-textarea-autosize";
 import NoteMenu from "./NoteMenu";
+import FullWidthButton from "./FullWidthButton";
 
 class Editor extends Component {
   static propTypes = {
     isEditingNoteBody: PropTypes.bool.isRequired,
     isEditingNoteTitle: PropTypes.bool.isRequired,
+    onAddNote: PropTypes.func.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
     onCancelEditNoteTitle: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
+    search: PropTypes.string.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
     }),
@@ -44,6 +47,10 @@ class Editor extends Component {
     });
   };
 
+  handleClickAddNote = () => {
+    this.props.onAddNote({ title: this.props.search });
+  };
+
   render () {
     const {
       selectedNote,
@@ -54,9 +61,18 @@ class Editor extends Component {
       onCancelEditNoteBody,
       onCancelEditNoteTitle,
       onDeleteNote,
+      search,
     } = this.props;
 
-    if (!selectedNote) { return <noscript />; }
+    if (!selectedNote) {
+      if (search.trim() === "") { return <noscript />; }
+
+      return (
+        <FullWidthButton onClick={this.handleClickAddNote}>
+          Add&nbsp;<em>{search}</em>
+        </FullWidthButton>
+      );
+    }
 
     const isEditing = isEditingNoteBody || isEditingNoteTitle;
 
@@ -116,18 +132,9 @@ class Editor extends Component {
           }}
         />
         {isEditing && (
-          <button style={{
-            border: 0,
-            textAlign: "center",
-            backgroundColor: "#2dbaa6",
-            color: "#fff",
-            height: 48,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
+          <FullWidthButton>
             Done
-          </button>
+          </FullWidthButton>
         )}
       </div>
     );
@@ -135,12 +142,14 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
+  search: selectors.getSearch(state),
   selectedNote: selectors.getSelectedNote(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
   isEditingNoteTitle: selectors.getIsEditingNoteTitle(state),
 });
 
 export default connect(mapStateToProps, {
+  onAddNote: actions.requestAddNote,
   onCancelEditNoteBody: actions.cancelEditNoteBody,
   onCancelEditNoteTitle: actions.cancelEditNoteTitle,
   onDeleteNote: actions.requestDeleteNote,
