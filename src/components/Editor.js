@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Textarea from "react-textarea-autosize";
+import NoteMenu from "./NoteMenu";
 
 class Editor extends Component {
   static propTypes = {
@@ -56,13 +57,26 @@ class Editor extends Component {
 
     if (!selectedNote) { return <noscript />; }
 
+    const isEditing = isEditingNoteBody || isEditingNoteTitle;
+
     return (
       <div style={{
-        borderTop: "1px solid #ccc",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
+        position: "relative",
+        boxShadow: "0 -1px 4px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.12)",
       }}>
+        {!isEditing && (
+          <div style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 1,
+          }}>
+            <NoteMenu />
+          </div>
+        )}
         <input
           value={selectedNote.title}
           style={{
@@ -97,7 +111,7 @@ class Editor extends Component {
             border: "0",
           }}
         />
-        {(isEditingNoteBody || isEditingNoteTitle) && (
+        {isEditing && (
           <button style={{
             border: 0,
             textAlign: "center",
