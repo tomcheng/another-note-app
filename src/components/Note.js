@@ -27,7 +27,7 @@ class Note extends Component {
       <div
         onClick={this.handleClick}
         style={{
-          backgroundColor: isSelected ? "#fcfcd4" : null,
+          backgroundColor: isSelected ? "#f5f5f5" : null,
           height: 40,
           display: isVisible ? "flex" : "none",
           alignItems: "center",
@@ -35,7 +35,10 @@ class Note extends Component {
           whiteSpace: "nowrap",
         }}
       >
-        <div style={{ paddingRight: 8 }}>
+        <div style={{
+          paddingRight: 8,
+          fontWeight: isSelected ? "bold" : null,
+        }}>
           {note.title}
         </div>
         <div style={{
