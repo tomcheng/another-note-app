@@ -38,6 +38,12 @@ class Editor extends Component {
     });
   };
 
+  handleKeyDownTitle = evt => {
+    if (evt.key === "Enter") {
+      this.props.onEditNoteBody();
+    }
+  };
+
   handleChangeBody = ({ target }) => {
     const { selectedNote, onUpdateNote } = this.props;
 
@@ -110,6 +116,7 @@ class Editor extends Component {
           onFocus={onEditNoteTitle}
           onBlur={onCancelEditNoteTitle}
           onChange={this.handleChangeTitle}
+          onKeyDown={this.handleKeyDownTitle}
         />
         <Textarea
           placeholder="Add to this note"

@@ -84,6 +84,10 @@ class Search extends Component {
     this.props.onUpdateSearch({ search: "" });
   };
 
+  handleClickAdd = () => {
+    this.props.onAddNote({ title: this.props.search });
+  };
+
   render () {
     const { search } = this.props;
 
@@ -114,6 +118,9 @@ class Search extends Component {
             display: "flex",
             alignItems: "center",
           }}>
+            <Button buttonStyle="link" onClick={this.handleClickAdd}>
+              add
+            </Button>
             <Button buttonStyle="link" onClick={this.handleClickClear}>
               clear
             </Button>
