@@ -54,6 +54,7 @@ class NoteMenu extends Component {
   };
 
   render () {
+    const { selectedNote } = this.props;
     const { menuOpen, deleteModalShowing } = this.state;
 
     return (
@@ -82,9 +83,11 @@ class NoteMenu extends Component {
               backgroundColor: "#fff",
               boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
             }}>
-              <PopoverItem onClick={this.handleClickConvertToList}>
-                Convert to List
-              </PopoverItem>
+              {selectedNote.type !== "list" && (
+                <PopoverItem onClick={this.handleClickConvertToList}>
+                  Convert to List
+                </PopoverItem>
+              )}
               <PopoverItem onClick={this.handleClickDelete}>
                 Delete
               </PopoverItem>
