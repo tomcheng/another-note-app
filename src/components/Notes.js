@@ -5,12 +5,14 @@ import Note from "./Note";
 
 class Notes extends Component {
   static propTypes = {
+    containerStyle: PropTypes.object.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
     })).isRequired,
     notesLoaded: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
     visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+    onDeselectNote: PropTypes.func.isRequired,
     onRequestNotes: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
@@ -22,22 +24,35 @@ class Notes extends Component {
     this.props.onRequestNotes();
   }
 
+  stopPropagation = evt => { evt.stopPropagation(); };
+
   render () {
-    const { notes, onSelectNote, selectedNote, notesLoaded, visibleNoteIds } = this.props;
+    const {
+      containerStyle,
+      notes,
+      onSelectNote,
+      selectedNote,
+      onDeselectNote,
+      notesLoaded,
+      visibleNoteIds,
+    } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
 
     return (
-      <div>
-        {notes.map(note => (
-          <Note
-            key={note.id}
-            note={note}
-            onSelectNote={onSelectNote}
-            isSelected={!!selectedNote && note.id === selectedNote.id}
-            isVisible={visibleNoteIds.includes(note.id)}
-          />
-        ))}
+      <div style={containerStyle} onClick={onDeselectNote}>
+        <div onClick={this.stopPropagation}>
+          {notes.map(note => (
+            <Note
+              key={note.id}
+              note={note}
+              onSelectNote={onSelectNote}
+              onDeselectNote={onDeselectNote}
+              isSelected={!!selectedNote && note.id === selectedNote.id}
+              isVisible={visibleNoteIds.includes(note.id)}
+            />
+          ))}
+        </div>
         {visibleNoteIds.length === 0 && (
           <div style={{
             opacity: 0.3,
@@ -63,4 +78,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onRequestNotes: actions.requestNotes,
   onSelectNote: actions.selectNote,
+  onDeselectNote: actions.deselectNote,
 })(Notes);

@@ -11,13 +11,18 @@ class Note extends Component {
       title: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
     }).isRequired,
+    onDeselectNote: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
   };
 
   handleClick = () => {
-    const { note, onSelectNote } = this.props;
+    const { note, isSelected, onSelectNote, onDeselectNote } = this.props;
 
-    onSelectNote({ id: note.id });
+    if (isSelected) {
+      onDeselectNote();
+    } else {
+      onSelectNote({ id: note.id });
+    }
   };
 
   render () {

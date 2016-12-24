@@ -50,9 +50,7 @@ class App extends Component {
           <div style={{ flexShrink: 0 }}>
             <Search />
           </div>
-          <div style={{ flexShrink: 1, flexGrow: 1, overflow: "auto" }}>
-            <Notes />
-          </div>
+          <Notes containerStyle={{ flexShrink: 1, flexGrow: 1, overflow: "auto" }} />
           <div style={{ flexShrink: 0 }}>
             <Editor />
           </div>
