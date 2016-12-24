@@ -7,8 +7,11 @@ class Note extends Component {
     isSelected: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     note: PropTypes.shape({
-      body: PropTypes.string.isRequired,
+      body: PropTypes.string,
       id: PropTypes.number.isRequired,
+      items: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string,
+      })),
       title: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
     }).isRequired,
@@ -24,6 +27,16 @@ class Note extends Component {
     } else {
       onSelectNote({ id: note.id });
     }
+  };
+
+  getSummary = () => {
+    const { note } = this.props;
+
+    if (note.type === "list") {
+      return note.items.map(item => item.value).join(" ");
+    }
+
+    return note.body;
   };
 
   render () {
@@ -63,7 +76,7 @@ class Note extends Component {
           overflow: "hidden",
           paddingRight: 10,
         }}>
-          &ndash; {note.body}
+          &ndash; {this.getSummary()}
         </div>
         <div style={{
           fontSize: 12,
