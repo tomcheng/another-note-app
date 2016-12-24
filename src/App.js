@@ -51,7 +51,7 @@ class App extends Component {
             <Search />
           </div>
           <Notes containerStyle={{ flexShrink: 0, flexBasis: "60px", flexGrow: 1, overflow: "auto" }} />
-          <Editor containerStyle={{ flexShrink: 1, overflow: "auto" }} />
+          <Editor containerStyle={{ flexShrink: 1 }} />
         </div>
       </Provider>
     );

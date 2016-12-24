@@ -122,73 +122,80 @@ class Editor extends Component {
       <div style={{
         ...containerStyle,
         boxShadow: "0 -1px 4px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.12)",
-        position: "relative",
+        position: "relative", // for box shadow to show
+        overflow: "hidden",
+        backgroundColor: "#fff",
+        display: "flex",
+        flexDirection: "column",
       }}>
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          position: "relative",
-          backgroundColor: "#fff",
-        }}>
-          {!isEditing && (
-            <div style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              zIndex: 1,
-            }}>
-              <NoteMenu
-                selectedNote={selectedNote}
-                onDeleteNote={onDeleteNote}
-              />
-            </div>
-          )}
-          <Textarea
-            name="title"
-            value={title}
-            style={{
-              padding: "3px 5px",
-              margin: "8px 7px 0",
-              fontSize: 16,
-              fontWeight: 600,
-              fontFamily: "inherit",
-              lineHeight: "inherit",
-              border: 0,
-              resize: "none",
-            }}
-            onFocus={onEditNoteTitle}
-            onBlur={this.handleBlurTitle}
-            onChange={this.handleChangeField}
-            onKeyDown={this.handleKeyDownTitle}
-          />
-          <Textarea
-            name="body"
-            value={body}
-            placeholder="Add to this note"
-            ref={el => { this.textarea = el; }}
-            onChange={this.handleChangeField}
-            onBlur={this.handleBlurBody}
-            onFocus={onEditNoteBody}
-            minRows={3}
-            style={{
-              display: "block",
-              fontFamily: "inherit",
-              lineHeight: "inherit",
-              fontSize: "inherit",
-              color: "inherit",
-              padding: "2px 5px",
-              margin: "0 7px 12px",
-              resize: "none",
-              border: "0",
-            }}
-          />
-          {isEditing && (
+        <div style={{ flexShrink: 1, overflow: "auto" }}>
+          <div style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+          }}>
+            {!isEditing && (
+              <div style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                zIndex: 1,
+              }}>
+                <NoteMenu
+                  selectedNote={selectedNote}
+                  onDeleteNote={onDeleteNote}
+                />
+              </div>
+            )}
+            <Textarea
+              name="title"
+              value={title}
+              style={{
+                padding: "3px 5px",
+                margin: "8px 7px 0",
+                fontSize: 16,
+                fontWeight: 600,
+                fontFamily: "inherit",
+                lineHeight: "inherit",
+                border: 0,
+                resize: "none",
+              }}
+              onFocus={onEditNoteTitle}
+              onBlur={this.handleBlurTitle}
+              onChange={this.handleChangeField}
+              onKeyDown={this.handleKeyDownTitle}
+            />
+            <Textarea
+              name="body"
+              value={body}
+              placeholder="Add to this note"
+              ref={el => { this.textarea = el; }}
+              onChange={this.handleChangeField}
+              onBlur={this.handleBlurBody}
+              onFocus={onEditNoteBody}
+              minRows={3}
+              style={{
+                display: "block",
+                fontFamily: "inherit",
+                lineHeight: "inherit",
+                fontSize: "inherit",
+                color: "inherit",
+                padding: "2px 5px",
+                margin: "0 7px 12px",
+                resize: "none",
+                border: "0",
+              }}
+            />
+          </div>
+        </div>
+        {isEditing && (
+          <div style={{ flexShrink: 0 }}>
             <FullWidthButton>
               Done
             </FullWidthButton>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
