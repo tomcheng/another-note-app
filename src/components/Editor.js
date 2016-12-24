@@ -5,8 +5,8 @@ import Textarea from "react-textarea-autosize";
 
 class Editor extends Component {
   static propTypes = {
-    isEditing: PropTypes.bool.isRequired,
-    onBlurEdit: PropTypes.func.isRequired,
+    isEditingNoteBody: PropTypes.bool.isRequired,
+    onCancelEditNoteBody: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
@@ -14,7 +14,7 @@ class Editor extends Component {
   };
 
   componentWillReceiveProps (nextProps) {
-    if (!this.props.isEditing && nextProps.isEditing) {
+    if (!this.props.isEditingNoteBody && nextProps.isEditingNoteBody) {
       setTimeout(() => {
         this.textarea.focus();
       }, 0);
@@ -40,7 +40,7 @@ class Editor extends Component {
   };
 
   render () {
-    const { selectedNote, onBlurEdit } = this.props;
+    const { selectedNote, onCancelEditNoteBody, isEditingNoteBody } = this.props;
 
     if (!selectedNote) { return <noscript />; }
 
@@ -68,7 +68,8 @@ class Editor extends Component {
           value={selectedNote.body}
           ref={el => { this.textarea = el; }}
           onChange={this.handleChangeBody}
-          onBlur={onBlurEdit}
+          onBlur={onCancelEditNoteBody}
+          minRows={3}
           style={{
             display: "block",
             fontFamily: "inherit",
@@ -76,12 +77,14 @@ class Editor extends Component {
             fontSize: "inherit",
             color: "inherit",
             padding: "2px 5px 5px",
-            margin: "0 5px 10px",
-            width: "100%",
+            margin: "0 5px 5px",
             resize: "none",
             border: "0",
           }}
         />
+        {isEditingNoteBody && (
+          <button>Done</button>
+        )}
       </div>
     );
   }
@@ -89,10 +92,10 @@ class Editor extends Component {
 
 const mapStateToProps = state => ({
   selectedNote: selectors.getSelectedNote(state),
-  isEditing: selectors.getIsEditing(state),
+  isEditingNoteBody: selectors.getIsEditingNoteBody(state),
 });
 
 export default connect(mapStateToProps, {
-  onBlurEdit: actions.blurEdit,
+  onCancelEditNoteBody: actions.cancelEditNoteBody,
   onUpdateNote: actions.requestUpdateNote,
 })(Editor);

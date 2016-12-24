@@ -9,7 +9,7 @@ class Search extends Component {
     onAddNote: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
     onDeselectNote: PropTypes.func.isRequired,
-    onEditNote: PropTypes.func.isRequired,
+    onEditNoteBody: PropTypes.func.isRequired,
     onSelectNextNote: PropTypes.func.isRequired,
     onSelectPreviousNote: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
@@ -58,7 +58,7 @@ class Search extends Component {
       search,
       selectedNote,
       onAddNote,
-      onEditNote,
+      onEditNoteBody,
       onSelectNextNote,
       onSelectPreviousNote,
     } = this.props;
@@ -66,7 +66,7 @@ class Search extends Component {
     switch (evt.key) {
       case "Enter":
         if (selectedNote) {
-          onEditNote();
+          onEditNoteBody();
         } else {
           onAddNote({ title: search });
         }
@@ -118,7 +118,7 @@ export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onDeleteSearch: actions.deleteSearch,
   onDeselectNote: actions.deselectNote,
-  onEditNote: actions.editNote,
+  onEditNoteBody: actions.editNoteBody,
   onSelectNextNote: actions.selectNextNote,
   onSelectPreviousNote: actions.selectPreviousNote,
   onUpdateSearch: actions.updateSearch,

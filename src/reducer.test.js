@@ -101,6 +101,7 @@ it("adds a note to the beginning of the list", () => {
     { id: 1, title: "foo", body: "" },
   ]);
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getIsEditingNoteBody(state)).toEqual(true);
 });
 
 it("updates a note", () => {
@@ -136,17 +137,17 @@ it("deselects a note", () => {
   expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
 
-it("sets the editing flag", () => {
-  const state = reducer(undefined, actions.editNote());
+it("sets the editing body flag", () => {
+  const state = reducer(undefined, actions.editNoteBody());
 
-  expect(selectors.getIsEditing(state)).toBe(true);
+  expect(selectors.getIsEditingNoteBody(state)).toBe(true);
 });
 
 it("unsets the editing flag", () => {
-  let state = reducer(undefined, actions.editNote());
-  state = reducer(state, actions.blurEdit());
+  let state = reducer(undefined, actions.editNoteBody());
+  state = reducer(state, actions.cancelEditNoteBody());
 
-  expect(selectors.getIsEditing(state)).toBe(false);
+  expect(selectors.getIsEditingNoteBody(state)).toBe(false);
 });
 
 it("selects the first visible note as next if none is selected", () => {

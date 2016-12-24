@@ -16,11 +16,11 @@ actions.selectNote         = payload => ({ type: "SELECT_NOTE", payload });
 actions.deselectNote       = ()      => ({ type: "DESELECT_NOTE" });
 actions.selectNextNote     = ()      => ({ type: "SELECT_NEXT_NOTE" });
 actions.selectPreviousNote = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
-actions.editNote           = ()      => ({ type: "EDIT_NOTE" });
-actions.blurEdit           = ()      => ({ type: "BLUR_EDIT" });
+actions.editNoteBody       = ()      => ({ type: "EDIT_NOTE_BODY" });
+actions.cancelEditNoteBody = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
 
 const initialState = {
-  isEditing: false,
+  isEditingNoteBody: false,
   isNavigating: false,
   notes: {},
   noteIds: [],
@@ -79,7 +79,7 @@ const reducer = (state = initialState, action) => {
         },
         noteIds: [payload.note.id].concat(state.noteIds),
         search: "",
-        isEditing: true,
+        isEditingNoteBody: true,
         selectedNoteId: payload.note.id,
       };
     case "UPDATE_NOTE":
@@ -113,10 +113,10 @@ const reducer = (state = initialState, action) => {
 
       return { ...state, selectedNoteId, isNavigating: true };
     }
-    case "EDIT_NOTE":
-      return { ...state, isEditing: true };
-    case "BLUR_EDIT":
-      return { ...state, isEditing: false };
+    case "EDIT_NOTE_BODY":
+      return { ...state, isEditingNoteBody: true };
+    case "CANCEL_EDIT_NOTE_BODY":
+      return { ...state, isEditingNoteBody: false };
     default:
       return state;
   }
@@ -131,13 +131,13 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
-selectors.getNotesById    = state => state.notes;
-selectors.getNoteIds      = state => state.noteIds;
-selectors.getSelectedNote = state => state.notes[state.selectedNoteId];
-selectors.getIsEditing    = state => state.isEditing;
-selectors.getIsNavigating = state => state.isNavigating;
-selectors.getNotesLoaded  = state => state.notesLoaded;
-selectors.getSearch       = state => state.search;
+selectors.getNotesById         = state => state.notes;
+selectors.getNoteIds           = state => state.noteIds;
+selectors.getSelectedNote      = state => state.notes[state.selectedNoteId];
+selectors.getIsEditingNoteBody = state => state.isEditingNoteBody;
+selectors.getIsNavigating      = state => state.isNavigating;
+selectors.getNotesLoaded       = state => state.notesLoaded;
+selectors.getSearch            = state => state.search;
 selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
