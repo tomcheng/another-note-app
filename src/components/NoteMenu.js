@@ -1,28 +1,125 @@
-import React, { Component } from "react";
+import React, { PropTypes, Component } from "react";
 import Icon from "./Icon";
 
 class NoteMenu extends Component {
-  static propTypes = {};
+  static propTypes = {
+    selectedNote: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+    onDeleteNote: PropTypes.func.isRequired,
+  };
 
   state = {
     menuOpen: false,
+    deleteModalShowing: false,
   };
 
   handleClickIcon = () => {
-    this.setState({ menuOpen: !this.state.menuOpen });
+    this.setState({ menuOpen: true });
+  };
+
+  handleClickOverlay = () => {
+    this.setState({ menuOpen: false });
+  };
+
+  handleClickDelete = () => {
+    this.setState({
+      menuOpen: false,
+      deleteModalShowing: true,
+    });
+  };
+
+  handleCloseDeleteModal = () => {
+    this.setState({ deleteModalShowing: false });
+  };
+
+  handleDeleteNote = () => {
+    const { onDeleteNote, selectedNote } = this.props;
+
+    this.setState({ deleteModalShowing: false });
+
+    onDeleteNote({ id: selectedNote.id });
   };
 
   render () {
-    const { menuOpen } = this.state;
+    const { menuOpen, deleteModalShowing } = this.state;
 
     return (
-      <div>
+      <div style={{ position: "relative" }}>
         <Icon
           icon="ellipsis-v"
           action
           onClick={this.handleClickIcon}
-          style={{ color: menuOpen ? "red" : null }}
         />
+        {menuOpen && (
+          <div>
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+              onClick={this.handleClickOverlay}
+            />
+            <div style={{
+              position: "absolute",
+              top: 2,
+              right: 7,
+              backgroundColor: "#fff",
+              boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+            }}>
+              <div
+                style={{
+                  height: 48,
+                  lineHeight: "48px",
+                  padding: "0 12px",
+                }}
+                onClick={this.handleClickDelete}
+              >
+                Delete
+              </div>
+            </div>
+          </div>
+        )}
+        {deleteModalShowing && (
+          <div>
+            <div
+              style={{
+                backgroundColor: "rgba(0,0,0,0.6)",
+                position: "fixed",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}
+              onClick={this.handleCloseDeleteModal}
+            />
+            <div style={{
+              backgroundColor: "#fff",
+              position: "fixed",
+              top: 100,
+              left: "50%",
+              marginLeft: -150,
+              width: 300,
+              boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
+              borderRadius: 2,
+              padding: 20,
+            }}>
+              <h3>Are you sure?</h3>
+              <div>Deleting this note cannot be undone.</div>
+              <div style={{ textAlign: "right" }}>
+                <button onClick={this.handleCloseDeleteModal}>
+                  cancel
+                </button>
+                <button onClick={this.handleDeleteNote}>
+                  Delete Note
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

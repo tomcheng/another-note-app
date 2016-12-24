@@ -117,6 +117,15 @@ it("updates a note", () => {
   ]);
 });
 
+it("deletes a note", () => {
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", body: "" },
+  ] }));
+  state = reducer(state, actions.deleteNote({ id: 1 }));
+
+  expect(selectors.getNotes(state)).toEqual([]);
+});
+
 it("selects a note", () => {
   let state = reducer(undefined, actions.loadNotes({ notes: [
     { id: 1, title: "foo", body: "" },

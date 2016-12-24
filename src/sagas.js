@@ -26,4 +26,11 @@ sagas.push(function* () {
   });
 });
 
+sagas.push(function* () {
+  yield* takeEvery("REQUEST_DELETE_NOTE", function* ({ payload }) {
+    yield call(api.deleteNote, payload);
+    yield put(actions.deleteNote(payload));
+  });
+});
+
 export default sagas;

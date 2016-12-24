@@ -17,3 +17,7 @@ input:focus, textarea:focus {
   outline: 0;
   background-color: #fcfcd4;
 }
+
+h3 {
+  margin-top: 0;
+}

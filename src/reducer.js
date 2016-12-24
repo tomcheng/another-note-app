@@ -12,6 +12,8 @@ actions.requestAddNote      = payload => ({ type: "REQUEST_ADD_NOTE", payload })
 actions.addNote             = payload => ({ type: "ADD_NOTE", payload });
 actions.requestUpdateNote   = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
 actions.updateNote          = payload => ({ type: "UPDATE_NOTE", payload });
+actions.requestDeleteNote   = payload => ({ type: "REQUEST_DELETE_NOTE", payload });
+actions.deleteNote          = payload => ({ type: "DELETE_NOTE", payload });
 actions.selectNote          = payload => ({ type: "SELECT_NOTE", payload });
 actions.deselectNote        = ()      => ({ type: "DESELECT_NOTE" });
 actions.selectNextNote      = ()      => ({ type: "SELECT_NEXT_NOTE" });
@@ -93,6 +95,15 @@ const reducer = (state = initialState, action) => {
           [payload.note.id]: payload.note,
         },
         noteIds: [payload.note.id].concat(state.noteIds.filter(id => id !== payload.note.id)),
+      };
+    case "DELETE_NOTE":
+      return {
+        ...state,
+        notes: {
+          ...state.notes,
+          [payload.id]: undefined,
+        },
+        noteIds: state.noteIds.filter(id => id !== payload.id),
       };
     case "SELECT_NOTE":
       return { ...state, selectedNoteId: payload.id };

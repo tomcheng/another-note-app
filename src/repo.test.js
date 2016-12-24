@@ -62,3 +62,9 @@ it("puts updated notes at the beginning of the list", () => {
     { id: 2, title: "bar", body: "", updatedAt: moment().format() },
   ] })
 });
+
+it("deletes a note", () => {
+  api.addNote({ title: "foo" });
+  api.deleteNote({ id: 1 });
+  expect(api.getNotes()).toEqual({ notes: [] });
+});

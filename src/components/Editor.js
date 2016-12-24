@@ -53,6 +53,7 @@ class Editor extends Component {
       onEditNoteTitle,
       onCancelEditNoteBody,
       onCancelEditNoteTitle,
+      onDeleteNote,
     } = this.props;
 
     if (!selectedNote) { return <noscript />; }
@@ -74,7 +75,10 @@ class Editor extends Component {
             right: 0,
             zIndex: 1,
           }}>
-            <NoteMenu />
+            <NoteMenu
+              selectedNote={selectedNote}
+              onDeleteNote={onDeleteNote}
+            />
           </div>
         )}
         <input
@@ -139,6 +143,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onCancelEditNoteBody: actions.cancelEditNoteBody,
   onCancelEditNoteTitle: actions.cancelEditNoteTitle,
+  onDeleteNote: actions.requestDeleteNote,
   onEditNoteBody: actions.editNoteBody,
   onEditNoteTitle: actions.editNoteTitle,
   onUpdateNote: actions.requestUpdateNote,

@@ -34,3 +34,9 @@ export const updateNote = ({ id, updates }) => {
 
   return { note: newNote };
 };
+
+export const deleteNote = ({ id }) => {
+  const notes = getLocalNotes();
+
+  saveLocalNotes(notes.filter(note => note.id !== id));
+};
