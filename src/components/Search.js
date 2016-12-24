@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
+import Button from "./Button";
 
 class Search extends Component {
   static propTypes = {
@@ -79,26 +80,46 @@ class Search extends Component {
     }
   };
 
+  handleClickClear = () => {
+    this.props.onUpdateSearch({ search: "" });
+  };
+
   render () {
     const { search } = this.props;
 
     return (
-      <input
-        placeholder="Search or add notes"
-        ref={el => { this.input = el; }}
-        type="text"
-        style={{
-          width: "100%",
-          padding: "0 12px",
-          height: 48,
-          borderWidth: "0 0 1px 0",
-          borderColor: "#ccc",
-        }}
-        value={search}
-        onChange={this.handleChangeSearch}
-        onKeyDown={this.handleKeyDown}
-        onFocus={this.handleFocus}
-      />
+      <div style={{ position: "relative"}}>
+        <input
+          placeholder="Search or add notes"
+          ref={el => { this.input = el; }}
+          type="text"
+          style={{
+            width: "100%",
+            padding: "0 12px",
+            height: 48,
+            borderWidth: "0 0 1px 0",
+            borderColor: "#ccc",
+          }}
+          value={search}
+          onChange={this.handleChangeSearch}
+          onKeyDown={this.handleKeyDown}
+          onFocus={this.handleFocus}
+        />
+        {search.trim() !== "" && (
+          <div style={{
+            position: "absolute",
+            top: 0,
+            right: 5,
+            height: 48,
+            display: "flex",
+            alignItems: "center",
+          }}>
+            <Button buttonStyle="link" onClick={this.handleClickClear}>
+              clear
+            </Button>
+          </div>
+        )}
+      </div>
     );
   }
 }
