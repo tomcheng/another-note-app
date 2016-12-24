@@ -94,8 +94,8 @@ class Search extends Component {
         type="text"
         style={{
           width: "100%",
-          padding: "0 10px",
-          height: 40,
+          padding: "0 12px",
+          height: 48,
           borderWidth: "0 0 1px 0",
           borderColor: "#ccc",
         }}

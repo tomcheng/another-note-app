@@ -7,8 +7,8 @@ const Icon = ({ icon, style, action, onClick }) => (
       "fa-fw": action,
     })}
     style={{
-      padding: action ? "0 20px" : null,
-      lineHeight: action ? "40px" : null,
+      padding: action ? "0 25px" : null,
+      lineHeight: action ? "48px" : null,
       ...style,
     }}
     onClick={onClick}

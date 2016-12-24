@@ -80,11 +80,11 @@ class Editor extends Component {
         <input
           value={selectedNote.title}
           style={{
-            padding: "0 5px",
-            margin: "5px 5px 0",
+            padding: "0 7px",
+            margin: "10px 5px 0",
             fontSize: 16,
             fontWeight: 600,
-            lineHeight: "30px",
+            lineHeight: "28px",
             border: 0,
           }}
           onFocus={onEditNoteTitle}
@@ -106,7 +106,7 @@ class Editor extends Component {
             fontSize: "inherit",
             color: "inherit",
             padding: "2px 5px 5px",
-            margin: "0 5px 5px",
+            margin: "0 7px 10px",
             resize: "none",
             border: "0",
           }}
@@ -117,7 +117,7 @@ class Editor extends Component {
             textAlign: "center",
             backgroundColor: "#2dbaa6",
             color: "#fff",
-            height: 40,
+            height: 48,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

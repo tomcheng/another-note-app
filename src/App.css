@@ -7,9 +7,9 @@ body, html {
   margin: 0;
 }
 
-body, html, input {
-  font-size: 14px;
-  line-height: 20px;
+body, html, input, button {
+  font-size: 15px;
+  line-height: 22px;
   color: #222;
 }
 

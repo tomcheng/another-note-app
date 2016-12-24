@@ -28,18 +28,17 @@ class Note extends Component {
         onClick={this.handleClick}
         style={{
           backgroundColor: isSelected ? "#f5f5f5" : null,
-          height: 40,
+          height: 48,
           display: isVisible ? "flex" : "none",
           alignItems: "center",
-          padding: "0 10px",
+          padding: "0 12px",
           whiteSpace: "nowrap",
         }}
       >
         <div style={{
-          paddingRight: 8,
           fontWeight: isSelected ? "bold" : null,
         }}>
-          {note.title}
+          {note.title}&nbsp;
         </div>
         <div style={{
           flexGrow: 1,
@@ -47,11 +46,12 @@ class Note extends Component {
           opacity: 0.3,
           textOverflow: "ellipsis",
           overflow: "hidden",
+          paddingRight: 10,
         }}>
-          {note.body}
+          &ndash; {note.body}
         </div>
         <div style={{
-          fontSize: 11,
+          fontSize: 12,
           opacity: 0.3,
         }}>
           {moment(note.updatedAt).fromNow()}
