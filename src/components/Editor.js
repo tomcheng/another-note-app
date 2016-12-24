@@ -18,8 +18,21 @@ class Editor extends Component {
     search: PropTypes.string.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
+      title: PropTypes.string,
     }),
   };
+
+  constructor (props) {
+    super(props);
+
+    const { selectedNote } = props;
+
+    this.state = {
+      body: selectedNote ? selectedNote.body : null,
+      title: selectedNote ? selectedNote.title : null,
+    };
+  }
+
 
   componentWillReceiveProps (nextProps) {
     if (!this.props.isEditingNoteBody && nextProps.isEditingNoteBody) {
@@ -27,30 +40,51 @@ class Editor extends Component {
         this.textarea.focus();
       }, 0);
     }
+
+    if (this.props.selectedNote !== nextProps.selectedNote) {
+      this.setState({
+        body: nextProps.selectedNote ? nextProps.selectedNote.body : null,
+        title: nextProps.selectedNote ? nextProps.selectedNote.title : null,
+      });
+    }
   }
 
-  handleChangeTitle = ({ target }) => {
-    const { selectedNote, onUpdateNote } = this.props;
+  handleChangeField = ({ target }) => {
+    this.setState({ [target.name]: target.value })
+  };
 
-    onUpdateNote({
-      id: selectedNote.id,
-      updates: { title: target.value }
-    });
+  handleBlurTitle = () => {
+    const { onUpdateNote, selectedNote, onCancelEditNoteTitle } = this.props;
+    const { title } = this.state;
+
+    if (title !== selectedNote.title) {
+      onUpdateNote({
+        id: selectedNote.id,
+        updates: { title },
+      });
+    }
+
+    onCancelEditNoteTitle();
+  };
+
+  handleBlurBody = () => {
+    const { onUpdateNote, selectedNote, onCancelEditNoteBody } = this.props;
+    const { body } = this.state;
+
+    if (body !== selectedNote.body) {
+      onUpdateNote({
+        id: selectedNote.id,
+        updates: { body },
+      });
+    }
+
+    onCancelEditNoteBody();
   };
 
   handleKeyDownTitle = evt => {
     if (evt.key === "Enter") {
       this.props.onEditNoteBody();
     }
-  };
-
-  handleChangeBody = ({ target }) => {
-    const { selectedNote, onUpdateNote } = this.props;
-
-    onUpdateNote({
-      id: selectedNote.id,
-      updates: { body: target.value }
-    });
   };
 
   handleClickAddNote = () => {
@@ -64,11 +98,10 @@ class Editor extends Component {
       isEditingNoteTitle,
       onEditNoteBody,
       onEditNoteTitle,
-      onCancelEditNoteBody,
-      onCancelEditNoteTitle,
       onDeleteNote,
       search,
     } = this.props;
+    const { title, body } = this.state;
 
     if (!selectedNote) {
       if (search.trim() === "") { return <noscript />; }
@@ -104,7 +137,8 @@ class Editor extends Component {
           </div>
         )}
         <input
-          value={selectedNote.title}
+          name="title"
+          value={title}
           style={{
             padding: "0 7px",
             margin: "10px 5px 0",
@@ -114,16 +148,17 @@ class Editor extends Component {
             border: 0,
           }}
           onFocus={onEditNoteTitle}
-          onBlur={onCancelEditNoteTitle}
-          onChange={this.handleChangeTitle}
+          onBlur={this.handleBlurTitle}
+          onChange={this.handleChangeField}
           onKeyDown={this.handleKeyDownTitle}
         />
         <Textarea
+          name="body"
+          value={body}
           placeholder="Add to this note"
-          value={selectedNote.body}
           ref={el => { this.textarea = el; }}
-          onChange={this.handleChangeBody}
-          onBlur={onCancelEditNoteBody}
+          onChange={this.handleChangeField}
+          onBlur={this.handleBlurBody}
           onFocus={onEditNoteBody}
           minRows={3}
           style={{
