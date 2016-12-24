@@ -6,6 +6,7 @@ import Note from "./Note";
 class Notes extends Component {
   static propTypes = {
     containerStyle: PropTypes.object.isRequired,
+    isEditing: PropTypes.bool.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
     })).isRequired,
@@ -35,6 +36,7 @@ class Notes extends Component {
       onDeselectNote,
       notesLoaded,
       visibleNoteIds,
+      isEditing,
     } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
@@ -42,8 +44,9 @@ class Notes extends Component {
     return (
       <div
         style={{
-          backgroundColor: "#f2f2f2",
           ...containerStyle,
+          backgroundColor: "#f2f2f2",
+          flexBasis: isEditing ? 0 : containerStyle.flexBasis,
         }}
         onClick={onDeselectNote}
       >
@@ -80,6 +83,7 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
   visibleNoteIds: selectors.getVisibleNoteIds(state),
+  isEditing: selectors.getIsEditingNoteTitle(state) || selectors.getIsEditingNoteBody(state),
 });
 
 export default connect(mapStateToProps, {
