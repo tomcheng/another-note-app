@@ -40,7 +40,13 @@ class Notes extends Component {
     if (!notesLoaded) { return <noscript />; }
 
     return (
-      <div style={containerStyle} onClick={onDeselectNote}>
+      <div
+        style={{
+          backgroundColor: "#f2f2f2",
+          ...containerStyle,
+        }}
+        onClick={onDeselectNote}
+      >
         <div onClick={this.stopPropagation}>
           {notes.map(note => (
             <Note
@@ -49,6 +55,7 @@ class Notes extends Component {
               onSelectNote={onSelectNote}
               onDeselectNote={onDeselectNote}
               isSelected={!!selectedNote && note.id === selectedNote.id}
+              isFaded={!!selectedNote && note.id !== selectedNote.id}
               isVisible={visibleNoteIds.includes(note.id)}
             />
           ))}

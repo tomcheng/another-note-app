@@ -3,6 +3,7 @@ import moment from "moment";
 
 class Note extends Component {
   static propTypes = {
+    isFaded: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     note: PropTypes.shape({
@@ -26,23 +27,27 @@ class Note extends Component {
   };
 
   render () {
-    const { note, isSelected, isVisible } = this.props;
+    const { note, isVisible, isFaded } = this.props;
 
     return (
       <div
         onClick={this.handleClick}
         style={{
-          backgroundColor: isSelected ? "#f5f5f5" : null,
-          height: 48,
           display: isVisible ? "flex" : "none",
+          backgroundColor: "#fff",
+          backgroundClip: "padding-box",
+          opacity: isFaded ? 0.3 : 1,
+          transition: "opacity 0.1s ease-in-out",
           alignItems: "center",
           padding: "0 12px",
           whiteSpace: "nowrap",
+          border: "1px solid rgba(0,0,0,0.03)",
+          borderRadius: 2,
+          margin: "1px 2px",
+          height: 48,
         }}
       >
-        <div style={{
-          fontWeight: isSelected ? "bold" : null,
-        }}>
+        <div style={{ fontWeight: 500 }}>
           {note.title}&nbsp;
         </div>
         <div style={{

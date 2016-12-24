@@ -122,6 +122,7 @@ class Editor extends Component {
         alignItems: "stretch",
         position: "relative",
         boxShadow: "0 -1px 4px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.12)",
+        backgroundColor: "#fff",
       }}>
         {!isEditing && (
           <div style={{
