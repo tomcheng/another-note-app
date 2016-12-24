@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import Icon from "./Icon";
+import Button from "./Button";
 
 class NoteMenu extends Component {
   static propTypes = {
@@ -74,7 +75,7 @@ class NoteMenu extends Component {
                 style={{
                   height: 48,
                   lineHeight: "48px",
-                  padding: "0 12px",
+                  padding: "0 18px",
                 }}
                 onClick={this.handleClickDelete}
               >
@@ -105,17 +106,21 @@ class NoteMenu extends Component {
               width: 300,
               boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
               borderRadius: 2,
-              padding: 20,
+              padding: "15px 20px 20px",
             }}>
-              <h3>Are you sure?</h3>
-              <div>Deleting this note cannot be undone.</div>
+              <h3 style={{ marginBottom: 12 }}>
+                Are you sure?
+              </h3>
+              <div style={{ marginBottom: 20 }}>
+                Deleting this note cannot be undone.
+              </div>
               <div style={{ textAlign: "right" }}>
-                <button onClick={this.handleCloseDeleteModal}>
+                <Button buttonStyle="link" onClick={this.handleCloseDeleteModal}>
                   cancel
-                </button>
-                <button onClick={this.handleDeleteNote}>
+                </Button>
+                <Button buttonStyle="danger" onClick={this.handleDeleteNote}>
                   Delete Note
-                </button>
+                </Button>
               </div>
             </div>
           </div>
