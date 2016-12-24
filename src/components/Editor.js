@@ -2,8 +2,9 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Textarea from "react-textarea-autosize";
-import NoteMenu from "./NoteMenu";
 import FullWidthButton from "./FullWidthButton";
+import NoteMenu from "./NoteMenu";
+import ListManager from "./ListManager";
 
 class Editor extends Component {
   static propTypes = {
@@ -169,27 +170,33 @@ class Editor extends Component {
               onChange={this.handleChangeField}
               onKeyDown={this.handleKeyDownTitle}
             />
-            <Textarea
-              name="body"
-              value={body}
-              placeholder="Add to this note"
-              ref={el => { this.textarea = el; }}
-              onChange={this.handleChangeField}
-              onBlur={this.handleBlurBody}
-              onFocus={onEditNoteBody}
-              minRows={3}
-              style={{
-                display: "block",
-                fontFamily: "inherit",
-                lineHeight: "inherit",
-                fontSize: "inherit",
-                color: "inherit",
-                padding: "2px 5px",
-                margin: "0 7px 12px",
-                resize: "none",
-                border: "0",
-              }}
-            />
+            {selectedNote.type === "list" ? (
+              <div style={{ margin: "0 12px 12px" }}>
+                <ListManager list={selectedNote} />
+              </div>
+            ) : (
+              <Textarea
+                name="body"
+                value={body}
+                placeholder="Add to this note"
+                ref={el => { this.textarea = el; }}
+                onChange={this.handleChangeField}
+                onBlur={this.handleBlurBody}
+                onFocus={onEditNoteBody}
+                minRows={3}
+                style={{
+                  display: "block",
+                  fontFamily: "inherit",
+                  lineHeight: "inherit",
+                  fontSize: "inherit",
+                  color: "inherit",
+                  padding: "2px 5px",
+                  margin: "0 7px 12px",
+                  resize: "none",
+                  border: "0",
+                }}
+              />
+            )}
           </div>
         </div>
         {isEditing && (
