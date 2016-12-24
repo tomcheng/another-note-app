@@ -1,5 +1,12 @@
 import * as api from "./repo";
 import moment from "moment";
+import defaults from "lodash/defaults";
+
+const addDefaults = note => defaults(note, {
+  body: "",
+  type: "note",
+  updatedAt: moment().format(),
+});
 
 beforeEach(() => {
   localStorage.clear();
@@ -12,10 +19,20 @@ it("returns an empty list if no notes are saved", () => {
 it("saves a note", () => {
   const response = api.addNote({ title: "foo" });
 
-  expect(api.getNotes()).toEqual({ notes: [
-    { id: 1, title: "foo", body: "", updatedAt: moment().format() },
-  ] });
-  expect(response).toEqual({ note: { id: 1, title: "foo", body: "", updatedAt: moment().format() } });
+  expect(api.getNotes()).toEqual({ notes: [ {
+    id: 1,
+    type: "note",
+    title: "foo",
+    body: "",
+    updatedAt: moment().format()
+  } ] });
+  expect(response).toEqual({ note: {
+    id: 1,
+    type: "note",
+    title: "foo",
+    body: "",
+    updatedAt: moment().format(),
+  } });
 });
 
 it("save multiple notes and puts latest ones first", () => {
@@ -23,8 +40,8 @@ it("save multiple notes and puts latest ones first", () => {
   api.addNote({ title: "bar" });
 
   expect(api.getNotes()).toEqual({ notes: [
-    { id: 2, title: "bar", body: "", updatedAt: moment().format() },
-    { id: 1, title: "foo", body: "", updatedAt: moment().format() },
+    addDefaults({ id: 2, title: "bar" }),
+    addDefaults({ id: 1, title: "foo" }),
   ] })
 });
 
@@ -34,9 +51,9 @@ it("increments ids properly", () => {
   api.addNote({ title: "baz" });
 
   expect(api.getNotes()).toEqual({ notes: [
-    { id: 3, title: "baz", body: "", updatedAt: moment().format() },
-    { id: 2, title: "bar", body: "", updatedAt: moment().format() },
-    { id: 1, title: "foo", body: "", updatedAt: moment().format() },
+    addDefaults({ id: 3, title: "baz" }),
+    addDefaults({ id: 2, title: "bar" }),
+    addDefaults({ id: 1, title: "foo" }),
   ] })
 });
 
@@ -45,11 +62,9 @@ it("updates a note", () => {
   const response = api.updateNote({ id: 1, updates: { body: "bar" } });
 
   expect(api.getNotes()).toEqual({ notes: [
-    { id: 1, title: "foo", body: "bar", updatedAt: moment().format() },
+    addDefaults({ id: 1, title: "foo", body: "bar" }),
   ] });
-  expect(response).toEqual({ note: {
-    id: 1, title: "foo", body: "bar", updatedAt: moment().format(),
-  } });
+  expect(response).toEqual({ note: addDefaults({ id: 1, title: "foo", body: "bar" }) });
 });
 
 it("puts updated notes at the beginning of the list", () => {
@@ -58,8 +73,8 @@ it("puts updated notes at the beginning of the list", () => {
   api.updateNote({ id: 1, updates: { body: "baz" } });
 
   expect(api.getNotes()).toEqual({ notes: [
-    { id: 1, title: "foo", body: "baz", updatedAt: moment().format() },
-    { id: 2, title: "bar", body: "", updatedAt: moment().format() },
+    addDefaults({ id: 1, title: "foo", body: "baz" }),
+    addDefaults({ id: 2, title: "bar" }),
   ] })
 });
 
@@ -79,6 +94,21 @@ it("converts a note to a list", () => {
     title: "foo",
     type: "list",
     items: [{ id: 1, checked: false, value: "bar" }],
+    updatedAt: moment().format(),
+  } });
+});
+
+it("updates a list item", () => {
+  api.addNote({ title: "foo" });
+  api.updateNote({ id: 1, updates: { body: "bar" } });
+  api.convertToList({ id: 1 });
+  const response = api.updateListItem({ listId: 1, itemId: 1, updates: { checked: true } });
+
+  expect(response).toEqual({ note: {
+    id: 1,
+    title: "foo",
+    type: "list",
+    items: [{ id: 1, checked: true, value: "bar" }],
     updatedAt: moment().format(),
   } });
 });

@@ -1,4 +1,7 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
+import { actions } from "../reducer";
+import ListItem from "./ListItem";
 
 class ListManager extends Component {
   static propTypes = {
@@ -8,20 +11,26 @@ class ListManager extends Component {
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
+    onUpdateListItem: PropTypes.func.isRequired,
   };
 
   render () {
-    const { list } = this.props;
+    const { list, onUpdateListItem } = this.props;
     return (
       <div>
-        {list.items.map(({ id, value }) => (
-          <div key={id}>
-            {value}
-          </div>
+        {list.items.map(item => (
+          <ListItem
+            key={item.id}
+            item={item}
+            listId={list.id}
+            onUpdateListItem={onUpdateListItem}
+          />
         ))}
       </div>
     );
   }
 }
 
-export default ListManager;
+export default connect(null, {
+  onUpdateListItem: actions.requestUpdateListItem,
+})(ListManager);

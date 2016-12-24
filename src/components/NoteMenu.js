@@ -7,6 +7,7 @@ class NoteMenu extends Component {
   static propTypes = {
     selectedNote: PropTypes.shape({
       id: PropTypes.number.isRequired,
+      type: PropTypes.oneOf(["list", "note"]).isRequired,
     }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,

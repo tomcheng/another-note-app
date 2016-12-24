@@ -17,7 +17,13 @@ export const getNotes = () => ({ notes: getLocalNotes() });
 export const addNote = ({ title }) => {
   const notes = getLocalNotes();
   const id = (max(notes.map(note => note.id)) || 0) + 1;
-  const note = { id, title, body: "", updatedAt: moment().format() };
+  const note = {
+    id,
+    title,
+    type: "note",
+    body: "",
+    updatedAt: moment().format(),
+  };
 
   saveLocalNotes([note].concat(notes));
 
@@ -54,6 +60,18 @@ export const convertToList = ({ id }) => {
       .map((value, index) => ({ id: index + 1, value, checked: false })),
     updatedAt: moment().format(),
   };
+
+  saveLocalNotes([list].concat(notes));
+
+  return { note: list };
+};
+
+export const updateListItem = ({ listId, itemId, updates }) => {
+  const notes = getLocalNotes();
+  const listIndex = findIndex(notes, { id: listId });
+  const list = notes.splice(listIndex, 1)[0];
+  const itemIndex = findIndex(list.items, { id: itemId });
+  list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
 
   saveLocalNotes([list].concat(notes));
 
