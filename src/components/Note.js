@@ -47,12 +47,17 @@ class Note extends Component {
           height: 48,
         }}
       >
-        <div style={{ fontWeight: 500 }}>
+        <div style={{
+          fontWeight: 500,
+          flexShrink: 1,
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+        }}>
           {note.title}&nbsp;
         </div>
         <div style={{
           flexGrow: 1,
-          flexShrink: 1,
+          flexShrink: 1000000,
           opacity: 0.3,
           textOverflow: "ellipsis",
           overflow: "hidden",
