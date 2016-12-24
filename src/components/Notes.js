@@ -38,6 +38,15 @@ class Notes extends Component {
             isVisible={visibleNoteIds.includes(note.id)}
           />
         ))}
+        {visibleNoteIds.length === 0 && (
+          <div style={{
+            opacity: 0.3,
+            textAlign: "center",
+            lineHeight: "48px",
+          }}>
+            No notes found
+          </div>
+        )}
       </div>
     );
   }
