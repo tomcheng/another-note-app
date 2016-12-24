@@ -6,6 +6,7 @@ export const selectors = {};
 
 actions.updateSearch        = payload => ({ type: "UPDATE_SEARCH", payload });
 actions.deleteSearch        = payload => ({ type: "DELETE_SEARCH", payload });
+actions.clearSearch         = ()      => ({ type: "CLEAR_SEARCH" });
 actions.requestNotes        = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes           = payload => ({ type: "LOAD_NOTES", payload });
 actions.requestAddNote      = payload => ({ type: "REQUEST_ADD_NOTE", payload });
@@ -65,6 +66,8 @@ const reducer = (state = initialState, action) => {
         search: payload.search,
         selectedNoteId: null,
       };
+    case "CLEAR_SEARCH":
+      return { ...state, search: "" };
     case "LOAD_NOTES":
       return {
         ...state,

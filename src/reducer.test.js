@@ -33,6 +33,19 @@ it("selects a note based on search", () => {
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
 
+it("keeps selected note when clearing search", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [
+      { id: 1, title: "foo", body: "" },
+    ],
+  }));
+  state = reducer(state, actions.updateSearch({ search: "f" }));
+  state = reducer(state, actions.clearSearch());
+
+  expect(selectors.getSearch(state)).toBe("");
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+});
+
 it("updates visible notes based on search", () => {
   let state = reducer(undefined, actions.loadNotes({
     notes: [
