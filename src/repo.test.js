@@ -68,3 +68,17 @@ it("deletes a note", () => {
   api.deleteNote({ id: 1 });
   expect(api.getNotes()).toEqual({ notes: [] });
 });
+
+it("converts a note to a list", () => {
+  api.addNote({ title: "foo" });
+  api.updateNote({ id: 1, updates: { body: "bar" } });
+  const response = api.convertToList({ id: 1 });
+
+  expect(response).toEqual({ note: {
+    id: 1,
+    title: "foo",
+    type: "list",
+    items: [{ id: 1, checked: false, value: "bar" }],
+    updatedAt: moment().format(),
+  } });
+});

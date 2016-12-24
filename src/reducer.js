@@ -4,25 +4,26 @@ import find from "lodash/find";
 export const actions = {};
 export const selectors = {};
 
-actions.updateSearch        = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.deleteSearch        = payload => ({ type: "DELETE_SEARCH", payload });
-actions.clearSearch         = ()      => ({ type: "CLEAR_SEARCH" });
-actions.requestNotes        = ()      => ({ type: "REQUEST_NOTES" });
-actions.loadNotes           = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestAddNote      = payload => ({ type: "REQUEST_ADD_NOTE", payload });
-actions.addNote             = payload => ({ type: "ADD_NOTE", payload });
-actions.requestUpdateNote   = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
-actions.updateNote          = payload => ({ type: "UPDATE_NOTE", payload });
-actions.requestDeleteNote   = payload => ({ type: "REQUEST_DELETE_NOTE", payload });
-actions.deleteNote          = payload => ({ type: "DELETE_NOTE", payload });
-actions.selectNote          = payload => ({ type: "SELECT_NOTE", payload });
-actions.deselectNote        = ()      => ({ type: "DESELECT_NOTE" });
-actions.selectNextNote      = ()      => ({ type: "SELECT_NEXT_NOTE" });
-actions.selectPreviousNote  = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
-actions.editNoteBody        = ()      => ({ type: "EDIT_NOTE_BODY" });
-actions.editNoteTitle       = ()      => ({ type: "EDIT_NOTE_TITLE" });
-actions.cancelEditNoteBody  = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
-actions.cancelEditNoteTitle = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
+actions.updateSearch             = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.deleteSearch             = payload => ({ type: "DELETE_SEARCH", payload });
+actions.clearSearch              = ()      => ({ type: "CLEAR_SEARCH" });
+actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
+actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddNote           = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote                  = payload => ({ type: "ADD_NOTE", payload });
+actions.requestUpdateNote        = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
+actions.updateNote               = payload => ({ type: "UPDATE_NOTE", payload });
+actions.requestDeleteNote        = payload => ({ type: "REQUEST_DELETE_NOTE", payload });
+actions.deleteNote               = payload => ({ type: "DELETE_NOTE", payload });
+actions.selectNote               = payload => ({ type: "SELECT_NOTE", payload });
+actions.deselectNote             = ()      => ({ type: "DESELECT_NOTE" });
+actions.selectNextNote           = ()      => ({ type: "SELECT_NEXT_NOTE" });
+actions.selectPreviousNote       = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
+actions.editNoteBody             = ()      => ({ type: "EDIT_NOTE_BODY" });
+actions.editNoteTitle            = ()      => ({ type: "EDIT_NOTE_TITLE" });
+actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
+actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
+actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 
 const initialState = {
   isEditingNoteBody: false,
@@ -146,7 +147,9 @@ const reducer = (state = initialState, action) => {
 const matches = (note, search) => {
   const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedBody = note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody = note.type === "list"
+    ? note.items.map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
+    : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   return processedTitle.indexOf(processedSearch) !== -1 ||
     processedBody.indexOf(processedSearch) !== -1;

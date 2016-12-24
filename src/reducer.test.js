@@ -235,3 +235,14 @@ it("it sets isNavigating when selecting previous", () => {
 
   expect(selectors.getIsNavigating(state)).toEqual(true);
 });
+
+it("handles loading lists", () => {
+  let state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", type: "list", items: [{ value: "bar", checked: false }] }
+  ] }));
+
+  expect(selectors.getNotes(state)).toEqual([
+    { id: 1, title: "foo", type: "list", items: [{ value: "bar", checked: false }] }
+  ]);
+  expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
+});

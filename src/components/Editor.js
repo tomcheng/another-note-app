@@ -13,6 +13,7 @@ class Editor extends Component {
     onAddNote: PropTypes.func.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
     onCancelEditNoteTitle: PropTypes.func.isRequired,
+    onConvertNoteToList: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -99,9 +100,10 @@ class Editor extends Component {
       selectedNote,
       isEditingNoteBody,
       isEditingNoteTitle,
+      onConvertNoteToList,
+      onDeleteNote,
       onEditNoteBody,
       onEditNoteTitle,
-      onDeleteNote,
       search,
     } = this.props;
     const { title, body } = this.state;
@@ -144,6 +146,7 @@ class Editor extends Component {
               }}>
                 <NoteMenu
                   selectedNote={selectedNote}
+                  onConvertNoteToList={onConvertNoteToList}
                   onDeleteNote={onDeleteNote}
                 />
               </div>
@@ -212,6 +215,7 @@ export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onCancelEditNoteBody: actions.cancelEditNoteBody,
   onCancelEditNoteTitle: actions.cancelEditNoteTitle,
+  onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onEditNoteBody: actions.editNoteBody,
   onEditNoteTitle: actions.editNoteTitle,

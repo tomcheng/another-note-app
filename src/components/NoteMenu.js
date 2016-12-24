@@ -1,12 +1,14 @@
 import React, { PropTypes, Component } from "react";
 import Icon from "./Icon";
 import Button from "./Button";
+import PopoverItem from "./PopoverItem";
 
 class NoteMenu extends Component {
   static propTypes = {
     selectedNote: PropTypes.shape({
       id: PropTypes.number.isRequired,
     }).isRequired,
+    onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
   };
 
@@ -42,6 +44,14 @@ class NoteMenu extends Component {
     onDeleteNote({ id: selectedNote.id });
   };
 
+  handleClickConvertToList = () => {
+    const { onConvertNoteToList, selectedNote } = this.props;
+
+    this.setState({ menuOpen: false });
+
+    onConvertNoteToList({ id: selectedNote.id });
+  };
+
   render () {
     const { menuOpen, deleteModalShowing } = this.state;
 
@@ -71,16 +81,12 @@ class NoteMenu extends Component {
               backgroundColor: "#fff",
               boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
             }}>
-              <div
-                style={{
-                  height: 48,
-                  lineHeight: "48px",
-                  padding: "0 18px",
-                }}
-                onClick={this.handleClickDelete}
-              >
+              <PopoverItem onClick={this.handleClickConvertToList}>
+                Convert to List
+              </PopoverItem>
+              <PopoverItem onClick={this.handleClickDelete}>
                 Delete
-              </div>
+              </PopoverItem>
             </div>
           </div>
         )}

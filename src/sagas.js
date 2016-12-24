@@ -33,4 +33,11 @@ sagas.push(function* () {
   });
 });
 
+sagas.push(function* () {
+  yield* takeEvery("REQUEST_CONVERT_NOTE_TO_LIST", function* ({ payload }) {
+    const response = yield call(api.convertToList, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
 export default sagas;

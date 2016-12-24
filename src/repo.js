@@ -40,3 +40,22 @@ export const deleteNote = ({ id }) => {
 
   saveLocalNotes(notes.filter(note => note.id !== id));
 };
+
+export const convertToList = ({ id }) => {
+  const notes = getLocalNotes();
+  const noteIndex = findIndex(notes, { id });
+  const oldNote = notes.splice(noteIndex, 1)[0];
+  const list = {
+    id,
+    title: oldNote.title,
+    type: "list",
+    items: oldNote.body.split("\n")
+      .filter(value => value.trim !== "")
+      .map((value, index) => ({ id: index + 1, value, checked: false })),
+    updatedAt: moment().format(),
+  };
+
+  saveLocalNotes([list].concat(notes));
+
+  return { note: list };
+};
