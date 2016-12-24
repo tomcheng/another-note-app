@@ -6,7 +6,11 @@ import Textarea from "react-textarea-autosize";
 class Editor extends Component {
   static propTypes = {
     isEditingNoteBody: PropTypes.bool.isRequired,
+    isEditingNoteTitle: PropTypes.bool.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
+    onCancelEditNoteTitle: PropTypes.func.isRequired,
+    onEditNoteBody: PropTypes.func.isRequired,
+    onEditNoteTitle: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
@@ -40,7 +44,15 @@ class Editor extends Component {
   };
 
   render () {
-    const { selectedNote, onCancelEditNoteBody, isEditingNoteBody } = this.props;
+    const {
+      selectedNote,
+      isEditingNoteBody,
+      isEditingNoteTitle,
+      onEditNoteBody,
+      onEditNoteTitle,
+      onCancelEditNoteBody,
+      onCancelEditNoteTitle,
+    } = this.props;
 
     if (!selectedNote) { return <noscript />; }
 
@@ -61,6 +73,8 @@ class Editor extends Component {
             lineHeight: "30px",
             border: 0,
           }}
+          onFocus={onEditNoteTitle}
+          onBlur={onCancelEditNoteTitle}
           onChange={this.handleChangeTitle}
         />
         <Textarea
@@ -69,6 +83,7 @@ class Editor extends Component {
           ref={el => { this.textarea = el; }}
           onChange={this.handleChangeBody}
           onBlur={onCancelEditNoteBody}
+          onFocus={onEditNoteBody}
           minRows={3}
           style={{
             display: "block",
@@ -82,8 +97,19 @@ class Editor extends Component {
             border: "0",
           }}
         />
-        {isEditingNoteBody && (
-          <button>Done</button>
+        {(isEditingNoteBody || isEditingNoteTitle) && (
+          <button style={{
+            border: 0,
+            textAlign: "center",
+            backgroundColor: "#2dbaa6",
+            color: "#fff",
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            Done
+          </button>
         )}
       </div>
     );
@@ -93,9 +119,13 @@ class Editor extends Component {
 const mapStateToProps = state => ({
   selectedNote: selectors.getSelectedNote(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
+  isEditingNoteTitle: selectors.getIsEditingNoteTitle(state),
 });
 
 export default connect(mapStateToProps, {
   onCancelEditNoteBody: actions.cancelEditNoteBody,
+  onCancelEditNoteTitle: actions.cancelEditNoteTitle,
+  onEditNoteBody: actions.editNoteBody,
+  onEditNoteTitle: actions.editNoteTitle,
   onUpdateNote: actions.requestUpdateNote,
 })(Editor);

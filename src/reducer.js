@@ -4,23 +4,26 @@ import find from "lodash/find";
 export const actions = {};
 export const selectors = {};
 
-actions.updateSearch       = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.deleteSearch       = payload => ({ type: "DELETE_SEARCH", payload });
-actions.requestNotes       = ()      => ({ type: "REQUEST_NOTES" });
-actions.loadNotes          = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestAddNote     = payload => ({ type: "REQUEST_ADD_NOTE", payload });
-actions.addNote            = payload => ({ type: "ADD_NOTE", payload });
-actions.requestUpdateNote  = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
-actions.updateNote         = payload => ({ type: "UPDATE_NOTE", payload });
-actions.selectNote         = payload => ({ type: "SELECT_NOTE", payload });
-actions.deselectNote       = ()      => ({ type: "DESELECT_NOTE" });
-actions.selectNextNote     = ()      => ({ type: "SELECT_NEXT_NOTE" });
-actions.selectPreviousNote = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
-actions.editNoteBody       = ()      => ({ type: "EDIT_NOTE_BODY" });
-actions.cancelEditNoteBody = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
+actions.updateSearch        = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.deleteSearch        = payload => ({ type: "DELETE_SEARCH", payload });
+actions.requestNotes        = ()      => ({ type: "REQUEST_NOTES" });
+actions.loadNotes           = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddNote      = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote             = payload => ({ type: "ADD_NOTE", payload });
+actions.requestUpdateNote   = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
+actions.updateNote          = payload => ({ type: "UPDATE_NOTE", payload });
+actions.selectNote          = payload => ({ type: "SELECT_NOTE", payload });
+actions.deselectNote        = ()      => ({ type: "DESELECT_NOTE" });
+actions.selectNextNote      = ()      => ({ type: "SELECT_NEXT_NOTE" });
+actions.selectPreviousNote  = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
+actions.editNoteBody        = ()      => ({ type: "EDIT_NOTE_BODY" });
+actions.editNoteTitle       = ()      => ({ type: "EDIT_NOTE_TITLE" });
+actions.cancelEditNoteBody  = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
+actions.cancelEditNoteTitle = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
 
 const initialState = {
   isEditingNoteBody: false,
+  isEditingNoteTitle: false,
   isNavigating: false,
   notes: {},
   noteIds: [],
@@ -117,6 +120,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, isEditingNoteBody: true };
     case "CANCEL_EDIT_NOTE_BODY":
       return { ...state, isEditingNoteBody: false };
+    case "EDIT_NOTE_TITLE":
+      return { ...state, isEditingNoteTitle: true };
+    case "CANCEL_EDIT_NOTE_TITLE":
+      return { ...state, isEditingNoteTitle: false };
     default:
       return state;
   }
@@ -131,13 +138,14 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
-selectors.getNotesById         = state => state.notes;
-selectors.getNoteIds           = state => state.noteIds;
-selectors.getSelectedNote      = state => state.notes[state.selectedNoteId];
-selectors.getIsEditingNoteBody = state => state.isEditingNoteBody;
-selectors.getIsNavigating      = state => state.isNavigating;
-selectors.getNotesLoaded       = state => state.notesLoaded;
-selectors.getSearch            = state => state.search;
+selectors.getNotesById          = state => state.notes;
+selectors.getNoteIds            = state => state.noteIds;
+selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];
+selectors.getIsEditingNoteBody  = state => state.isEditingNoteBody;
+selectors.getIsEditingNoteTitle = state => state.isEditingNoteTitle;
+selectors.getIsNavigating       = state => state.isNavigating;
+selectors.getNotesLoaded        = state => state.notesLoaded;
+selectors.getSearch             = state => state.search;
 selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
