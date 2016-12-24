@@ -60,7 +60,7 @@ class Editor extends Component {
     if (title !== selectedNote.title) {
       onUpdateNote({
         id: selectedNote.id,
-        updates: { title },
+        updates: { title: title.replace(/\n/g, "") },
       });
     }
 
@@ -83,6 +83,7 @@ class Editor extends Component {
 
   handleKeyDownTitle = evt => {
     if (evt.key === "Enter") {
+      evt.preventDefault();
       this.props.onEditNoteBody();
     }
   };
@@ -137,16 +138,18 @@ class Editor extends Component {
             />
           </div>
         )}
-        <input
+        <Textarea
           name="title"
           value={title}
           style={{
-            padding: "0 7px",
-            margin: "10px 5px 0",
+            padding: "3px 5px",
+            margin: "8px 7px 0",
             fontSize: 16,
             fontWeight: 600,
-            lineHeight: "28px",
+            fontFamily: "inherit",
+            lineHeight: "inherit",
             border: 0,
+            resize: "none",
           }}
           onFocus={onEditNoteTitle}
           onBlur={this.handleBlurTitle}
@@ -168,8 +171,8 @@ class Editor extends Component {
             lineHeight: "inherit",
             fontSize: "inherit",
             color: "inherit",
-            padding: "2px 5px 5px",
-            margin: "0 7px 10px",
+            padding: "2px 5px",
+            margin: "0 7px 12px",
             resize: "none",
             border: "0",
           }}
