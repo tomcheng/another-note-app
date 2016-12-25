@@ -22,8 +22,10 @@ actions.selectNextNote           = ()      => ({ type: "SELECT_NEXT_NOTE" });
 actions.selectPreviousNote       = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
 actions.editNoteBody             = ()      => ({ type: "EDIT_NOTE_BODY" });
 actions.editNoteTitle            = ()      => ({ type: "EDIT_NOTE_TITLE" });
+actions.setAddListItem           = ()      => ({ type: "SET_ADD_LIST_ITEM" });
 actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
 actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
+actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" });
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
@@ -31,6 +33,7 @@ actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM
 const initialState = {
   isEditingNoteBody: false,
   isEditingNoteTitle: false,
+  isAddingListItem: false,
   isNavigating: false,
   notes: {},
   noteIds: [],
@@ -92,6 +95,7 @@ const reducer = (state = initialState, action) => {
         noteIds: [payload.note.id].concat(state.noteIds),
         search: "",
         isEditingNoteBody: payload.note.type === "note",
+        isAddingListItem: payload.note.type === "list",
         selectedNoteId: payload.note.id,
       };
     case "UPDATE_NOTE":
@@ -142,6 +146,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, isEditingNoteTitle: true };
     case "CANCEL_EDIT_NOTE_TITLE":
       return { ...state, isEditingNoteTitle: false };
+    case "SET_ADD_LIST_ITEM":
+      return { ...state, isAddingListItem: true };
+    case "CANCEL_ADD_LIST_ITEM":
+      return { ...state, isAddingListItem: false };
     default:
       return state;
   }
@@ -163,6 +171,7 @@ selectors.getNoteIds            = state => state.noteIds;
 selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];
 selectors.getIsEditingNoteBody  = state => state.isEditingNoteBody;
 selectors.getIsEditingNoteTitle = state => state.isEditingNoteTitle;
+selectors.getIsAddingListItem   = state => state.isAddingListItem;
 selectors.getIsNavigating       = state => state.isNavigating;
 selectors.getNotesLoaded        = state => state.notesLoaded;
 selectors.getSearch             = state => state.search;

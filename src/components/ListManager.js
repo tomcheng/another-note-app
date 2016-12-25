@@ -1,12 +1,13 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { actions } from "../reducer";
+import { actions, selectors } from "../reducer";
 import TextInput from "./TextInput";
 import ListItem from "./ListItem";
 import Checkbox from "./Checkbox";
 
 class ListManager extends Component {
   static propTypes = {
+    isAddingListItem: PropTypes.bool.isRequired,
     list: PropTypes.shape({
       hideChecked: PropTypes.bool.isRequired,
       items: PropTypes.arrayOf(PropTypes.shape({
@@ -16,12 +17,20 @@ class ListManager extends Component {
       })).isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
+    onCancelAddListItem: PropTypes.func.isRequired,
+    onSetAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
 
   state = {
     newItemValue: "",
   };
+
+  componentDidMount () {
+    if (this.props.isAddingListItem) {
+      this.addItemField.focus();
+    }
+  }
 
   handleChangeAddItem = ({ target }) => {
     this.setState({ newItemValue: target.value });
@@ -37,7 +46,7 @@ class ListManager extends Component {
   };
 
   render () {
-    const { list, onUpdateListItem } = this.props;
+    const { list, onUpdateListItem, onSetAddListItem, onCancelAddListItem } = this.props;
     const { newItemValue } = this.state;
 
     return (
@@ -56,12 +65,15 @@ class ListManager extends Component {
             checked={false}
             label={(
               <TextInput
+                refCallback={el => { this.addItemField = el; }}
                 value={newItemValue}
                 placeholder="+ Add item"
                 onChange={this.handleChangeAddItem}
                 style={{ flexGrow: 1, marginLeft: -5 }}
-                singleLine
                 onEnter={this.handleEnterAddItem}
+                onBlur={onCancelAddListItem}
+                onFocus={onSetAddListItem}
+                singleLine
               />
             )}
             disabled
@@ -72,7 +84,13 @@ class ListManager extends Component {
   }
 }
 
-export default connect(null, {
+const mapStateToProps = state => ({
+  isAddingListItem: selectors.getIsAddingListItem(state),
+});
+
+export default connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
+  onCancelAddListItem: actions.cancelAddListItem,
+  onSetAddListItem: actions.setAddListItem,
   onUpdateListItem: actions.requestUpdateListItem,
 })(ListManager);

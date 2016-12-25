@@ -116,16 +116,17 @@ it("adds a note to the beginning of the list", () => {
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
 });
 
-it("sets editing note body when add a note", () => {
+it("sets editing note body flag after adding a note", () => {
   const state = reducer(undefined, actions.addNote({ note: { id: 1, type: "note" } }));
 
   expect(selectors.getIsEditingNoteBody(state)).toEqual(true);
 });
 
-it("does not set editing note body when adding a list", () => {
+it("sets adding item flag after adding a list", () => {
   const state = reducer(undefined, actions.addNote({ note: { id: 1, type: "list" } }));
 
   expect(selectors.getIsEditingNoteBody(state)).toEqual(false);
+  expect(selectors.getIsAddingListItem(state)).toEqual(true);
 });
 
 it("updates a note", () => {
@@ -194,6 +195,19 @@ it("unsets the editing title flag", () => {
   state = reducer(state, actions.cancelEditNoteTitle());
 
   expect(selectors.getIsEditingNoteTitle(state)).toBe(false);
+});
+
+it("sets the add list item flag", () => {
+  const state = reducer(undefined, actions.setAddListItem());
+
+  expect(selectors.getIsAddingListItem(state)).toBe(true);
+});
+
+it("unsets the add list item flag", () => {
+  let state = reducer(undefined, actions.setAddListItem());
+  state = reducer(state, actions.cancelAddListItem());
+
+  expect(selectors.getIsAddingListItem(state)).toBe(false);
 });
 
 it("selects the first visible note as next if none is selected", () => {

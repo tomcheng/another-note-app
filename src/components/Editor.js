@@ -39,7 +39,7 @@ class Editor extends Component {
   componentWillReceiveProps (nextProps) {
     if (!this.props.isEditingNoteBody && nextProps.isEditingNoteBody) {
       setTimeout(() => {
-        this.textarea.focus();
+        this.bodyField.focus();
       }, 0);
     }
 
@@ -97,6 +97,7 @@ class Editor extends Component {
       selectedNote,
       isEditingNoteBody,
       isEditingNoteTitle,
+      isAddingListItem,
       onConvertNoteToList,
       onDeleteNote,
       onEditNoteBody,
@@ -107,7 +108,7 @@ class Editor extends Component {
 
     if (!selectedNote) { return <noscript />; }
 
-    const isEditing = isEditingNoteBody || isEditingNoteTitle;
+    const isEditing = isEditingNoteBody || isEditingNoteTitle || isAddingListItem;
 
     return (
       <div style={{
@@ -164,7 +165,7 @@ class Editor extends Component {
                 name="body"
                 value={body}
                 placeholder="Add to this note"
-                refCallback={el => { this.textarea = el; }}
+                refCallback={el => { this.bodyField = el; }}
                 onChange={this.handleChangeBody}
                 onBlur={this.handleBlurBody}
                 onFocus={onEditNoteBody}
@@ -197,6 +198,7 @@ const mapStateToProps = state => ({
   selectedNote: selectors.getSelectedNote(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
   isEditingNoteTitle: selectors.getIsEditingNoteTitle(state),
+  isAddingListItem: selectors.getIsAddingListItem(state),
 });
 
 export default connect(mapStateToProps, {
