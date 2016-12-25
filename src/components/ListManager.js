@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
+import TextInput from "./TextInput";
 import ListItem from "./ListItem";
 import Checkbox from "./Checkbox";
 
@@ -29,6 +30,7 @@ class ListManager extends Component {
     const { newItemValue } = this.state;
 
     if (evt.key === "Enter") {
+      evt.preventDefault();
       this.setState({ newItemValue: "" });
       onAddListItem({ listId: list.id, value: newItemValue });
     }
@@ -52,12 +54,12 @@ class ListManager extends Component {
           <Checkbox
             checked={false}
             label={(
-              <input
+              <TextInput
                 value={newItemValue}
-                type="text"
                 placeholder="+ Add item"
                 onChange={this.handleChangeAddItem}
                 onKeyDown={this.handleKeyDownAddItem}
+                style={{ flexGrow: 1, marginLeft: -5 }}
               />
             )}
             disabled

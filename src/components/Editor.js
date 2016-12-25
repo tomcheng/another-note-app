@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import Textarea from "react-textarea-autosize";
+import TextInput from "./TextInput";
 import Button from "./Button";
 import NoteMenu from "./NoteMenu";
 import ListManager from "./ListManager";
@@ -137,18 +137,14 @@ class Editor extends Component {
                 />
               </div>
             )}
-            <Textarea
+            <TextInput
               name="title"
               value={title}
               style={{
-                padding: "3px 5px",
                 margin: "8px 7px 0",
                 fontSize: 16,
                 fontWeight: 500,
-                fontFamily: "inherit",
-                lineHeight: "inherit",
                 color: "rgba(255,255,255,0.95)",
-                resize: "none",
               }}
               onFocus={onEditNoteTitle}
               onBlur={this.handleBlurTitle}
@@ -160,7 +156,7 @@ class Editor extends Component {
                 <ListManager list={selectedNote} />
               </div>
             ) : (
-              <Textarea
+              <TextInput
                 name="body"
                 value={body}
                 placeholder="Add to this note"
@@ -170,14 +166,8 @@ class Editor extends Component {
                 onFocus={onEditNoteBody}
                 minRows={3}
                 style={{
-                  display: "block",
-                  fontFamily: "inherit",
-                  lineHeight: "inherit",
-                  fontSize: "inherit",
                   color: "rgba(255,255,255,0.75)",
-                  padding: "2px 5px",
                   margin: "0 7px 12px",
-                  resize: "none",
                 }}
               />
             )}
