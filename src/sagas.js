@@ -41,6 +41,13 @@ sagas.push(function* () {
 });
 
 sagas.push(function* () {
+  yield* takeEvery("REQUEST_ADD_LIST_ITEM", function* ({ payload }) {
+    const response = yield call(api.addListItem, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
+sagas.push(function* () {
   yield* takeEvery("REQUEST_UPDATE_LIST_ITEM", function* ({ payload }) {
     const response = yield call(api.updateListItem, payload);
     yield put(actions.updateNote(response));

@@ -24,8 +24,8 @@ actions.editNoteTitle            = ()      => ({ type: "EDIT_NOTE_TITLE" });
 actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
 actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
+actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
-actions.updateListItem           = payload => ({ type: "UPDATE_LIST_ITEM", payload });
 
 const initialState = {
   isEditingNoteBody: false,

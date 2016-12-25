@@ -56,10 +56,22 @@ export const convertToList = ({ id }) => {
     title: oldNote.title,
     type: "list",
     items: oldNote.body.split("\n")
-      .filter(value => value.trim !== "")
+      .filter(value => value.trim() !== "")
       .map((value, index) => ({ id: index + 1, value, checked: false })),
     updatedAt: moment().format(),
   };
+
+  saveLocalNotes([list].concat(notes));
+
+  return { note: list };
+};
+
+export const addListItem = ({ listId, value }) => {
+  const notes = getLocalNotes();
+  const listIndex = findIndex(notes, { id: listId });
+  const list = notes.splice(listIndex, 1)[0];
+
+  list.items.push({ id: list.items.length + 1, value, checked: false });
 
   saveLocalNotes([list].concat(notes));
 
@@ -71,6 +83,7 @@ export const updateListItem = ({ listId, itemId, updates }) => {
   const listIndex = findIndex(notes, { id: listId });
   const list = notes.splice(listIndex, 1)[0];
   const itemIndex = findIndex(list.items, { id: itemId });
+
   list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
 
   saveLocalNotes([list].concat(notes));

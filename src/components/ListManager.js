@@ -11,11 +11,32 @@ class ListManager extends Component {
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
+    onAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
+  };
+
+  state = {
+    newItemValue: "",
+  };
+
+  handleChangeAddItem = ({ target }) => {
+    this.setState({ newItemValue: target.value });
+  };
+
+  handleKeyDownAddItem = evt => {
+    const { onAddListItem, list } = this.props;
+    const { newItemValue } = this.state;
+
+    if (evt.key === "Enter") {
+      this.setState({ newItemValue: "" });
+      onAddListItem({ listId: list.id, value: newItemValue });
+    }
   };
 
   render () {
     const { list, onUpdateListItem } = this.props;
+    const { newItemValue } = this.state;
+
     return (
       <div>
         {list.items.map(item => (
@@ -26,11 +47,19 @@ class ListManager extends Component {
             onUpdateListItem={onUpdateListItem}
           />
         ))}
+        <input
+          value={newItemValue}
+          type="text"
+          placeholder="Add item"
+          onChange={this.handleChangeAddItem}
+          onKeyDown={this.handleKeyDownAddItem}
+        />
       </div>
     );
   }
 }
 
 export default connect(null, {
+  onAddListItem: actions.requestAddListItem,
   onUpdateListItem: actions.requestUpdateListItem,
 })(ListManager);

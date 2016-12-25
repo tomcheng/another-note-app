@@ -98,6 +98,33 @@ it("converts a note to a list", () => {
   } });
 });
 
+it("converts an empty note to a list with no items", () => {
+  api.addNote({ title: "foo" });
+  const response = api.convertToList({ id: 1 });
+
+  expect(response).toEqual({ note: {
+    id: 1,
+    title: "foo",
+    type: "list",
+    items: [],
+    updatedAt: moment().format(),
+  } });
+});
+
+it("adds a list item", () => {
+  api.addNote({ title: "foo" });
+  api.convertToList({ id: 1 });
+  const response = api.addListItem({ listId: 1, value: "bar" });
+
+  expect(response).toEqual({ note: {
+    id: 1,
+    title: "foo",
+    type: "list",
+    items: [{ id: 1, checked: false, value: "bar" }],
+    updatedAt: moment().format(),
+  } });
+});
+
 it("updates a list item", () => {
   api.addNote({ title: "foo" });
   api.updateNote({ id: 1, updates: { body: "bar" } });
