@@ -8,6 +8,7 @@ class Search extends Component {
   static propTypes = {
     isNavigating: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
+    onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
@@ -79,8 +80,12 @@ class Search extends Component {
     this.props.onClearSearch();
   };
 
-  handleClickAdd = () => {
+  handleClickAddNote = () => {
     this.props.onAddNote({ title: this.props.search });
+  };
+
+  handleClickAddList = () => {
+    this.props.onAddList({ title: this.props.search });
   };
 
   render () {
@@ -112,8 +117,11 @@ class Search extends Component {
             alignItems: "center",
             color: "#fff",
           }}>
-            <Button buttonStyle="link" style={{ color: "#fff" }} onClick={this.handleClickAdd}>
+            <Button buttonStyle="link" onClick={this.handleClickAddNote}>
               + note
+            </Button>
+            <Button buttonStyle="link" onClick={this.handleClickAddList}>
+              + list
             </Button>
             <Button buttonStyle="link" onClick={this.handleClickClear}>
               clear
@@ -132,6 +140,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+  onAddList: actions.requestAddList,
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
   onDeleteSearch: actions.deleteSearch,

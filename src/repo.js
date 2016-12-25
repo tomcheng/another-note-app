@@ -30,6 +30,22 @@ export const addNote = ({ title }) => {
   return { note };
 };
 
+export const addList = ({ title }) => {
+  const notes = getLocalNotes();
+  const id = (max(notes.map(note => note.id)) || 0) + 1;
+  const list = {
+    id,
+    title,
+    type: "list",
+    items: [],
+    updatedAt: moment().format(),
+  };
+
+  saveLocalNotes([list].concat(notes));
+
+  return { note: list };
+};
+
 export const updateNote = ({ id, updates }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });

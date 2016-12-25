@@ -114,7 +114,18 @@ it("adds a note to the beginning of the list", () => {
     { id: 1, title: "foo", body: "" },
   ]);
   expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+});
+
+it("sets editing note body when add a note", () => {
+  const state = reducer(undefined, actions.addNote({ note: { id: 1, type: "note" } }));
+
   expect(selectors.getIsEditingNoteBody(state)).toEqual(true);
+});
+
+it("does not set editing note body when adding a list", () => {
+  const state = reducer(undefined, actions.addNote({ note: { id: 1, type: "list" } }));
+
+  expect(selectors.getIsEditingNoteBody(state)).toEqual(false);
 });
 
 it("updates a note", () => {

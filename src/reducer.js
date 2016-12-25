@@ -9,6 +9,7 @@ actions.deleteSearch             = payload => ({ type: "DELETE_SEARCH", payload 
 actions.clearSearch              = ()      => ({ type: "CLEAR_SEARCH" });
 actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddList           = payload => ({ type: "REQUEST_ADD_LIST", payload });
 actions.requestAddNote           = payload => ({ type: "REQUEST_ADD_NOTE", payload });
 actions.addNote                  = payload => ({ type: "ADD_NOTE", payload });
 actions.requestUpdateNote        = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
@@ -90,7 +91,7 @@ const reducer = (state = initialState, action) => {
         },
         noteIds: [payload.note.id].concat(state.noteIds),
         search: "",
-        isEditingNoteBody: true,
+        isEditingNoteBody: payload.note.type === "note",
         selectedNoteId: payload.note.id,
       };
     case "UPDATE_NOTE":

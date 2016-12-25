@@ -13,6 +13,13 @@ sagas.push(function* () {
 });
 
 sagas.push(function* () {
+  yield* takeEvery("REQUEST_ADD_LIST", function* ({ payload }) {
+    const response = yield call(api.addList, payload);
+    yield put(actions.addNote(response));
+  });
+});
+
+sagas.push(function* () {
   yield* takeEvery("REQUEST_ADD_NOTE", function* ({ payload }) {
     const response = yield call(api.addNote, payload);
     yield put(actions.addNote(response));
