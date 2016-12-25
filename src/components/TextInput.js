@@ -36,7 +36,7 @@ class TextInput extends Component {
   };
 
   render () {
-    const { style, refCallback, ...other } = this.props;
+    const { style, refCallback, singleLine, onEnter, ...other } = this.props;
 
     return (
       <Textarea
