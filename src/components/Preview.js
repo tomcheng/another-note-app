@@ -9,8 +9,8 @@ import ListManager from "./ListManager";
 class Preview extends Component {
   static propTypes = {
     containerStyle: PropTypes.object.isRequired,
+    isEditing: PropTypes.bool.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
-    isEditingNoteTitle: PropTypes.bool.isRequired,
     isSearching: PropTypes.bool.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
@@ -104,10 +104,8 @@ class Preview extends Component {
     const {
       containerStyle,
       selectedNote,
-      isEditingNoteBody,
-      isEditingNoteTitle,
-      isAddingListItem,
       isSearching,
+      isEditing,
       onConvertNoteToList,
       onDeleteNote,
       onEditNoteBody,
@@ -115,8 +113,6 @@ class Preview extends Component {
       onUpdateNote,
     } = this.props;
     const { title, body } = this.state;
-
-    const isEditing = isEditingNoteBody || isEditingNoteTitle || isAddingListItem;
 
     return (
       <div style={{
@@ -231,9 +227,8 @@ class Preview extends Component {
 
 const mapStateToProps = state => ({
   selectedNote: selectors.getSelectedNote(state),
+  isEditing: selectors.getIsEditing(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
-  isEditingNoteTitle: selectors.getIsEditingNoteTitle(state),
-  isAddingListItem: selectors.getIsAddingListItem(state),
   isSearching: selectors.getIsSearching(state),
 });
 

@@ -86,9 +86,7 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
   visibleNoteIds: selectors.getVisibleNoteIds(state),
-  isEditing: selectors.getIsEditingNoteTitle(state) ||
-    selectors.getIsEditingNoteBody(state) ||
-    selectors.getIsAddingListItem(state),
+  isEditing: selectors.getIsEditing(state),
 });
 
 export default connect(mapStateToProps, {

@@ -6,6 +6,7 @@ import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
+    isEditing: PropTypes.bool.isRequired,
     isNavigating: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
@@ -98,13 +99,14 @@ class Search extends Component {
   };
 
   render () {
-    const { search } = this.props;
+    const { search, isEditing } = this.props;
 
     return (
       <div style={{
         position: "relative",
         padding: 5,
         borderBottom: "1px solid rgba(0,0,0,0.18)",
+        display: isEditing ? "none" : null,
       }}>
         <input
           className="SearchInput"
@@ -144,6 +146,7 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
+  isEditing: selectors.getIsEditing(state),
   isNavigating: selectors.getIsNavigating(state),
   search: selectors.getSearch(state),
   selectedNote: selectors.getSelectedNote(state),

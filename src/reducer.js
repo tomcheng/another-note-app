@@ -167,6 +167,9 @@ selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];
 selectors.getIsEditingNoteBody  = state => state.isEditingNoteBody;
 selectors.getIsEditingNoteTitle = state => state.isEditingNoteTitle;
 selectors.getIsAddingListItem   = state => state.isAddingListItem;
+selectors.getIsEditing          = state => state.isEditingNoteBody ||
+                                           state.isEditingNoteTitle ||
+                                           state.isAddingListItem;
 selectors.getIsNavigating       = state => state.isNavigating;
 selectors.getIsSearching        = state => state.isSearching;
 selectors.getNotesLoaded        = state => state.notesLoaded;
