@@ -122,6 +122,7 @@ class Preview extends Component {
       <div style={{
         ...containerStyle,
         borderTop: "1px solid rgba(255,255,255,0.12)",
+        backgroundColor: "rgba(0,0,0,0.2)",
         padding: "5px 4px",
         flexGrow: isEditing ? 1 : null,
         display: isSearching ? "none" : "flex",
@@ -206,7 +207,7 @@ class Preview extends Component {
           <div style={{
             lineHeight: "40px",
             color: "#fff",
-            opacity: 0.5,
+            opacity: 0.3,
             textAlign: "center",
           }}>
             Nothing selected
