@@ -45,7 +45,10 @@ class Note extends Component {
 
     if (note.type === "list") {
       const uncheckedItems = note.items.filter(item => !item.checked);
-      return uncheckedItems.length > 0 ? uncheckedItems[0].value : "All done!";
+
+      if (note.items.length === 0) { return "No items"; }
+      if (uncheckedItems.length === 0) { return "All done!"; }
+      return uncheckedItems[0].value;
     }
 
     return note.body;
