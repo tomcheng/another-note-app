@@ -6,7 +6,7 @@ import reducer from "./reducer";
 import sagas from "./sagas";
 import Search from "./components/Search";
 import Notes from "./components/Notes";
-import Editor from "./components/Editor";
+import Preview from "./components/Preview";
 import './App.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -51,7 +51,7 @@ class App extends Component {
             <Search />
           </div>
           <Notes containerStyle={{ flexShrink: 0, flexBasis: "120px", flexGrow: 1, overflow: "auto" }} />
-          <Editor containerStyle={{ flexShrink: 1 }} />
+          <Preview containerStyle={{ flexShrink: 0 }} />
         </div>
       </Provider>
     );

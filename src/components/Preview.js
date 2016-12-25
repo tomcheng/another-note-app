@@ -6,7 +6,7 @@ import Button from "./Button";
 import NoteMenu from "./NoteMenu";
 import ListManager from "./ListManager";
 
-class Editor extends Component {
+class Preview extends Component {
   static propTypes = {
     containerStyle: PropTypes.object.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
@@ -219,4 +219,4 @@ export default connect(mapStateToProps, {
   onEditNoteTitle: actions.editNoteTitle,
   onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,
-})(Editor);
+})(Preview);
