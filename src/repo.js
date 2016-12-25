@@ -38,6 +38,7 @@ export const addList = ({ title }) => {
     title,
     type: "list",
     items: [],
+    hideChecked: false,
     updatedAt: moment().format(),
   };
 
@@ -71,6 +72,7 @@ export const convertToList = ({ id }) => {
     id,
     title: oldNote.title,
     type: "list",
+    hideChecked: false,
     items: oldNote.body.split("\n")
       .filter(value => value.trim() !== "")
       .map((value, index) => ({ id: index + 1, value, checked: false })),

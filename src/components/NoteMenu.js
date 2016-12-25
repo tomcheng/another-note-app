@@ -8,9 +8,11 @@ class NoteMenu extends Component {
     selectedNote: PropTypes.shape({
       id: PropTypes.number.isRequired,
       type: PropTypes.oneOf(["list", "note"]).isRequired,
+      hideChecked: PropTypes.bool,
     }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired,
   };
 
   state = {
@@ -31,6 +33,22 @@ class NoteMenu extends Component {
       menuOpen: false,
       deleteModalShowing: true,
     });
+  };
+
+  handleClickHideChecked = () => {
+    const { onUpdateNote, selectedNote } = this.props;
+
+    this.setState({ menuOpen: false });
+
+    onUpdateNote({ id: selectedNote.id, updates: { hideChecked: true } });
+  };
+
+  handleClickShowChecked = () => {
+    const { onUpdateNote, selectedNote } = this.props;
+
+    this.setState({ menuOpen: false });
+
+    onUpdateNote({ id: selectedNote.id, updates: { hideChecked: false } });
   };
 
   handleCloseDeleteModal = () => {
@@ -87,6 +105,16 @@ class NoteMenu extends Component {
               {selectedNote.type !== "list" && (
                 <PopoverItem onClick={this.handleClickConvertToList}>
                   Convert to List
+                </PopoverItem>
+              )}
+              {(selectedNote.type === "list" && !selectedNote.hideChecked) && (
+                <PopoverItem onClick={this.handleClickHideChecked}>
+                  Hide Completed Items
+                </PopoverItem>
+              )}
+              {(selectedNote.type === "list" && selectedNote.hideChecked) && (
+                <PopoverItem onClick={this.handleClickShowChecked}>
+                  Show Completed Items
                 </PopoverItem>
               )}
               <PopoverItem onClick={this.handleClickDelete}>

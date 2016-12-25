@@ -3,6 +3,7 @@ import Checkbox from "./Checkbox";
 
 class ListItem extends Component {
   static propTypes = {
+    isVisible: PropTypes.bool.isRequired,
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,
@@ -18,11 +19,11 @@ class ListItem extends Component {
   };
 
   render () {
-    const { item } = this.props;
+    const { item, isVisible } = this.props;
     return (
       <div style={{
         height: 40,
-        display: "flex",
+        display: isVisible ? "flex" : "none",
         alignItems: "center",
       }}>
         <Checkbox

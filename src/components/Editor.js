@@ -101,6 +101,7 @@ class Editor extends Component {
       onDeleteNote,
       onEditNoteBody,
       onEditNoteTitle,
+      onUpdateNote,
     } = this.props;
     const { title, body } = this.state;
 
@@ -135,6 +136,7 @@ class Editor extends Component {
                   selectedNote={selectedNote}
                   onConvertNoteToList={onConvertNoteToList}
                   onDeleteNote={onDeleteNote}
+                  onUpdateNote={onUpdateNote}
                 />
               </div>
             )}

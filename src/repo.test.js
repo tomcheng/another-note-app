@@ -11,6 +11,7 @@ const addNoteDefaults = note => defaults(note, {
 const addListDefaults = list => defaults(list, {
   type: "list",
   items: [],
+  hideChecked: false,
   updatedAt: moment().format(),
 });
 
@@ -90,26 +91,22 @@ it("converts a note to a list", () => {
   api.updateNote({ id: 1, updates: { body: "bar" } });
   const response = api.convertToList({ id: 1 });
 
-  expect(response).toEqual({ note: {
+  expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    type: "list",
     items: [{ id: 1, checked: false, value: "bar" }],
-    updatedAt: moment().format(),
-  } });
+  }) });
 });
 
 it("converts an empty note to a list with no items", () => {
   api.addNote({ title: "foo" });
   const response = api.convertToList({ id: 1 });
 
-  expect(response).toEqual({ note: {
+  expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    type: "list",
-    items: [],
     updatedAt: moment().format(),
-  } });
+  }) });
 });
 
 it("adds a list item", () => {

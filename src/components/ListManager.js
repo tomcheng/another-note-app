@@ -8,7 +8,9 @@ import Checkbox from "./Checkbox";
 class ListManager extends Component {
   static propTypes = {
     list: PropTypes.shape({
+      hideChecked: PropTypes.bool.isRequired,
       items: PropTypes.arrayOf(PropTypes.shape({
+        checked: PropTypes.bool.isRequired,
         id: PropTypes.number.isRequired,
         value: PropTypes.string.isRequired,
       })).isRequired,
@@ -43,6 +45,7 @@ class ListManager extends Component {
         {list.items.map(item => (
           <ListItem
             key={item.id}
+            isVisible={!list.hideChecked || !item.checked}
             item={item}
             listId={list.id}
             onUpdateListItem={onUpdateListItem}
