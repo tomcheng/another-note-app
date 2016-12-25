@@ -72,6 +72,7 @@ export const addListItem = ({ listId, value }) => {
   const list = notes.splice(listIndex, 1)[0];
 
   list.items.push({ id: list.items.length + 1, value, checked: false });
+  list.updatedAt = moment().format();
 
   saveLocalNotes([list].concat(notes));
 
@@ -85,6 +86,7 @@ export const updateListItem = ({ listId, itemId, updates }) => {
   const itemIndex = findIndex(list.items, { id: itemId });
 
   list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
+  list.updatedAt = moment().format();
 
   saveLocalNotes([list].concat(notes));
 
