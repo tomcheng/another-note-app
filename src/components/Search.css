@@ -1,0 +1,24 @@
+.SearchInput::-webkit-input-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+.SearchInput::-moz-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+.SearchInput:-ms-input-placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.SearchInput {
+  width: 100%;
+  padding: 0 11px;
+  height: 48px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #fff;
+  background-color: rgba(255,255,255,0.2);
+}
+
+.SearchInput:focus {
+  background-color: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.8);
+}

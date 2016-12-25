@@ -16,6 +16,13 @@ const Button = ({ buttonStyle, onClick, children }) => {
         color: "#fff",
       };
       break;
+    case "ghost":
+      styles = {
+        backgroundColor: "transparent",
+        color: "#fff",
+        border: "1px solid rgba(255,255,255,0.8)",
+      };
+      break;
     default:
       break;
   }
@@ -24,11 +31,11 @@ const Button = ({ buttonStyle, onClick, children }) => {
     <button
       onClick={onClick}
       style={{
-        ...styles,
         height: 40,
         padding: "0 12px",
         border: 0,
-        borderRadius: 2,
+        borderRadius: 3,
+        ...styles,
       }}
     >
       {children}
@@ -37,7 +44,7 @@ const Button = ({ buttonStyle, onClick, children }) => {
 };
 
 Button.propTypes = {
-  buttonStyle: PropTypes.oneOf(["link", "danger"]).isRequired,
+  buttonStyle: PropTypes.oneOf(["link", "danger", "ghost"]).isRequired,
   children: PropTypes.any.isRequired,
   onClick: PropTypes.func,
 };

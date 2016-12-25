@@ -63,6 +63,7 @@ class NoteMenu extends Component {
           icon="ellipsis-v"
           action
           onClick={this.handleClickIcon}
+          style={{ color: "#fff" }}
         />
         {menuOpen && (
           <div>

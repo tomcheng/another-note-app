@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 import Button from "./Button";
+import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
@@ -86,18 +87,16 @@ class Search extends Component {
     const { search } = this.props;
 
     return (
-      <div style={{ position: "relative"}}>
+      <div style={{
+        position: "relative",
+        padding: 5,
+        borderBottom: "1px solid rgba(0,0,0,0.18)",
+      }}>
         <input
+          className="SearchInput"
           placeholder="Search or add notes"
           ref={el => { this.input = el; }}
           type="text"
-          style={{
-            width: "100%",
-            padding: "0 12px",
-            height: 48,
-            borderWidth: "0 0 1px 0",
-            borderColor: "#ccc",
-          }}
           value={search}
           onChange={this.handleChangeSearch}
           onKeyDown={this.handleKeyDown}
@@ -106,14 +105,15 @@ class Search extends Component {
         {search.trim() !== "" && (
           <div style={{
             position: "absolute",
-            top: 0,
-            right: 5,
+            top: 5,
+            right: 10,
             height: 48,
             display: "flex",
             alignItems: "center",
+            color: "#fff",
           }}>
-            <Button buttonStyle="link" onClick={this.handleClickAdd}>
-              add
+            <Button buttonStyle="link" style={{ color: "#fff" }} onClick={this.handleClickAdd}>
+              + note
             </Button>
             <Button buttonStyle="link" onClick={this.handleClickClear}>
               clear

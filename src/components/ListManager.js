@@ -38,7 +38,7 @@ class ListManager extends Component {
     const { newItemValue } = this.state;
 
     return (
-      <div>
+      <div style={{ color: "rgba(255,255,255,0.75)" }}>
         {list.items.map(item => (
           <ListItem
             key={item.id}

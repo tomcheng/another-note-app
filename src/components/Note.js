@@ -61,15 +61,14 @@ class Note extends Component {
           display: isVisible ? "flex" : "none",
           backgroundColor: "#fff",
           backgroundClip: "padding-box",
-          opacity: isFaded ? 0.3 : 1,
-          transition: "opacity 0.1s ease-in-out",
+          opacity: isFaded ? 0.4 : 1,
           alignItems: "center",
           padding: "0 12px",
           whiteSpace: "nowrap",
-          border: "1px solid rgba(0,0,0,0.03)",
-          borderRadius: 2,
-          margin: "1px 2px",
-          height: 48,
+          border: "1px solid rgba(0,0,0,0.1)",
+          borderRadius: 3,
+          margin: "1px 4px",
+          height: 50,
         }}
       >
         <div style={{

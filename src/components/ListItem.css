@@ -1,0 +1,14 @@
+.ListItemLabel {
+  display: block;
+  padding-left: 15px;
+  text-indent: -13px;
+}
+.ListItemInput {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin: 0 7px 0 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -5px;
+}

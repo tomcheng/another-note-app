@@ -45,7 +45,8 @@ class Notes extends Component {
       <div
         style={{
           ...containerStyle,
-          backgroundColor: "#f2f2f2",
+          borderTop: "1px solid rgba(255,255,255,0.12)",
+          paddingTop: 4,
           flexBasis: isEditing ? 0 : containerStyle.flexBasis,
         }}
         onClick={onDeselectNote}

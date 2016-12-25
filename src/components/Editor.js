@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Textarea from "react-textarea-autosize";
-import FullWidthButton from "./FullWidthButton";
+import Button from "./Button";
 import NoteMenu from "./NoteMenu";
 import ListManager from "./ListManager";
 
@@ -18,7 +18,6 @@ class Editor extends Component {
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
-    search: PropTypes.string.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
       title: PropTypes.string,
@@ -91,10 +90,6 @@ class Editor extends Component {
     }
   };
 
-  handleClickAddNote = () => {
-    this.props.onAddNote({ title: this.props.search });
-  };
-
   render () {
     const {
       containerStyle,
@@ -105,29 +100,19 @@ class Editor extends Component {
       onDeleteNote,
       onEditNoteBody,
       onEditNoteTitle,
-      search,
     } = this.props;
     const { title, body } = this.state;
 
-    if (!selectedNote) {
-      if (search.trim() === "") { return <noscript />; }
-
-      return (
-        <FullWidthButton onClick={this.handleClickAddNote}>
-          Add&nbsp;<em>{search}</em>
-        </FullWidthButton>
-      );
-    }
+    if (!selectedNote) { return <noscript />; }
 
     const isEditing = isEditingNoteBody || isEditingNoteTitle;
 
     return (
       <div style={{
         ...containerStyle,
-        boxShadow: "0 -1px 4px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.12)",
         position: "relative", // for box shadow to show
         overflow: "hidden",
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(0,0,0,0.45)",
         display: "flex",
         flexDirection: "column",
       }}>
@@ -159,10 +144,10 @@ class Editor extends Component {
                 padding: "3px 5px",
                 margin: "8px 7px 0",
                 fontSize: 16,
-                fontWeight: 600,
+                fontWeight: 500,
                 fontFamily: "inherit",
                 lineHeight: "inherit",
-                border: 0,
+                color: "rgba(255,255,255,0.95)",
                 resize: "none",
               }}
               onFocus={onEditNoteTitle}
@@ -189,21 +174,24 @@ class Editor extends Component {
                   fontFamily: "inherit",
                   lineHeight: "inherit",
                   fontSize: "inherit",
-                  color: "inherit",
+                  color: "rgba(255,255,255,0.75)",
                   padding: "2px 5px",
                   margin: "0 7px 12px",
                   resize: "none",
-                  border: "0",
                 }}
               />
             )}
           </div>
         </div>
         {isEditing && (
-          <div style={{ flexShrink: 0 }}>
-            <FullWidthButton>
+          <div style={{
+            flexShrink: 0,
+            textAlign: "right",
+            padding: "0 12px 12px"
+          }}>
+            <Button buttonStyle="ghost">
               Done
-            </FullWidthButton>
+            </Button>
           </div>
         )}
       </div>
@@ -212,7 +200,6 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-  search: selectors.getSearch(state),
   selectedNote: selectors.getSelectedNote(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
   isEditingNoteTitle: selectors.getIsEditingNoteTitle(state),
