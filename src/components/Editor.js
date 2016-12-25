@@ -51,8 +51,12 @@ class Editor extends Component {
     }
   }
 
-  handleChangeField = ({ target }) => {
-    this.setState({ [target.name]: target.value })
+  handleChangeTitle = ({ target }) => {
+    this.setState({ title: target.value });
+  };
+
+  handleChangeBody = ({ target }) => {
+    this.setState({ body: target.value })
   };
 
   handleBlurTitle = () => {
@@ -62,7 +66,7 @@ class Editor extends Component {
     if (title !== selectedNote.title) {
       onUpdateNote({
         id: selectedNote.id,
-        updates: { title: title.replace(/\n/g, "") },
+        updates: { title },
       });
     }
 
@@ -83,11 +87,8 @@ class Editor extends Component {
     onCancelEditNoteBody();
   };
 
-  handleKeyDownTitle = evt => {
-    if (evt.key === "Enter") {
-      evt.preventDefault();
-      this.props.onEditNoteBody();
-    }
+  handleEnterTitle = () => {
+    this.props.onEditNoteBody();
   };
 
   render () {
@@ -148,8 +149,9 @@ class Editor extends Component {
               }}
               onFocus={onEditNoteTitle}
               onBlur={this.handleBlurTitle}
-              onChange={this.handleChangeField}
-              onKeyDown={this.handleKeyDownTitle}
+              onChange={this.handleChangeTitle}
+              onEnter={this.handleEnterTitle}
+              singleLine
             />
             {selectedNote.type === "list" ? (
               <div style={{ margin: "0 12px 12px" }}>
@@ -160,8 +162,8 @@ class Editor extends Component {
                 name="body"
                 value={body}
                 placeholder="Add to this note"
-                ref={el => { this.textarea = el; }}
-                onChange={this.handleChangeField}
+                refCallback={el => { this.textarea = el; }}
+                onChange={this.handleChangeBody}
                 onBlur={this.handleBlurBody}
                 onFocus={onEditNoteBody}
                 minRows={3}

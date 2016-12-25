@@ -25,15 +25,13 @@ class ListManager extends Component {
     this.setState({ newItemValue: target.value });
   };
 
-  handleKeyDownAddItem = evt => {
+  handleEnterAddItem = () => {
     const { onAddListItem, list } = this.props;
     const { newItemValue } = this.state;
 
-    if (evt.key === "Enter") {
-      evt.preventDefault();
-      this.setState({ newItemValue: "" });
-      onAddListItem({ listId: list.id, value: newItemValue });
-    }
+    this.setState({ newItemValue: "" });
+
+    onAddListItem({ listId: list.id, value: newItemValue });
   };
 
   render () {
@@ -58,8 +56,9 @@ class ListManager extends Component {
                 value={newItemValue}
                 placeholder="+ Add item"
                 onChange={this.handleChangeAddItem}
-                onKeyDown={this.handleKeyDownAddItem}
                 style={{ flexGrow: 1, marginLeft: -5 }}
+                singleLine
+                onEnter={this.handleEnterAddItem}
               />
             )}
             disabled
