@@ -104,7 +104,7 @@ class Search extends Component {
     return (
       <div style={{
         position: "relative",
-        padding: 5,
+        padding: "7px 6px 6px",
         borderBottom: "1px solid rgba(0,0,0,0.18)",
         display: isEditing ? "none" : null,
       }}>

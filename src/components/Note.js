@@ -67,10 +67,10 @@ class Note extends Component {
           padding: "0 12px",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 3,
-          opacity: isFaded ? 0.4 : 1,
+          opacity: isFaded ? 0.7 : 1,
           alignItems: "center",
           whiteSpace: "nowrap",
-          margin: "1px 4px",
+          margin: "1px 0",
           height: 50,
         }}
       >

@@ -47,7 +47,7 @@ class Notes extends Component {
           ...containerStyle,
           borderTop: "1px solid rgba(255,255,255,0.12)",
           borderBottom: "1px solid rgba(0,0,0,0.18)",
-          paddingTop: 4,
+          padding: "4px 5px",
           display: isEditing ? "none" : null,
         }}
         onClick={onDeselectNote}

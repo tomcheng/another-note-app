@@ -51,7 +51,7 @@ class App extends Component {
             <Search />
           </div>
           <Notes containerStyle={{ flexShrink: 0, flexBasis: "30%", flexGrow: 1, overflow: "auto" }} />
-          <Preview containerStyle={{ flexShrink: 1, minHeight: "20%", }} />
+          <Preview containerStyle={{ flexShrink: 1, minHeight: "30%", }} />
         </div>
       </Provider>
     );
