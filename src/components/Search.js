@@ -10,12 +10,14 @@ class Search extends Component {
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
+    onClearIsSearching: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
     onDeselectNote: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onSelectNextNote: PropTypes.func.isRequired,
     onSelectPreviousNote: PropTypes.func.isRequired,
+    onSetIsSearching: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       id: PropTypes.number,
@@ -35,6 +37,11 @@ class Search extends Component {
   handleFocus = () => {
     this.input.select();
     this.props.onDeselectNote();
+    this.props.onSetIsSearching();
+  };
+
+  handleBlur = () => {
+    this.props.onClearIsSearching();
   };
 
   handleChangeSearch = ({ target }) => {
@@ -108,6 +115,7 @@ class Search extends Component {
           onChange={this.handleChangeSearch}
           onKeyDown={this.handleKeyDown}
           onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
         />
         {search.trim() !== "" && (
           <div style={{
@@ -145,10 +153,12 @@ export default connect(mapStateToProps, {
   onAddList: actions.requestAddList,
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
+  onClearIsSearching: actions.clearIsSearching,
   onDeleteSearch: actions.deleteSearch,
   onDeselectNote: actions.deselectNote,
   onEditNoteBody: actions.editNoteBody,
   onSelectNextNote: actions.selectNextNote,
   onSelectPreviousNote: actions.selectPreviousNote,
+  onSetIsSearching: actions.setIsSearching,
   onUpdateSearch: actions.updateSearch,
 })(Search);

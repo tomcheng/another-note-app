@@ -71,6 +71,19 @@ it("takes into account special characters when matching", () => {
   expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
 
+it("sets the isSearching flag", () => {
+  const state = reducer(undefined, actions.setIsSearching());
+
+  expect(selectors.getIsSearching(state)).toBe(true);
+});
+
+it("clears the isSearching flag", () => {
+  let state = reducer(undefined, actions.setIsSearching());
+  state = reducer(state, actions.clearIsSearching());
+
+  expect(selectors.getIsSearching(state)).toBe(false);
+});
+
 it("initializes with a list of empty notes", () => {
   const state = reducer(undefined, {});
 
