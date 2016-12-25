@@ -32,6 +32,14 @@ class ListManager extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!this.props.isAddingListItem && nextProps.isAddingListItem) {
+      setTimeout(() => {
+        this.addItemField.focus();
+      }, 0);
+    }
+  }
+
   handleChangeAddItem = ({ target }) => {
     this.setState({ newItemValue: target.value });
   };
@@ -40,13 +48,31 @@ class ListManager extends Component {
     const { onAddListItem, list } = this.props;
     const { newItemValue } = this.state;
 
+    if (newItemValue.trim() === "") {
+      this.addItemField.blur();
+      return;
+    }
+
+    this.setState({ newItemValue: "" });
+
+    onAddListItem({ listId: list.id, value: newItemValue });
+  };
+
+  handleBlurAddItem = () => {
+    const { onCancelAddListItem, onAddListItem, list } = this.props;
+    const { newItemValue } = this.state;
+
+    onCancelAddListItem();
+
+    if (newItemValue.trim() === "") { return; }
+
     this.setState({ newItemValue: "" });
 
     onAddListItem({ listId: list.id, value: newItemValue });
   };
 
   render () {
-    const { list, onUpdateListItem, onSetAddListItem, onCancelAddListItem } = this.props;
+    const { list, onUpdateListItem, onSetAddListItem } = this.props;
     const { newItemValue } = this.state;
 
     return (
@@ -71,7 +97,7 @@ class ListManager extends Component {
                 onChange={this.handleChangeAddItem}
                 style={{ flexGrow: 1, marginLeft: -5 }}
                 onEnter={this.handleEnterAddItem}
-                onBlur={onCancelAddListItem}
+                onBlur={this.handleBlurAddItem}
                 onFocus={onSetAddListItem}
                 singleLine
               />

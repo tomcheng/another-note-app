@@ -17,10 +17,12 @@ class Editor extends Component {
     onConvertNoteToList: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
+    onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       body: PropTypes.string,
       title: PropTypes.string,
+      type: PropTypes.oneOf(["list", "note"]).isRequired,
     }),
   };
 
@@ -88,7 +90,13 @@ class Editor extends Component {
   };
 
   handleEnterTitle = () => {
-    this.props.onEditNoteBody();
+    const { selectedNote, onEditNoteBody, onSetAddListItem } = this.props;
+
+    if (selectedNote.type === "note") {
+      onEditNoteBody();
+    } else {
+      onSetAddListItem();
+    }
   };
 
   render () {
@@ -209,5 +217,6 @@ export default connect(mapStateToProps, {
   onDeleteNote: actions.requestDeleteNote,
   onEditNoteBody: actions.editNoteBody,
   onEditNoteTitle: actions.editNoteTitle,
+  onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(Editor);
