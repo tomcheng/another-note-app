@@ -137,7 +137,6 @@ class Preview extends Component {
             backgroundClip: "padding-box",
             border: "1px solid rgba(0,0,0,0.1)",
             borderRadius: 3,
-            minHeight: 150,
             display: "flex",
             flexDirection: "column",
           }}>
