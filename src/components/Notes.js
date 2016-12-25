@@ -66,7 +66,8 @@ class Notes extends Component {
         </div>
         {visibleNoteIds.length === 0 && (
           <div style={{
-            opacity: 0.3,
+            color: "#fff",
+            opacity: 0.5,
             textAlign: "center",
             lineHeight: "48px",
           }}>
