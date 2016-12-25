@@ -1,9 +1,9 @@
-.ListItemLabel {
+.CheckboxLabel {
   display: block;
   padding-left: 15px;
   text-indent: -13px;
 }
-.ListItemInput {
+.CheckboxInput {
   width: 13px;
   height: 13px;
   padding: 0;

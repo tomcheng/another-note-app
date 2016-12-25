@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import "./ListItem.css";
+import Checkbox from "./Checkbox";
 
 class ListItem extends Component {
   static propTypes = {
@@ -25,20 +25,18 @@ class ListItem extends Component {
         display: "flex",
         alignItems: "center",
       }}>
-        <label className="ListItemLabel">
-          <input
-            className="ListItemInput"
-            type="checkbox"
-            checked={item.checked}
-            onChange={this.handleChange}
-          />
-          <span style={{
-            textDecoration: item.checked ? "line-through" : null,
-            opacity: item.checked ? 0.25 : null,
-          }}>
-            {item.value}
-          </span>
-        </label>
+        <Checkbox
+          label={(
+            <span style={{
+              textDecoration: item.checked ? "line-through" : null,
+              opacity: item.checked ? 0.25 : null,
+            }}>
+              {item.value}
+            </span>
+          )}
+          checked={item.checked}
+          onChange={this.handleChange}
+        />
       </div>
     );
   }

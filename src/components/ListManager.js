@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import ListItem from "./ListItem";
+import Checkbox from "./Checkbox";
 
 class ListManager extends Component {
   static propTypes = {
@@ -47,13 +48,21 @@ class ListManager extends Component {
             onUpdateListItem={onUpdateListItem}
           />
         ))}
-        <input
-          value={newItemValue}
-          type="text"
-          placeholder="Add item"
-          onChange={this.handleChangeAddItem}
-          onKeyDown={this.handleKeyDownAddItem}
-        />
+        <div style={{ height: 40, display: "flex", alignItems: "center" }}>
+          <Checkbox
+            checked={false}
+            label={(
+              <input
+                value={newItemValue}
+                type="text"
+                placeholder="+ Add item"
+                onChange={this.handleChangeAddItem}
+                onKeyDown={this.handleKeyDownAddItem}
+              />
+            )}
+            disabled
+          />
+        </div>
       </div>
     );
   }
