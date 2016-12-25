@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import omit from "lodash/omit";
 import Textarea from "react-textarea-autosize";
 
 class TextInput extends Component {
@@ -36,11 +37,11 @@ class TextInput extends Component {
   };
 
   render () {
-    const { style, refCallback, singleLine, onEnter, ...other } = this.props;
+    const { style, refCallback, ...other } = this.props;
 
     return (
       <Textarea
-        {...other}
+        {...omit(other, ["singleLine", "onEnter"])}
         onChange={this.handleChange}
         ref={refCallback}
         style={{
