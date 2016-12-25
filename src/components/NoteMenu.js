@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import capitalize from "lodash/capitalize";
 import Icon from "./Icon";
 import Button from "./Button";
 import PopoverItem from "./PopoverItem";
@@ -151,14 +152,14 @@ class NoteMenu extends Component {
                 Are you sure?
               </h3>
               <div style={{ marginBottom: 20 }}>
-                Deleting this note cannot be undone.
+                Deleting this {selectedNote.type} cannot be undone.
               </div>
               <div style={{ textAlign: "right" }}>
                 <Button buttonStyle="link" onClick={this.handleCloseDeleteModal}>
                   cancel
                 </Button>
                 <Button buttonStyle="danger" onClick={this.handleDeleteNote}>
-                  Delete Note
+                  Delete {capitalize(selectedNote.type)}
                 </Button>
               </div>
             </div>
