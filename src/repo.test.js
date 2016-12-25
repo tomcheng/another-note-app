@@ -5,6 +5,7 @@ import defaults from "lodash/defaults";
 const addNoteDefaults = note => defaults(note, {
   type: "note",
   body: "",
+  createdAt: moment().format(),
   updatedAt: moment().format(),
 });
 
@@ -12,6 +13,7 @@ const addListDefaults = list => defaults(list, {
   type: "list",
   items: [],
   hideChecked: false,
+  createdAt: moment().format(),
   updatedAt: moment().format(),
 });
 

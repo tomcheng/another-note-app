@@ -22,6 +22,7 @@ export const addNote = ({ title }) => {
     title,
     type: "note",
     body: "",
+    createdAt: moment().format(),
     updatedAt: moment().format(),
   };
 
@@ -39,6 +40,7 @@ export const addList = ({ title }) => {
     type: "list",
     items: [],
     hideChecked: false,
+    createdAt: moment().format(),
     updatedAt: moment().format(),
   };
 
@@ -51,7 +53,11 @@ export const updateNote = ({ id, updates }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });
   const oldNote = notes.splice(noteIndex, 1)[0];
-  const newNote = { ...oldNote, ...updates, updatedAt: moment().format() };
+  const newNote = {
+    ...oldNote,
+    ...updates,
+    updatedAt: moment().format(),
+  };
 
   saveLocalNotes([newNote].concat(notes));
 
@@ -76,6 +82,7 @@ export const convertToList = ({ id }) => {
     items: oldNote.body.split("\n")
       .filter(value => value.trim() !== "")
       .map((value, index) => ({ id: index + 1, value, checked: false })),
+    createdAt: oldNote.createdAt,
     updatedAt: moment().format(),
   };
 
