@@ -24,19 +24,8 @@ input, textarea {
 
 input:focus, textarea:focus {
   outline: 0;
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(46,132,134,0.2);
 }
-
-::-webkit-input-placeholder {
-  color: rgba(255,255,255,0.3);
-}
-::-moz-placeholder {
-  color: rgba(255,255,255,0.3);
-}
-:-ms-input-placeholder {
-  color: rgba(255,255,255,0.3);
-}
-
 
 h3 {
   margin-top: 0;

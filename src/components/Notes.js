@@ -46,6 +46,7 @@ class Notes extends Component {
         style={{
           ...containerStyle,
           borderTop: "1px solid rgba(255,255,255,0.12)",
+          borderBottom: "1px solid rgba(0,0,0,0.18)",
           paddingTop: 4,
           flexBasis: isEditing ? 0 : containerStyle.flexBasis,
         }}
