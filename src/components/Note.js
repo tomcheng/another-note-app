@@ -29,11 +29,23 @@ class Note extends Component {
     }
   };
 
+  getTitle = () => {
+    const { note } = this.props;
+
+    if (note.type === "list") {
+      return note.title +
+        " (" + note.items.filter(item => item.checked).length + "/" + note.items.length + ")";
+    }
+
+    return note.title;
+  };
+
   getSummary = () => {
     const { note } = this.props;
 
     if (note.type === "list") {
-      return note.items.map(item => item.value).join(" ");
+      const uncheckedItems = note.items.filter(item => !item.checked);
+      return uncheckedItems.length > 0 ? uncheckedItems[0].value : "All done!";
     }
 
     return note.body;
@@ -66,7 +78,7 @@ class Note extends Component {
           textOverflow: "ellipsis",
           overflow: "hidden",
         }}>
-          {note.title}&nbsp;
+          {this.getTitle()}&nbsp;
         </div>
         <div style={{
           flexGrow: 1,
