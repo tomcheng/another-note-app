@@ -12,6 +12,7 @@ class Search extends Component {
     onAddNote: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
+    onDeselectNote: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onSelectNextNote: PropTypes.func.isRequired,
     onSelectPreviousNote: PropTypes.func.isRequired,
@@ -33,6 +34,7 @@ class Search extends Component {
 
   handleFocus = () => {
     this.input.select();
+    this.props.onDeselectNote();
   };
 
   handleChangeSearch = ({ target }) => {
@@ -144,6 +146,7 @@ export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
   onDeleteSearch: actions.deleteSearch,
+  onDeselectNote: actions.deselectNote,
   onEditNoteBody: actions.editNoteBody,
   onSelectNextNote: actions.selectNextNote,
   onSelectPreviousNote: actions.selectPreviousNote,

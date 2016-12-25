@@ -21,7 +21,7 @@ it("clears selected note when updating from delete", () => {
   expect(selectors.getIsNavigating(state)).toBe(false);
 });
 
-it("selects a note based on search", () => {
+it("does not select a note based on search", () => {
   let state = reducer(undefined, actions.loadNotes({
     notes: [
       { id: 1, title: "foo", body: "" },
@@ -30,7 +30,7 @@ it("selects a note based on search", () => {
   }));
   state = reducer(state, actions.updateSearch({ search: "b" }));
 
-  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
 
 it("keeps selected note when clearing search", () => {
@@ -39,7 +39,7 @@ it("keeps selected note when clearing search", () => {
       { id: 1, title: "foo", body: "" },
     ],
   }));
-  state = reducer(state, actions.updateSearch({ search: "f" }));
+  state = reducer(state, actions.selectNote({ id: 1 }));
   state = reducer(state, actions.clearSearch());
 
   expect(selectors.getSearch(state)).toBe("");

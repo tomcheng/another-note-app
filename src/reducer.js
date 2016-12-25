@@ -1,5 +1,4 @@
 import { createSelector } from "reselect";
-import find from "lodash/find";
 
 export const actions = {};
 export const selectors = {};
@@ -47,22 +46,11 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case "UPDATE_SEARCH": {
-      const notes = selectors.getNotes(state);
-      const matchedNote = find(notes, note => {
-        const processedSearch = payload.search.toLowerCase();
-        const processedTitle = note.title.toLowerCase();
-
-        if (processedSearch === "") { return false; }
-
-        return processedTitle.indexOf(processedSearch) === 0;
-      });
-
       return {
         ...state,
         isEditing: false,
         isNavigating: false,
         search: payload.search,
-        selectedNoteId: matchedNote ? matchedNote.id : null,
       };
     }
     case "DELETE_SEARCH":
