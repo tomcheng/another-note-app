@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
-import { actions, selectors } from "./reducer";
-import Search from "./components/Search";
-import Notes from "./components/Notes";
-import Preview from "./components/Preview";
-import SectionDivider from "./components/SectionDivider";
-import './App.css';
+import { actions, selectors } from "../reducer";
+import Search from "./Search";
+import Notes from "./Notes";
+import Preview from "./Preview";
+import SectionDivider from "./SectionDivider";
 
 class App extends Component {
   static propTypes = {
