@@ -11,7 +11,6 @@ class Preview extends Component {
     containerStyle: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
-    isSearching: PropTypes.bool.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
     onCancelEditNoteTitle: PropTypes.func.isRequired,
@@ -104,7 +103,6 @@ class Preview extends Component {
     const {
       containerStyle,
       selectedNote,
-      isSearching,
       isEditing,
       onConvertNoteToList,
       onDeleteNote,
@@ -118,7 +116,7 @@ class Preview extends Component {
       <div style={{
         ...containerStyle,
         padding: "6px 5px",
-        display: isSearching ? "none" : "flex",
+        display: "flex",
         flexDirection: "column",
       }}>
         {selectedNote ? (
@@ -131,6 +129,7 @@ class Preview extends Component {
               backgroundColor: "#fff",
               backgroundClip: "padding-box",
               border: "1px solid rgba(0,0,0,0.1)",
+              overflow: "hidden",
               borderRadius: 3,
               display: "flex",
               flexDirection: "column",
@@ -181,17 +180,19 @@ class Preview extends Component {
                         <ListManager list={selectedNote} />
                       </div>
                     ) : (
-                      <TextInput
-                        name="body"
-                        value={body}
-                        placeholder="Add to this note"
-                        refCallback={el => { this.bodyField = el; }}
-                        onChange={this.handleChangeBody}
-                        onBlur={this.handleBlurBody}
-                        onFocus={onEditNoteBody}
-                        minRows={3}
-                        style={{ margin: "0 7px 12px" }}
-                      />
+                      <div style={{ margin: "0 7px 12px" }}>
+                        <TextInput
+                          name="body"
+                          value={body}
+                          placeholder="Add to this note"
+                          refCallback={el => { this.bodyField = el; }}
+                          onChange={this.handleChangeBody}
+                          onBlur={this.handleBlurBody}
+                          onFocus={onEditNoteBody}
+                          minRows={3}
+                          style={{ width: "100%" }}
+                        />
+                      </div>
                     )}
                 </div>
               </div>
@@ -227,7 +228,6 @@ const mapStateToProps = state => ({
   selectedNote: selectors.getSelectedNote(state),
   isEditing: selectors.getIsEditing(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
-  isSearching: selectors.getIsSearching(state),
 });
 
 export default connect(mapStateToProps, {
