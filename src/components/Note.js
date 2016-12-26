@@ -55,22 +55,20 @@ class Note extends Component {
   };
 
   render () {
-    const { note, isVisible, isFaded } = this.props;
+    const { note, isVisible, isSelected } = this.props;
 
     return (
       <div
         onClick={this.handleClick}
         style={{
           display: isVisible ? "flex" : "none",
-          backgroundColor: "#fff",
+          backgroundColor: isSelected ? "rgba(255,255,255,0.85)" : "#fff",
           backgroundClip: "padding-box",
           padding: "0 12px",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 3,
-          opacity: isFaded ? 0.7 : 1,
           alignItems: "center",
           whiteSpace: "nowrap",
-          margin: "1px 0",
           height: 50,
         }}
       >

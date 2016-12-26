@@ -63,7 +63,6 @@ class Notes extends Component {
               onSelectNote={onSelectNote}
               onDeselectNote={onDeselectNote}
               isSelected={!!selectedNote && note.id === selectedNote.id}
-              isFaded={!!selectedNote && note.id !== selectedNote.id}
               isVisible={visibleNoteIds.includes(note.id)}
             />
           ))}
