@@ -38,7 +38,7 @@ const initialState = {
   isAddingListItem: false,
   isNavigating: false,
   isSearching: false,
-  listHeight: 250,
+  listHeight: 300,
   notes: {},
   noteIds: [],
   notesLoaded: false,

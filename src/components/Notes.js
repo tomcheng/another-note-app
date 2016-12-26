@@ -50,8 +50,7 @@ class Notes extends Component {
           height: listHeight,
           overflow: "auto",
           borderTop: "1px solid rgba(255,255,255,0.12)",
-          borderBottom: "1px solid rgba(0,0,0,0.18)",
-          padding: "4px 5px",
+          padding: "4px 5px 4px",
           display: isEditing ? "none" : null,
         }}
         onClick={onDeselectNote}

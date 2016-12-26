@@ -11,6 +11,7 @@ class App extends Component {
   static propTypes = {
     listHeight: PropTypes.number.isRequired,
     onSetListHeight: PropTypes.func.isRequired,
+    isEditing: PropTypes.bool.isRequired,
   };
 
   constructor (props) {
@@ -32,7 +33,7 @@ class App extends Component {
   };
 
   render () {
-    const { listHeight } = this.props;
+    const { listHeight, isEditing } = this.props;
     const { appHeight } = this.state;
 
     return (
@@ -60,17 +61,24 @@ class App extends Component {
           >
             <div
               style={{
+                display: isEditing ? "none" : null,
                 height: 40,
-                top: -20,
+                top: -13,
                 left: 0,
                 right: 0,
                 position: "absolute",
                 zIndex: 1,
               }}
-            />
+            >
+              <div className="AppDragHandle" style={{
+                marginTop: 13,
+              }}>
+                <i className="fa fa-ellipsis-h" />
+              </div>
+            </div>
           </Draggable>
           <Notes containerStyle={{ flexShrink: 0 }} />
-          <Preview containerStyle={{ flexGrow: 1 }} />
+          <Preview containerStyle={{ flexGrow: 1, marginTop: 10 }} />
         </div>
       </div>
     );
@@ -79,6 +87,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   listHeight: selectors.getListHeight(state),
+  isEditing: selectors.getIsEditing(state),
 });
 
 export default connect(mapStateToProps, {

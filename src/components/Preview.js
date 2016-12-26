@@ -117,8 +117,6 @@ class Preview extends Component {
     return (
       <div style={{
         ...containerStyle,
-        borderTop: "1px solid rgba(255,255,255,0.12)",
-        backgroundColor: "rgba(0,0,0,0.4)",
         padding: "6px 5px",
         display: isSearching ? "none" : "flex",
         flexDirection: "column",
