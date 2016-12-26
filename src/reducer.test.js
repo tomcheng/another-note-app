@@ -284,3 +284,9 @@ it("handles loading lists", () => {
   ]);
   expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
 });
+
+it("sets the main list height", () => {
+  const state = reducer(undefined, actions.setListHeight({ height: 999 }));
+
+  expect(selectors.getListHeight(state)).toBe(999);
+});

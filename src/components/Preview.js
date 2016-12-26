@@ -120,7 +120,6 @@ class Preview extends Component {
         borderTop: "1px solid rgba(255,255,255,0.12)",
         backgroundColor: "rgba(0,0,0,0.4)",
         padding: "6px 5px",
-        flexGrow: isEditing ? 1 : null,
         display: isSearching ? "none" : "flex",
         flexDirection: "column",
       }}>

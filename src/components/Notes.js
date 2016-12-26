@@ -7,6 +7,7 @@ class Notes extends Component {
   static propTypes = {
     containerStyle: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
+    listHeight: PropTypes.number.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
     })).isRequired,
@@ -37,6 +38,7 @@ class Notes extends Component {
       notesLoaded,
       visibleNoteIds,
       isEditing,
+      listHeight,
     } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
@@ -45,6 +47,8 @@ class Notes extends Component {
       <div
         style={{
           ...containerStyle,
+          height: listHeight,
+          overflow: "auto",
           borderTop: "1px solid rgba(255,255,255,0.12)",
           borderBottom: "1px solid rgba(0,0,0,0.18)",
           padding: "4px 5px",
@@ -81,6 +85,7 @@ class Notes extends Component {
 }
 
 const mapStateToProps = state => ({
+  listHeight: selectors.getListHeight(state),
   selectedNote: selectors.getSelectedNote(state),
   notes: selectors.getNotes(state),
   notesLoaded: selectors.getNotesLoaded(state),

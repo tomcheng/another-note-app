@@ -30,6 +30,7 @@ actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" })
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
+actions.setListHeight            = payload => ({ type: "SET_LIST_HEIGHT", payload });
 
 const initialState = {
   isEditingNoteBody: false,
@@ -37,6 +38,7 @@ const initialState = {
   isAddingListItem: false,
   isNavigating: false,
   isSearching: false,
+  listHeight: 250,
   notes: {},
   noteIds: [],
   notesLoaded: false,
@@ -145,6 +147,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, isAddingListItem: true };
     case "CANCEL_ADD_LIST_ITEM":
       return { ...state, isAddingListItem: false };
+    case "SET_LIST_HEIGHT":
+      return { ...state, listHeight: payload.height };
     default:
       return state;
   }
@@ -174,6 +178,7 @@ selectors.getIsNavigating       = state => state.isNavigating;
 selectors.getIsSearching        = state => state.isSearching;
 selectors.getNotesLoaded        = state => state.notesLoaded;
 selectors.getSearch             = state => state.search;
+selectors.getListHeight         = state => state.listHeight;
 selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
