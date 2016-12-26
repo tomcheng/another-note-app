@@ -1,8 +1,11 @@
 import React, { PropTypes, Component } from "react";
 import Checkbox from "./Checkbox";
 
+const DEFAULT_LINE_HEIGHT = 22;
+
 class ListItem extends Component {
   static propTypes = {
+    height: PropTypes.number.isRequired,
     isVisible: PropTypes.bool.isRequired,
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -19,10 +22,10 @@ class ListItem extends Component {
   };
 
   render () {
-    const { item, isVisible } = this.props;
+    const { item, isVisible, height } = this.props;
     return (
       <div style={{
-        height: 40,
+        padding: ((height - DEFAULT_LINE_HEIGHT) / 2) + "px 0",
         display: isVisible ? "flex" : "none",
         alignItems: "center",
       }}>
@@ -37,6 +40,7 @@ class ListItem extends Component {
           )}
           checked={item.checked}
           onChange={this.handleChange}
+          alignWithText
         />
       </div>
     );

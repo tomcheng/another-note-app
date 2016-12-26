@@ -5,6 +5,8 @@ import TextInput from "./TextInput";
 import ListItem from "./ListItem";
 import Checkbox from "./Checkbox";
 
+const LIST_HEIGHT = 36;
+
 class ListManager extends Component {
   static propTypes = {
     isAddingListItem: PropTypes.bool.isRequired,
@@ -79,6 +81,7 @@ class ListManager extends Component {
       <div>
         {list.items.map(item => (
           <ListItem
+            height={LIST_HEIGHT}
             key={item.id}
             isVisible={!list.hideChecked || !item.checked}
             item={item}
@@ -86,7 +89,7 @@ class ListManager extends Component {
             onUpdateListItem={onUpdateListItem}
           />
         ))}
-        <div style={{ height: 40, display: "flex", alignItems: "center" }}>
+        <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
           <Checkbox
             checked={false}
             label={(

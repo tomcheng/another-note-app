@@ -1,10 +1,10 @@
 import React, { PropTypes } from "react";
 import "./Checkbox.css";
 
-const Checkbox = ({ checked, label, onChange, disabled }) => (
-  <label className="CheckboxLabel">
+const Checkbox = ({ checked, label, onChange, disabled, alignWithText }) => (
+  <label className={alignWithText ? "CheckboxLabelText" : "CheckboxLabel"}>
     <input
-      className="CheckboxInput"
+      className={alignWithText ? "CheckboxInputText" : "CheckboxInput"}
       type="checkbox"
       checked={checked}
       onChange={onChange}
@@ -17,6 +17,7 @@ const Checkbox = ({ checked, label, onChange, disabled }) => (
 Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   label: PropTypes.any.isRequired,
+  alignWithText: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
 };
