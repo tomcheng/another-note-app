@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions, selectors } from "./reducer";
-import Draggable from "react-draggable";
 import Search from "./components/Search";
 import Notes from "./components/Notes";
 import Preview from "./components/Preview";
+import SectionDivider from "./components/SectionDivider";
 import './App.css';
 
 class App extends Component {
@@ -54,29 +54,11 @@ class App extends Component {
           display: "flex",
           flexDirection: "column",
         }}>
-          <Draggable
-            axis="y"
+          <SectionDivider
+            listHeight={listHeight}
+            isEditing={isEditing}
             onDrag={this.handleDrag}
-            defaultPosition={{ x: 0, y: listHeight }}
-          >
-            <div
-              style={{
-                display: isEditing ? "none" : null,
-                height: 40,
-                top: -13,
-                left: 0,
-                right: 0,
-                position: "absolute",
-                zIndex: 1,
-              }}
-            >
-              <div className="AppDragHandle" style={{
-                marginTop: 13,
-              }}>
-                <i className="fa fa-ellipsis-h" />
-              </div>
-            </div>
-          </Draggable>
+          />
           <Notes containerStyle={{ flexShrink: 0 }} />
           <Preview containerStyle={{ flexGrow: 1, marginTop: 10 }} />
         </div>
