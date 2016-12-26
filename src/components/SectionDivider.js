@@ -28,6 +28,10 @@ const SectionDivider = ({ listHeight, isEditing, onDrag }) => (
   </Draggable>
 );
 
-SectionDivider.propTypes = {};
+SectionDivider.propTypes = {
+  isEditing: PropTypes.bool.isRequired,
+  listHeight: PropTypes.number.isRequired,
+  onDrag: PropTypes.func.isRequired,
+};
 
 export default SectionDivider;
