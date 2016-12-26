@@ -139,6 +139,7 @@ class Preview extends Component {
               flexDirection: "column",
             }}>
               <div style={{
+                marginTop: 5,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "stretch",
@@ -152,7 +153,7 @@ class Preview extends Component {
                     name="title"
                     value={title}
                     style={{
-                      margin: "8px 7px 0",
+                      margin: "0 7px",
                       fontWeight: 600,
                       flexGrow: 1,
                     }}
