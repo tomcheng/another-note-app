@@ -170,28 +170,28 @@ class Preview extends Component {
                 alignItems: "stretch",
               }}>
                 {selectedNote.type === "list" ? (
-                    <div style={{ margin: "7px 12px 10px" }}>
-                      <ListManager list={selectedNote} />
-                    </div>
-                  ) : (
-                    <div>
-                      <TextInput
-                        name="body"
-                        value={body}
-                        placeholder="Add to this note"
-                        refCallback={el => { this.bodyField = el; }}
-                        onChange={this.handleChangeBody}
-                        onBlur={this.handleBlurBody}
-                        onFocus={onEditNoteBody}
-                        minRows={2}
-                        style={{
-                          width: "100%",
-                          padding: "7px 12px 9px",
-                          borderRadius: "0 0 3px 3px",
-                        }}
-                      />
-                    </div>
-                  )}
+                  <div style={{ margin: "7px 12px 10px" }}>
+                    <ListManager list={selectedNote} />
+                  </div>
+                ) : (
+                  <div>
+                    <TextInput
+                      name="body"
+                      value={body}
+                      placeholder="Add to this note"
+                      refCallback={el => { this.bodyField = el; }}
+                      onChange={this.handleChangeBody}
+                      onBlur={this.handleBlurBody}
+                      onFocus={onEditNoteBody}
+                      minRows={2}
+                      style={{
+                        width: "100%",
+                        padding: "7px 12px 9px",
+                        borderRadius: "0 0 3px 3px",
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
