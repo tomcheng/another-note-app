@@ -8,7 +8,7 @@ const Icon = ({ icon, style, action, onClick }) => (
     })}
     style={{
       padding: action ? "0 20px" : null,
-      lineHeight: action ? "36px" : null,
+      lineHeight: action ? "42px" : null,
       ...style,
     }}
     onClick={onClick}

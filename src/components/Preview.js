@@ -115,7 +115,7 @@ class Preview extends Component {
           name="title"
           value={title}
           style={{
-            padding: "7px 12px",
+            padding: "10px 12px",
             fontWeight: 600,
             flexGrow: 1,
             borderRadius: "3px 3px 0 0",
@@ -163,7 +163,7 @@ class Preview extends Component {
             minRows={2}
             style={{
               width: "100%",
-              padding: "7px 12px 9px",
+              padding: "10px 12px 12px",
               borderRadius: "0 0 3px 3px",
             }}
           />
