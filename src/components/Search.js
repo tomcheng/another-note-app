@@ -108,7 +108,7 @@ class Search extends Component {
         {search.trim() !== "" && (
           <div style={{
             position: "absolute",
-            top: 5,
+            top: 7,
             right: 10,
             height: 48,
             display: "flex",
