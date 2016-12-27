@@ -6,6 +6,8 @@ import Notes from "./Notes";
 import Preview from "./Preview";
 import SectionDivider from "./SectionDivider";
 
+const DRAG_HANDLE_HEIGHT = 10;
+
 class App extends Component {
   static propTypes = {
     listHeight: PropTypes.number.isRequired,
@@ -54,12 +56,20 @@ class App extends Component {
           flexDirection: "column",
         }}>
           <SectionDivider
+            height={DRAG_HANDLE_HEIGHT}
             listHeight={listHeight}
             isEditing={isEditing}
             onDrag={this.handleDrag}
           />
           <Notes containerStyle={{ flexShrink: 0 }} />
-          <Preview containerStyle={{ flexGrow: 1, marginTop: 10 }} />
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            marginTop: isEditing ? null : 10,
+          }}>
+            <Preview />
+          </div>
         </div>
       </div>
     );
