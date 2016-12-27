@@ -14,7 +14,6 @@ class Search extends Component {
     onClearIsSearching: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
-    onEditNoteBody: PropTypes.func.isRequired,
     onSelectNextNote: PropTypes.func.isRequired,
     onSelectPreviousNote: PropTypes.func.isRequired,
     onSetIsSearching: PropTypes.func.isRequired,
@@ -55,22 +54,11 @@ class Search extends Component {
 
   handleKeyDown = evt => {
     const {
-      search,
-      selectedNote,
-      onAddNote,
-      onEditNoteBody,
       onSelectNextNote,
       onSelectPreviousNote,
     } = this.props;
 
     switch (evt.key) {
-      case "Enter":
-        if (selectedNote) {
-          onEditNoteBody();
-        } else {
-          onAddNote({ title: search });
-        }
-        break;
       case "ArrowDown":
         evt.preventDefault();
         onSelectNextNote();
@@ -156,7 +144,6 @@ export default connect(mapStateToProps, {
   onClearSearch: actions.clearSearch,
   onClearIsSearching: actions.clearIsSearching,
   onDeleteSearch: actions.deleteSearch,
-  onEditNoteBody: actions.editNoteBody,
   onSelectNextNote: actions.selectNextNote,
   onSelectPreviousNote: actions.selectPreviousNote,
   onSetIsSearching: actions.setIsSearching,
