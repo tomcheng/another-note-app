@@ -98,18 +98,88 @@ class Preview extends Component {
     this.props.onCancelEditing();
   };
 
+  renderCardHeader = () => {
+    const {
+      isEditing,
+      selectedNote,
+      onConvertNoteToList,
+      onDeleteNote,
+      onEditNoteTitle,
+      onUpdateNote,
+    } = this.props;
+    const { title } = this.state;
+
+    return (
+      <div style={{ display: "flex", borderBottom: "1px solid #2e8486" }}>
+        <TextInput
+          name="title"
+          value={title}
+          style={{
+            padding: "7px 12px",
+            fontWeight: 600,
+            flexGrow: 1,
+            borderRadius: "3px 3px 0 0",
+          }}
+          onFocus={onEditNoteTitle}
+          onBlur={this.handleBlurTitle}
+          onChange={this.handleChangeTitle}
+          onEnter={this.handleEnterTitle}
+          singleLine
+        />
+        {!isEditing && (
+          <NoteMenu
+            selectedNote={selectedNote}
+            onConvertNoteToList={onConvertNoteToList}
+            onDeleteNote={onDeleteNote}
+            onUpdateNote={onUpdateNote}
+          />
+        )}
+      </div>
+    );
+  };
+
+  renderCardContent = () => {
+    const { selectedNote, onEditNoteBody } = this.props;
+    const { body } = this.state;
+
+    switch (selectedNote.type) {
+      case "list":
+        return (
+          <div style={{ margin: "7px 12px 10px" }}>
+            <ListManager list={selectedNote} />
+          </div>
+        );
+
+      case "note":
+        return (
+          <TextInput
+            name="body"
+            value={body}
+            placeholder="Add to this note"
+            refCallback={el => { this.bodyField = el; }}
+            onChange={this.handleChangeBody}
+            onBlur={this.handleBlurBody}
+            onFocus={onEditNoteBody}
+            minRows={2}
+            style={{
+              width: "100%",
+              padding: "7px 12px 9px",
+              borderRadius: "0 0 3px 3px",
+            }}
+          />
+        );
+
+      default:
+        return <noscript />
+    }
+  };
+
   render () {
     const {
       containerStyle,
       selectedNote,
       isEditing,
-      onConvertNoteToList,
-      onDeleteNote,
-      onEditNoteBody,
-      onEditNoteTitle,
-      onUpdateNote,
     } = this.props;
-    const { title, body } = this.state;
 
     return (
       <div style={{
@@ -118,93 +188,35 @@ class Preview extends Component {
         display: "flex",
         flexDirection: "column",
       }}>
-        {selectedNote ? (
-          <div style={{
-            backgroundColor: "#fff",
-            backgroundClip: "padding-box",
-            border: "1px solid rgba(0,0,0,0.1)",
-            overflow: "hidden",
-            borderRadius: 3,
-            display: "flex",
-            flexDirection: "column",
-          }}>
+        <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          {selectedNote ? (
             <div style={{
+              backgroundColor: "#fff",
+              backgroundClip: "padding-box",
+              border: "1px solid rgba(0,0,0,0.1)",
+              overflow: "hidden",
+              borderRadius: 3,
               display: "flex",
               flexDirection: "column",
-              alignItems: "stretch",
             }}>
-              <div style={{
-                flexShrink: 0,
-                display: "flex",
-                borderBottom: "1px solid #2e8486",
-              }}>
-                <TextInput
-                  name="title"
-                  value={title}
-                  style={{
-                    padding: "7px 12px",
-                    fontWeight: 600,
-                    flexGrow: 1,
-                    borderRadius: "3px 3px 0 0",
-                  }}
-                  onFocus={onEditNoteTitle}
-                  onBlur={this.handleBlurTitle}
-                  onChange={this.handleChangeTitle}
-                  onEnter={this.handleEnterTitle}
-                  singleLine
-                />
-                {!isEditing && (
-                  <NoteMenu
-                    selectedNote={selectedNote}
-                    onConvertNoteToList={onConvertNoteToList}
-                    onDeleteNote={onDeleteNote}
-                    onUpdateNote={onUpdateNote}
-                  />
-                )}
+              <div style={{ flexShrink: 0 }}>
+                {this.renderCardHeader()}
               </div>
-              <div style={{
-                flexShrink: 1,
-                overflow: "auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-              }}>
-                {selectedNote.type === "list" ? (
-                  <div style={{ margin: "7px 12px 10px" }}>
-                    <ListManager list={selectedNote} />
-                  </div>
-                ) : (
-                  <div>
-                    <TextInput
-                      name="body"
-                      value={body}
-                      placeholder="Add to this note"
-                      refCallback={el => { this.bodyField = el; }}
-                      onChange={this.handleChangeBody}
-                      onBlur={this.handleBlurBody}
-                      onFocus={onEditNoteBody}
-                      minRows={2}
-                      style={{
-                        width: "100%",
-                        padding: "7px 12px 9px",
-                        borderRadius: "0 0 3px 3px",
-                      }}
-                    />
-                  </div>
-                )}
+              <div style={{ flexShrink: 1, overflow: "auto" }}>
+                {this.renderCardContent()}
               </div>
             </div>
-          </div>
-        ) : (
-          <div style={{
-            lineHeight: "40px",
-            color: "#fff",
-            opacity: 0.3,
-            textAlign: "center",
-          }}>
-            Nothing selected
-          </div>
-        )}
+          ) : (
+            <div style={{
+              lineHeight: "40px",
+              color: "#fff",
+              opacity: 0.3,
+              textAlign: "center",
+            }}>
+              Nothing selected
+            </div>
+          )}
+        </div>
         {isEditing && (
           <div style={{
             flexShrink: 0,
