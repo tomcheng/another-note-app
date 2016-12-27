@@ -10,9 +10,12 @@ const DRAG_HANDLE_HEIGHT = 10;
 
 class App extends Component {
   static propTypes = {
+    isEditing: PropTypes.bool.isRequired,
     listHeight: PropTypes.number.isRequired,
     onSetListHeight: PropTypes.func.isRequired,
-    isEditing: PropTypes.bool.isRequired,
+    selectedNote: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+    }),
   };
 
   constructor (props) {
@@ -34,7 +37,7 @@ class App extends Component {
   };
 
   render () {
-    const { listHeight, isEditing } = this.props;
+    const { listHeight, isEditing, selectedNote } = this.props;
     const { appHeight } = this.state;
 
     return (
@@ -55,12 +58,13 @@ class App extends Component {
           display: "flex",
           flexDirection: "column",
         }}>
-          <SectionDivider
-            height={DRAG_HANDLE_HEIGHT}
-            listHeight={listHeight}
-            isEditing={isEditing}
-            onDrag={this.handleDrag}
-          />
+          {!isEditing && (
+            <SectionDivider
+              height={DRAG_HANDLE_HEIGHT}
+              listHeight={listHeight}
+              onDrag={this.handleDrag}
+            />
+          )}
           <Notes containerStyle={{ flexShrink: 0 }} />
           <div style={{
             display: "flex",
@@ -68,7 +72,18 @@ class App extends Component {
             flexGrow: 1,
             marginTop: isEditing ? null : 10,
           }}>
-            <Preview containerStyle={{ flexGrow: 1 }} />
+            {selectedNote ? (
+              <Preview selectedNote={selectedNote} />
+            ) : (
+              <div style={{
+                lineHeight: "42px",
+                color: "#fff",
+                opacity: 0.3,
+                textAlign: "center",
+              }}>
+                Nothing selected
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -79,6 +94,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   listHeight: selectors.getListHeight(state),
   isEditing: selectors.getIsEditing(state),
+  selectedNote: selectors.getSelectedNote(state),
 });
 
 export default connect(mapStateToProps, {

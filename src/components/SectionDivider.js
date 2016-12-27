@@ -2,14 +2,13 @@ import React, { PropTypes } from "react";
 import Draggable from "react-draggable";
 import "./SectionDivider.css";
 
-const SectionDivider = ({ listHeight, isEditing, onDrag, height }) => (
+const SectionDivider = ({ listHeight, onDrag, height }) => (
   <Draggable
     axis="y"
     onDrag={onDrag}
     defaultPosition={{ x: 0, y: listHeight }}
   >
     <div style={{
-      display: isEditing ? "none" : null,
       height: 40,
       top: -14,
       left: 0,
@@ -33,7 +32,6 @@ const SectionDivider = ({ listHeight, isEditing, onDrag, height }) => (
 
 SectionDivider.propTypes = {
   height: PropTypes.number.isRequired,
-  isEditing: PropTypes.bool.isRequired,
   listHeight: PropTypes.number.isRequired,
   onDrag: PropTypes.func.isRequired,
 };

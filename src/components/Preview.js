@@ -8,9 +8,13 @@ import ListManager from "./ListManager";
 
 class Preview extends Component {
   static propTypes = {
-    containerStyle: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
+    selectedNote: PropTypes.shape({
+      body: PropTypes.string,
+      title: PropTypes.string,
+      type: PropTypes.oneOf(["list", "note"]).isRequired,
+    }).isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
@@ -18,11 +22,6 @@ class Preview extends Component {
     onEditNoteTitle: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
-    selectedNote: PropTypes.shape({
-      body: PropTypes.string,
-      title: PropTypes.string,
-      type: PropTypes.oneOf(["list", "note"]).isRequired,
-    }),
   };
 
   constructor (props) {
@@ -31,8 +30,8 @@ class Preview extends Component {
     const { selectedNote } = props;
 
     this.state = {
-      body: selectedNote ? selectedNote.body : null,
-      title: selectedNote ? selectedNote.title : null,
+      body: selectedNote.body,
+      title: selectedNote.title,
     };
   }
 
@@ -46,8 +45,8 @@ class Preview extends Component {
 
     if (this.props.selectedNote !== nextProps.selectedNote) {
       this.setState({
-        body: nextProps.selectedNote ? nextProps.selectedNote.body : null,
-        title: nextProps.selectedNote ? nextProps.selectedNote.title : null,
+        body: nextProps.selectedNote.body,
+        title: nextProps.selectedNote.title,
       });
     }
   }
@@ -174,49 +173,30 @@ class Preview extends Component {
     }
   };
 
-  renderEmptyState = () => {
-    return (
-      <div style={{
-        lineHeight: "42px",
-        color: "#fff",
-        opacity: 0.3,
-        textAlign: "center",
-      }}>
-        Nothing selected
-      </div>
-    );
-  };
-
-  renderEditingFooter = () => {
-    return (
-      <div style={{
-        flexShrink: 0,
-        textAlign: "right",
-        padding: 6,
-        backgroundColor: "rgba(0,0,0,0.4)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",
-        borderTop: "1px solid rgba(0,0,0,0.15)",
-      }}>
-        <Button
-          buttonStyle="ghost"
-          onClick={this.handleClickDone}
-        >
-          Done
-        </Button>
-      </div>
-    );
-  };
+  renderEditingFooter = () => (
+    <div style={{
+      flexShrink: 0,
+      textAlign: "right",
+      padding: 6,
+      backgroundColor: "rgba(0,0,0,0.4)",
+      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",
+      borderTop: "1px solid rgba(0,0,0,0.15)",
+    }}>
+      <Button
+        buttonStyle="ghost"
+        onClick={this.handleClickDone}
+      >
+        Done
+      </Button>
+    </div>
+  );
 
   render () {
-    const {
-      containerStyle,
-      selectedNote,
-      isEditing,
-    } = this.props;
+    const { isEditing } = this.props;
 
     return (
       <div style={{
-        ...containerStyle,
+        flexGrow: 1,
         display: "flex",
         flexDirection: "column",
       }}>
@@ -226,24 +206,22 @@ class Preview extends Component {
           flexDirection: "column",
           padding: "6px 5px",
         }}>
-          {selectedNote ? (
-            <div style={{
-              backgroundColor: "#fff",
-              backgroundClip: "padding-box",
-              border: "1px solid rgba(0,0,0,0.1)",
-              overflow: "hidden",
-              borderRadius: 3,
-              display: "flex",
-              flexDirection: "column",
-            }}>
-              <div style={{ flexShrink: 0 }}>
-                {this.renderCardHeader()}
-              </div>
-              <div style={{ flexShrink: 1, overflow: "auto" }}>
-                {this.renderCardContent()}
-              </div>
+          <div style={{
+            backgroundColor: "#fff",
+            backgroundClip: "padding-box",
+            border: "1px solid rgba(0,0,0,0.1)",
+            overflow: "hidden",
+            borderRadius: 3,
+            display: "flex",
+            flexDirection: "column",
+          }}>
+            <div style={{ flexShrink: 0 }}>
+              {this.renderCardHeader()}
             </div>
-          ) : this.renderEmptyState()}
+            <div style={{ flexShrink: 1, overflow: "auto" }}>
+              {this.renderCardContent()}
+            </div>
+          </div>
         </div>
         {isEditing && (
           <div style={{ flexShrink: 0 }}>
@@ -256,7 +234,6 @@ class Preview extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedNote: selectors.getSelectedNote(state),
   isEditing: selectors.getIsEditing(state),
   isEditingNoteBody: selectors.getIsEditingNoteBody(state),
 });
