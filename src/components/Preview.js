@@ -120,80 +120,74 @@ class Preview extends Component {
       }}>
         {selectedNote ? (
           <div style={{
-            flexGrow: 1,
+            backgroundColor: "#fff",
+            backgroundClip: "padding-box",
+            border: "1px solid rgba(0,0,0,0.1)",
+            overflow: "hidden",
+            borderRadius: 3,
             display: "flex",
             flexDirection: "column",
           }}>
             <div style={{
-              backgroundColor: "#fff",
-              backgroundClip: "padding-box",
-              border: "1px solid rgba(0,0,0,0.1)",
-              overflow: "hidden",
-              borderRadius: 3,
+              marginTop: 5,
               display: "flex",
               flexDirection: "column",
+              alignItems: "stretch",
             }}>
               <div style={{
-                marginTop: 5,
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+              }}>
+                <TextInput
+                  name="title"
+                  value={title}
+                  style={{
+                    margin: "0 7px",
+                    fontWeight: 600,
+                    flexGrow: 1,
+                  }}
+                  onFocus={onEditNoteTitle}
+                  onBlur={this.handleBlurTitle}
+                  onChange={this.handleChangeTitle}
+                  onEnter={this.handleEnterTitle}
+                  singleLine
+                />
+                {!isEditing && (
+                  <NoteMenu
+                    selectedNote={selectedNote}
+                    onConvertNoteToList={onConvertNoteToList}
+                    onDeleteNote={onDeleteNote}
+                    onUpdateNote={onUpdateNote}
+                  />
+                )}
+              </div>
+              <div style={{
+                flexShrink: 1,
+                overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "stretch",
               }}>
-                <div style={{
-                  flexShrink: 0,
-                  display: "flex",
-                  alignItems: "center",
-                }}>
-                  <TextInput
-                    name="title"
-                    value={title}
-                    style={{
-                      margin: "0 7px",
-                      fontWeight: 600,
-                      flexGrow: 1,
-                    }}
-                    onFocus={onEditNoteTitle}
-                    onBlur={this.handleBlurTitle}
-                    onChange={this.handleChangeTitle}
-                    onEnter={this.handleEnterTitle}
-                    singleLine
-                  />
-                  {!isEditing && (
-                    <NoteMenu
-                      selectedNote={selectedNote}
-                      onConvertNoteToList={onConvertNoteToList}
-                      onDeleteNote={onDeleteNote}
-                      onUpdateNote={onUpdateNote}
-                    />
+                {selectedNote.type === "list" ? (
+                    <div style={{ margin: "0 12px 12px" }}>
+                      <ListManager list={selectedNote} />
+                    </div>
+                  ) : (
+                    <div style={{ margin: "0 7px 12px" }}>
+                      <TextInput
+                        name="body"
+                        value={body}
+                        placeholder="Add to this note"
+                        refCallback={el => { this.bodyField = el; }}
+                        onChange={this.handleChangeBody}
+                        onBlur={this.handleBlurBody}
+                        onFocus={onEditNoteBody}
+                        minRows={2}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
                   )}
-                </div>
-                <div style={{
-                  flexShrink: 1,
-                  overflow: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                }}>
-                  {selectedNote.type === "list" ? (
-                      <div style={{ margin: "0 12px 12px" }}>
-                        <ListManager list={selectedNote} />
-                      </div>
-                    ) : (
-                      <div style={{ margin: "0 7px 12px" }}>
-                        <TextInput
-                          name="body"
-                          value={body}
-                          placeholder="Add to this note"
-                          refCallback={el => { this.bodyField = el; }}
-                          onChange={this.handleChangeBody}
-                          onBlur={this.handleBlurBody}
-                          onFocus={onEditNoteBody}
-                          minRows={3}
-                          style={{ width: "100%" }}
-                        />
-                      </div>
-                    )}
-                </div>
               </div>
             </div>
           </div>
