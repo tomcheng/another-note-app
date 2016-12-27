@@ -19,8 +19,8 @@ const Button = ({ buttonStyle, onClick, children }) => {
     case "ghost":
       styles = {
         backgroundColor: "transparent",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.8)",
+        color: "rgba(255,255,255,0.8)",
+        border: "1px solid rgba(255,255,255,0.7)",
       };
       break;
     default:

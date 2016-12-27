@@ -174,6 +174,39 @@ class Preview extends Component {
     }
   };
 
+  renderEmptyState = () => {
+    return (
+      <div style={{
+        lineHeight: "42px",
+        color: "#fff",
+        opacity: 0.3,
+        textAlign: "center",
+      }}>
+        Nothing selected
+      </div>
+    );
+  };
+
+  renderEditingFooter = () => {
+    return (
+      <div style={{
+        flexShrink: 0,
+        textAlign: "right",
+        padding: 6,
+        backgroundColor: "rgba(0,0,0,0.4)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",
+        borderTop: "1px solid rgba(0,0,0,0.15)",
+      }}>
+        <Button
+          buttonStyle="ghost"
+          onClick={this.handleClickDone}
+        >
+          Done
+        </Button>
+      </div>
+    );
+  };
+
   render () {
     const {
       containerStyle,
@@ -184,11 +217,15 @@ class Preview extends Component {
     return (
       <div style={{
         ...containerStyle,
-        padding: "6px 5px",
         display: "flex",
         flexDirection: "column",
       }}>
-        <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <div style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          padding: "6px 5px",
+        }}>
           {selectedNote ? (
             <div style={{
               backgroundColor: "#fff",
@@ -206,29 +243,11 @@ class Preview extends Component {
                 {this.renderCardContent()}
               </div>
             </div>
-          ) : (
-            <div style={{
-              lineHeight: "40px",
-              color: "#fff",
-              opacity: 0.3,
-              textAlign: "center",
-            }}>
-              Nothing selected
-            </div>
-          )}
+          ) : this.renderEmptyState()}
         </div>
         {isEditing && (
-          <div style={{
-            flexShrink: 0,
-            textAlign: "right",
-            padding: "5px 1px 0",
-          }}>
-            <Button
-              buttonStyle="ghost"
-              onClick={this.handleClickDone}
-            >
-              Done
-            </Button>
+          <div style={{ flexShrink: 0 }}>
+            {this.renderEditingFooter()}
           </div>
         )}
       </div>

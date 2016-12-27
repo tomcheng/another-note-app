@@ -68,7 +68,7 @@ class App extends Component {
             flexGrow: 1,
             marginTop: isEditing ? null : 10,
           }}>
-            <Preview />
+            <Preview containerStyle={{ flexGrow: 1 }} />
           </div>
         </div>
       </div>
