@@ -61,7 +61,7 @@ class Note extends Component {
         onClick={this.handleClick}
         style={{
           display: isVisible ? "flex" : "none",
-          backgroundColor: isSelected ? "rgba(255,255,255,0.85)" : "#fff",
+          backgroundColor: isSelected ? "#d5e6e7" : "#fff",
           backgroundClip: "padding-box",
           padding: "0 12px",
           border: "1px solid rgba(0,0,0,0.1)",

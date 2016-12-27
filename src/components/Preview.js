@@ -129,7 +129,6 @@ class Preview extends Component {
             flexDirection: "column",
           }}>
             <div style={{
-              marginTop: 5,
               display: "flex",
               flexDirection: "column",
               alignItems: "stretch",
@@ -137,15 +136,16 @@ class Preview extends Component {
               <div style={{
                 flexShrink: 0,
                 display: "flex",
-                alignItems: "center",
+                borderBottom: "1px solid #2e8486",
               }}>
                 <TextInput
                   name="title"
                   value={title}
                   style={{
-                    margin: "0 7px",
+                    padding: "7px 12px",
                     fontWeight: 600,
                     flexGrow: 1,
+                    borderRadius: "3px 3px 0 0",
                   }}
                   onFocus={onEditNoteTitle}
                   onBlur={this.handleBlurTitle}
@@ -170,11 +170,11 @@ class Preview extends Component {
                 alignItems: "stretch",
               }}>
                 {selectedNote.type === "list" ? (
-                    <div style={{ margin: "0 12px 12px" }}>
+                    <div style={{ margin: "7px 12px 10px" }}>
                       <ListManager list={selectedNote} />
                     </div>
                   ) : (
-                    <div style={{ margin: "0 7px 12px" }}>
+                    <div>
                       <TextInput
                         name="body"
                         value={body}
@@ -184,7 +184,11 @@ class Preview extends Component {
                         onBlur={this.handleBlurBody}
                         onFocus={onEditNoteBody}
                         minRows={2}
-                        style={{ width: "100%" }}
+                        style={{
+                          width: "100%",
+                          padding: "7px 12px 9px",
+                          borderRadius: "0 0 3px 3px",
+                        }}
                       />
                     </div>
                   )}
