@@ -12,8 +12,7 @@ class Preview extends Component {
     isEditing: PropTypes.bool.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
     onAddNote: PropTypes.func.isRequired,
-    onCancelEditNoteBody: PropTypes.func.isRequired,
-    onCancelEditNoteTitle: PropTypes.func.isRequired,
+    onCancelEditing: PropTypes.func.isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
@@ -62,7 +61,7 @@ class Preview extends Component {
   };
 
   handleBlurTitle = () => {
-    const { onUpdateNote, selectedNote, onCancelEditNoteTitle } = this.props;
+    const { onUpdateNote, selectedNote } = this.props;
     const { title } = this.state;
 
     if (title !== selectedNote.title) {
@@ -71,12 +70,10 @@ class Preview extends Component {
         updates: { title },
       });
     }
-
-    onCancelEditNoteTitle();
   };
 
   handleBlurBody = () => {
-    const { onUpdateNote, selectedNote, onCancelEditNoteBody } = this.props;
+    const { onUpdateNote, selectedNote } = this.props;
     const { body } = this.state;
 
     if (body !== selectedNote.body) {
@@ -85,8 +82,6 @@ class Preview extends Component {
         updates: { body },
       });
     }
-
-    onCancelEditNoteBody();
   };
 
   handleEnterTitle = () => {
@@ -97,6 +92,10 @@ class Preview extends Component {
     } else {
       onSetAddListItem();
     }
+  };
+
+  handleClickDone = () => {
+    this.props.onCancelEditing();
   };
 
   render () {
@@ -214,7 +213,10 @@ class Preview extends Component {
             textAlign: "right",
             padding: "5px 1px 0",
           }}>
-            <Button buttonStyle="ghost">
+            <Button
+              buttonStyle="ghost"
+              onClick={this.handleClickDone}
+            >
               Done
             </Button>
           </div>
@@ -232,8 +234,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
-  onCancelEditNoteBody: actions.cancelEditNoteBody,
-  onCancelEditNoteTitle: actions.cancelEditNoteTitle,
+  onCancelEditing: actions.cancelEditing,
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onEditNoteBody: actions.editNoteBody,

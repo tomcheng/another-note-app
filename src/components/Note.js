@@ -3,7 +3,6 @@ import moment from "moment";
 
 class Note extends Component {
   static propTypes = {
-    isFaded: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     note: PropTypes.shape({

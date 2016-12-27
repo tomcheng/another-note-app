@@ -19,7 +19,6 @@ class ListManager extends Component {
       })).isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
-    onCancelAddListItem: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
@@ -61,10 +60,8 @@ class ListManager extends Component {
   };
 
   handleBlurAddItem = () => {
-    const { onCancelAddListItem, onAddListItem, list } = this.props;
+    const { onAddListItem, list } = this.props;
     const { newItemValue } = this.state;
-
-    onCancelAddListItem();
 
     if (newItemValue.trim() === "") { return; }
 
@@ -119,7 +116,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
-  onCancelAddListItem: actions.cancelAddListItem,
   onSetAddListItem: actions.setAddListItem,
   onUpdateListItem: actions.requestUpdateListItem,
 })(ListManager);

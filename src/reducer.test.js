@@ -190,24 +190,10 @@ it("sets the editing body flag", () => {
   expect(selectors.getIsEditingNoteBody(state)).toBe(true);
 });
 
-it("unsets the editing body flag", () => {
-  let state = reducer(undefined, actions.editNoteBody());
-  state = reducer(state, actions.cancelEditNoteBody());
-
-  expect(selectors.getIsEditingNoteBody(state)).toBe(false);
-});
-
 it("sets the editing title flag", () => {
   const state = reducer(undefined, actions.editNoteTitle());
 
   expect(selectors.getIsEditingNoteTitle(state)).toBe(true);
-});
-
-it("unsets the editing title flag", () => {
-  let state = reducer(undefined, actions.editNoteTitle());
-  state = reducer(state, actions.cancelEditNoteTitle());
-
-  expect(selectors.getIsEditingNoteTitle(state)).toBe(false);
 });
 
 it("sets the add list item flag", () => {
@@ -216,11 +202,13 @@ it("sets the add list item flag", () => {
   expect(selectors.getIsAddingListItem(state)).toBe(true);
 });
 
-it("unsets the add list item flag", () => {
-  let state = reducer(undefined, actions.setAddListItem());
-  state = reducer(state, actions.cancelAddListItem());
+it("cancels editing flags", () => {
+  let state = reducer(undefined, actions.editNoteTitle());
+  state = reducer(state, actions.editNoteBody());
+  state = reducer(state, actions.setAddListItem());
+  state = reducer(state, actions.cancelEditing());
 
-  expect(selectors.getIsAddingListItem(state)).toBe(false);
+  expect(selectors.getIsEditing(state)).toBe(false);
 });
 
 it("selects the first visible note as next if none is selected", () => {

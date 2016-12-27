@@ -24,9 +24,7 @@ actions.selectPreviousNote       = ()      => ({ type: "SELECT_PREVIOUS_NOTE" })
 actions.editNoteBody             = ()      => ({ type: "EDIT_NOTE_BODY" });
 actions.editNoteTitle            = ()      => ({ type: "EDIT_NOTE_TITLE" });
 actions.setAddListItem           = ()      => ({ type: "SET_ADD_LIST_ITEM" });
-actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
-actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
-actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" });
+actions.cancelEditing            = ()      => ({ type: "CANCEL_EDITING" });
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
@@ -137,16 +135,17 @@ const reducer = (state = initialState, action) => {
     }
     case "EDIT_NOTE_BODY":
       return { ...state, isEditingNoteBody: true };
-    case "CANCEL_EDIT_NOTE_BODY":
-      return { ...state, isEditingNoteBody: false };
     case "EDIT_NOTE_TITLE":
       return { ...state, isEditingNoteTitle: true };
-    case "CANCEL_EDIT_NOTE_TITLE":
-      return { ...state, isEditingNoteTitle: false };
     case "SET_ADD_LIST_ITEM":
       return { ...state, isAddingListItem: true };
-    case "CANCEL_ADD_LIST_ITEM":
-      return { ...state, isAddingListItem: false };
+    case "CANCEL_EDITING":
+      return {
+        ...state,
+        isEditingNoteBody: false,
+        isEditingNoteTitle: false,
+        isAddingListItem: false,
+      };
     case "SET_LIST_HEIGHT":
       return { ...state, listHeight: payload.height };
     default:
