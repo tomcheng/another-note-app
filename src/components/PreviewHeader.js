@@ -7,7 +7,7 @@ import NoteMenu from "./NoteMenu";
 const PreviewHeader = ({
   title,
   isEditing,
-  onEditNoteTitle,
+  onSetEditing,
   onBlurTitle,
   onChangeTitle,
   onEnter,
@@ -22,7 +22,7 @@ const PreviewHeader = ({
         flexGrow: 1,
         borderRadius: "3px 3px 0 0",
       }}
-      onFocus={onEditNoteTitle}
+      onFocus={onSetEditing}
       onBlur={onBlurTitle}
       onChange={onChangeTitle}
       onEnter={onEnter}
@@ -39,7 +39,7 @@ PreviewHeader.propTypes = {
   title: PropTypes.string.isRequired,
   onBlurTitle: PropTypes.func.isRequired,
   onChangeTitle: PropTypes.func.isRequired,
-  onEditNoteTitle: PropTypes.func.isRequired,
+  onSetEditing: PropTypes.func.isRequired,
   onEnter: PropTypes.func.isRequired,
 };
 
@@ -48,5 +48,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onEditNoteTitle: actions.editNoteTitle,
+  onSetEditing: actions.setEditing,
 })(PreviewHeader);

@@ -16,7 +16,8 @@ class NotePreview extends Component {
     }).isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
-    onEditNoteBody: PropTypes.func.isRequired,
+    onCancelEditNoteBody: PropTypes.func.isRequired,
+    onSetEditNoteBody: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -68,8 +69,10 @@ class NotePreview extends Component {
   };
 
   handleBlurBody = () => {
-    const { onUpdateNote, selectedNote } = this.props;
+    const { onUpdateNote, selectedNote, onCancelEditNoteBody } = this.props;
     const { body } = this.state;
+
+    onCancelEditNoteBody();
 
     if (body !== selectedNote.body) {
       onUpdateNote({
@@ -80,39 +83,16 @@ class NotePreview extends Component {
   };
 
   handleEnterTitle = () => {
-    this.props.onEditNoteBody();
+    this.props.onSetEditNoteBody();
   };
 
   handleClickDone = () => {
     this.props.onCancelEditing();
   };
 
-  renderCardContent = () => {
-    const { onEditNoteBody } = this.props;
-    const { body } = this.state;
-
-    return (
-      <TextInput
-        name="body"
-        value={body}
-        placeholder="Add to this note"
-        refCallback={el => { this.bodyField = el; }}
-        onChange={this.handleChangeBody}
-        onBlur={this.handleBlurBody}
-        onFocus={onEditNoteBody}
-        minRows={2}
-        style={{
-          width: "100%",
-          padding: "10px 12px 12px",
-          borderRadius: "0 0 3px 3px",
-        }}
-      />
-    );
-  };
-
   render () {
-    const { isEditing } = this.props;
-    const { title } = this.state;
+    const { isEditing, onSetEditNoteBody } = this.props;
+    const { title, body } = this.state;
 
     return (
       <div style={{
@@ -144,7 +124,21 @@ class NotePreview extends Component {
               />
             </div>
             <div style={{ flexShrink: 1, overflow: "auto" }}>
-              {this.renderCardContent()}
+              <TextInput
+                name="body"
+                value={body}
+                placeholder="Add to this note"
+                refCallback={el => { this.bodyField = el; }}
+                onChange={this.handleChangeBody}
+                onBlur={this.handleBlurBody}
+                onFocus={onSetEditNoteBody}
+                minRows={2}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px 12px",
+                  borderRadius: "0 0 3px 3px",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -173,6 +167,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onCancelEditing: actions.cancelEditing,
-  onEditNoteBody: actions.editNoteBody,
+  onCancelEditNoteBody: actions.cancelEditNoteBody,
+  onSetEditNoteBody: actions.setEditNoteBody,
   onUpdateNote: actions.requestUpdateNote,
 })(NotePreview);

@@ -184,31 +184,45 @@ it("deselects a note", () => {
   expect(selectors.getSelectedNote(state)).toBeFalsy();
 });
 
-it("sets the editing body flag", () => {
-  const state = reducer(undefined, actions.editNoteBody());
+it("sets the editing flag", () => {
+  const state = reducer(undefined, actions.setEditing());
 
-  expect(selectors.getIsEditingNoteBody(state)).toBe(true);
+  expect(selectors.getIsEditing(state)).toBe(true);
 });
 
-it("sets the editing title flag", () => {
-  const state = reducer(undefined, actions.editNoteTitle());
+it("cancels the editing flag", () => {
+  let state = reducer(undefined, actions.setEditing());
+  state = reducer(state, actions.cancelEditing());
 
-  expect(selectors.getIsEditingNoteTitle(state)).toBe(true);
+  expect(selectors.getIsEditing(state)).toBe(false);
+});
+
+it("sets the editing body flag", () => {
+  const state = reducer(undefined, actions.setEditNoteBody());
+
+  expect(selectors.getIsEditingNoteBody(state)).toBe(true);
+  expect(selectors.getIsEditing(state)).toBe(true);
+});
+
+it("cancels the editing body flag", () => {
+  let state = reducer(undefined, actions.setEditNoteBody());
+  state = reducer(state, actions.cancelEditNoteBody());
+
+  expect(selectors.getIsEditingNoteBody(state)).toBe(false);
 });
 
 it("sets the add list item flag", () => {
   const state = reducer(undefined, actions.setAddListItem());
 
   expect(selectors.getIsAddingListItem(state)).toBe(true);
+  expect(selectors.getIsEditing(state)).toBe(true);
 });
 
-it("cancels editing flags", () => {
-  let state = reducer(undefined, actions.editNoteTitle());
-  state = reducer(state, actions.editNoteBody());
-  state = reducer(state, actions.setAddListItem());
-  state = reducer(state, actions.cancelEditing());
+it("cancels the add list item flag", () => {
+  let state = reducer(undefined, actions.setAddListItem());
+  state = reducer(state, actions.cancelAddListItem());
 
-  expect(selectors.getIsEditing(state)).toBe(false);
+  expect(selectors.getIsAddingListItem(state)).toBe(false);
 });
 
 it("selects the first visible note as next if none is selected", () => {

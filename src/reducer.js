@@ -21,18 +21,22 @@ actions.selectNote               = payload => ({ type: "SELECT_NOTE", payload })
 actions.deselectNote             = ()      => ({ type: "DESELECT_NOTE" });
 actions.selectNextNote           = ()      => ({ type: "SELECT_NEXT_NOTE" });
 actions.selectPreviousNote       = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
-actions.editNoteBody             = ()      => ({ type: "EDIT_NOTE_BODY" });
-actions.editNoteTitle            = ()      => ({ type: "EDIT_NOTE_TITLE" });
-actions.setAddListItem           = ()      => ({ type: "SET_ADD_LIST_ITEM" });
+actions.setEditing               = ()      => ({ type: "SET_EDITING" });
 actions.cancelEditing            = ()      => ({ type: "CANCEL_EDITING" });
+actions.setEditNoteBody          = ()      => ({ type: "SET_EDIT_NOTE_BODY" });
+actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
+actions.setEditNoteTitle         = ()      => ({ type: "SET_EDIT_NOTE_TITLE" });
+actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
+actions.setAddListItem           = ()      => ({ type: "SET_ADD_LIST_ITEM" });
+actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" });
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
 actions.setListHeight            = payload => ({ type: "SET_LIST_HEIGHT", payload });
 
 const initialState = {
+  isEditing: false,
   isEditingNoteBody: false,
-  isEditingNoteTitle: false,
   isAddingListItem: false,
   isNavigating: false,
   isSearching: false,
@@ -133,19 +137,18 @@ const reducer = (state = initialState, action) => {
 
       return { ...state, selectedNoteId, isNavigating: true };
     }
-    case "EDIT_NOTE_BODY":
-      return { ...state, isEditingNoteBody: true };
-    case "EDIT_NOTE_TITLE":
-      return { ...state, isEditingNoteTitle: true };
-    case "SET_ADD_LIST_ITEM":
-      return { ...state, isAddingListItem: true };
+    case "SET_EDITING":
+      return { ...state, isEditing: true };
     case "CANCEL_EDITING":
-      return {
-        ...state,
-        isEditingNoteBody: false,
-        isEditingNoteTitle: false,
-        isAddingListItem: false,
-      };
+      return { ...state, isEditing: false };
+    case "SET_EDIT_NOTE_BODY":
+      return { ...state, isEditing: true, isEditingNoteBody: true };
+    case "CANCEL_EDIT_NOTE_BODY":
+      return { ...state, isEditingNoteBody: false };
+    case "SET_ADD_LIST_ITEM":
+      return { ...state, isEditing: true, isAddingListItem: true };
+    case "CANCEL_ADD_LIST_ITEM":
+      return { ...state, isAddingListItem: false };
     case "SET_LIST_HEIGHT":
       return { ...state, listHeight: payload.height };
     default:
@@ -168,11 +171,8 @@ selectors.getNotesById          = state => state.notes;
 selectors.getNoteIds            = state => state.noteIds;
 selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];
 selectors.getIsEditingNoteBody  = state => state.isEditingNoteBody;
-selectors.getIsEditingNoteTitle = state => state.isEditingNoteTitle;
 selectors.getIsAddingListItem   = state => state.isAddingListItem;
-selectors.getIsEditing          = state => state.isEditingNoteBody ||
-                                           state.isEditingNoteTitle ||
-                                           state.isAddingListItem;
+selectors.getIsEditing          = state => state.isEditing;
 selectors.getIsNavigating       = state => state.isNavigating;
 selectors.getIsSearching        = state => state.isSearching;
 selectors.getNotesLoaded        = state => state.notesLoaded;

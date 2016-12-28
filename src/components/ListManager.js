@@ -19,6 +19,8 @@ class ListManager extends Component {
       })).isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
+    onCancelAddListItem: PropTypes.func.isRequired,
+    onCancelEditing: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
@@ -46,11 +48,12 @@ class ListManager extends Component {
   };
 
   handleEnterAddItem = () => {
-    const { onAddListItem, list } = this.props;
+    const { onAddListItem, list, onCancelEditing } = this.props;
     const { newItemValue } = this.state;
 
     if (newItemValue.trim() === "") {
       this.addItemField.blur();
+      onCancelEditing();
       return;
     }
 
@@ -60,8 +63,10 @@ class ListManager extends Component {
   };
 
   handleBlurAddItem = () => {
-    const { onAddListItem, list } = this.props;
+    const { onAddListItem, onCancelAddListItem, list } = this.props;
     const { newItemValue } = this.state;
+
+    onCancelAddListItem();
 
     if (newItemValue.trim() === "") { return; }
 
@@ -116,6 +121,8 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
+  onCancelAddListItem: actions.cancelAddListItem,
+  onCancelEditing: actions.cancelEditing,
   onSetAddListItem: actions.setAddListItem,
   onUpdateListItem: actions.requestUpdateListItem,
 })(ListManager);
