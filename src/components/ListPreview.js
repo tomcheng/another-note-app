@@ -21,10 +21,8 @@ class ListPreview extends Component {
   constructor (props) {
     super(props);
 
-    const { selectedNote } = props;
-
     this.state = {
-      title: selectedNote.title,
+      title: this.props.selectedNote.title,
     };
   }
 
@@ -60,18 +58,8 @@ class ListPreview extends Component {
     this.props.onCancelEditing();
   };
 
-  renderCardContent = () => {
-    const { selectedNote } = this.props;
-
-    return (
-      <div style={{ margin: "7px 12px 10px" }}>
-        <ListManager list={selectedNote} />
-      </div>
-    );
-  };
-
   render () {
-    const { isEditing } = this.props;
+    const { isEditing, selectedNote } = this.props;
     const { title } = this.state;
 
     return (
@@ -103,8 +91,12 @@ class ListPreview extends Component {
                 onEnter={this.handleEnterTitle}
               />
             </div>
-            <div style={{ flexShrink: 1, overflow: "auto" }}>
-              {this.renderCardContent()}
+            <div style={{
+              flexShrink: 1,
+              overflow: "auto",
+              padding: "7px 12px 10px",
+            }}>
+              <ListManager list={selectedNote} />
             </div>
           </div>
         </div>
