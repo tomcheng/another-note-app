@@ -10,6 +10,9 @@ actions.setIsSearching           = ()      => ({ type: "SET_IS_SEARCHING" });
 actions.clearIsSearching         = ()      => ({ type: "CLEAR_IS_SEARCHING" });
 actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestUISettings        = ()      => ({ type: "REQUEST_UI_SETTINGS" });
+actions.loadUISettings           = payload => ({ type: "LOAD_UI_SETTINGS", payload });
+actions.requestUpdateUISettings  = payload => ({ type: "REQUEST_UPDATE_UI_SETTINGS", payload });
 actions.requestAddList           = payload => ({ type: "REQUEST_ADD_LIST", payload });
 actions.requestAddNote           = payload => ({ type: "REQUEST_ADD_NOTE", payload });
 actions.addNote                  = payload => ({ type: "ADD_NOTE", payload });
@@ -32,7 +35,6 @@ actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" })
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
-actions.setListHeight            = payload => ({ type: "SET_LIST_HEIGHT", payload });
 
 const initialState = {
   isEditing: false,
@@ -46,6 +48,7 @@ const initialState = {
   notesLoaded: false,
   search: "",
   selectedNoteId: null,
+  UISettingsLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -74,6 +77,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, isSearching: true };
     case "CLEAR_IS_SEARCHING":
       return { ...state, isSearching: false };
+    case "LOAD_UI_SETTINGS":
+      return { ...state, listHeight: payload.listHeight, UISettingsLoaded: true };
     case "LOAD_NOTES":
       return {
         ...state,
@@ -149,8 +154,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, isEditing: true, isAddingListItem: true };
     case "CANCEL_ADD_LIST_ITEM":
       return { ...state, isAddingListItem: false };
-    case "SET_LIST_HEIGHT":
-      return { ...state, listHeight: payload.height };
     default:
       return state;
   }
@@ -167,6 +170,7 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
+selectors.getUISettingsLoaded   = state => state.UISettingsLoaded;
 selectors.getNotesById          = state => state.notes;
 selectors.getNoteIds            = state => state.noteIds;
 selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];

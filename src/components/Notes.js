@@ -15,16 +15,11 @@ class Notes extends Component {
     search: PropTypes.string.isRequired,
     visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
     onDeselectNote: PropTypes.func.isRequired,
-    onRequestNotes: PropTypes.func.isRequired,
     onSelectNote: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       id: PropTypes.number,
     }),
   };
-
-  componentDidMount () {
-    this.props.onRequestNotes();
-  }
 
   stopPropagation = evt => { evt.stopPropagation(); };
 
@@ -93,7 +88,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onRequestNotes: actions.requestNotes,
   onSelectNote: actions.selectNote,
   onDeselectNote: actions.deselectNote,
 })(Notes);

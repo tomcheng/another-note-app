@@ -6,6 +6,20 @@ import * as api from "./repo";
 const sagas = [];
 
 sagas.push(function* () {
+  yield* takeEvery("REQUEST_UI_SETTINGS", function* () {
+    const response = yield call(api.getUISettings);
+    yield put(actions.loadUISettings(response));
+  });
+});
+
+sagas.push(function* () {
+  yield* takeEvery("REQUEST_UPDATE_UI_SETTINGS", function* ({ payload }) {
+    const response = yield call(api.updateUISettings, payload);
+    yield put(actions.loadUISettings(response));
+  });
+});
+
+sagas.push(function* () {
   yield* takeEvery("REQUEST_NOTES", function* () {
     const response = yield call(api.getNotes);
     yield put(actions.loadNotes(response));

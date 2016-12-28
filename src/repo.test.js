@@ -21,6 +21,17 @@ beforeEach(() => {
   localStorage.clear();
 });
 
+it("return default UI settings if none are saved", () => {
+  expect(api.getUISettings()).toEqual({ listHeight: 300 });
+});
+
+it("updates UI settings", () => {
+  const response = api.updateUISettings({ listHeight: 400 });
+
+  expect(api.getUISettings()).toEqual({ listHeight: 400 });
+  expect(response).toEqual({ listHeight: 400 });
+});
+
 it("returns an empty list if no notes are saved", () => {
   expect(api.getNotes()).toEqual({ notes: [] });
 });

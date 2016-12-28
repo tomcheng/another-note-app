@@ -13,7 +13,10 @@ class App extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
     listHeight: PropTypes.number.isRequired,
-    onSetListHeight: PropTypes.func.isRequired,
+    UISettingsLoaded: PropTypes.bool.isRequired,
+    onRequestNotes: PropTypes.func.isRequired,
+    onRequestUISettings: PropTypes.func.isRequired,
+    onUpdateUISettings: PropTypes.func.isRequired,
     selectedNote: PropTypes.shape({
       type: PropTypes.string.isRequired,
     }),
@@ -28,17 +31,20 @@ class App extends Component {
   }
 
   componentDidMount () {
+    this.props.onRequestNotes();
+    this.props.onRequestUISettings();
+
     window.addEventListener("resize", () => {
       this.setState({ appHeight: window.innerHeight });
     })
   };
 
   handleDrag = (e, ui) => {
-    this.props.onSetListHeight({ height: ui.y });
+    this.props.onUpdateUISettings({ listHeight: ui.y });
   };
 
   render () {
-    const { listHeight, isEditing, selectedNote } = this.props;
+    const { listHeight, isEditing, selectedNote, UISettingsLoaded } = this.props;
     const { appHeight } = this.state;
 
     return (
@@ -59,7 +65,7 @@ class App extends Component {
           display: "flex",
           flexDirection: "column",
         }}>
-          {!isEditing && (
+          {(!isEditing && UISettingsLoaded) && (
             <SectionDivider
               height={DRAG_HANDLE_HEIGHT}
               listHeight={listHeight}
@@ -98,8 +104,11 @@ const mapStateToProps = state => ({
   listHeight: selectors.getListHeight(state),
   isEditing: selectors.getIsEditing(state),
   selectedNote: selectors.getSelectedNote(state),
+  UISettingsLoaded: selectors.getUISettingsLoaded(state),
 });
 
 export default connect(mapStateToProps, {
-  onSetListHeight: actions.setListHeight,
+  onUpdateUISettings: actions.requestUpdateUISettings,
+  onRequestNotes: actions.requestNotes,
+  onRequestUISettings: actions.requestUISettings,
 })(App);

@@ -84,6 +84,13 @@ it("clears the isSearching flag", () => {
   expect(selectors.getIsSearching(state)).toBe(false);
 });
 
+it("loads UI settings", () => {
+  const state = reducer(undefined, actions.loadUISettings({ listHeight: 100 }));
+
+  expect(selectors.getListHeight(state)).toBe(100);
+  expect(selectors.getUISettingsLoaded(state)).toBe(true);
+});
+
 it("initializes with a list of empty notes", () => {
   const state = reducer(undefined, {});
 
@@ -285,10 +292,4 @@ it("handles loading lists", () => {
     { id: 1, title: "foo", type: "list", items: [{ value: "bar", checked: false }] }
   ]);
   expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
-});
-
-it("sets the main list height", () => {
-  const state = reducer(undefined, actions.setListHeight({ height: 999 }));
-
-  expect(selectors.getListHeight(state)).toBe(999);
 });

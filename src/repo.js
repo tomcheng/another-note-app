@@ -2,7 +2,7 @@ import findIndex from "lodash/findIndex";
 import max from "lodash/max";
 import moment from "moment"
 
-const saveLocalNotes = notes => { localStorage.setItem("notes", JSON.stringify(notes)); };
+const save = ({ key, payload }) => { localStorage.setItem(key, JSON.stringify(payload)); };
 
 const getLocalNotes = () => {
   const json = localStorage.getItem("notes");
@@ -10,6 +10,25 @@ const getLocalNotes = () => {
   if (!json) { return []; }
 
   return JSON.parse(json);
+};
+
+const getLocalUISettings = () => {
+  const json = localStorage.getItem("ui_settings");
+
+  if (!json) { return { listHeight: 300 }; }
+
+  return JSON.parse(json);
+};
+
+export const getUISettings = () => getLocalUISettings();
+
+export const updateUISettings = settings => {
+  const oldSettings = getLocalUISettings();
+  const newSettings = { ...oldSettings, ...settings };
+
+  save({ key: "ui_settings", payload: newSettings });
+
+  return newSettings;
 };
 
 export const getNotes = () => ({ notes: getLocalNotes() });
@@ -26,7 +45,7 @@ export const addNote = ({ title }) => {
     updatedAt: moment().format(),
   };
 
-  saveLocalNotes([note].concat(notes));
+  save({ key: "notes", payload: [note].concat(notes) });
 
   return { note };
 };
@@ -44,7 +63,7 @@ export const addList = ({ title }) => {
     updatedAt: moment().format(),
   };
 
-  saveLocalNotes([list].concat(notes));
+  save({ key: "notes", payload: [list].concat(notes) });
 
   return { note: list };
 };
@@ -59,7 +78,7 @@ export const updateNote = ({ id, updates }) => {
     updatedAt: moment().format(),
   };
 
-  saveLocalNotes([newNote].concat(notes));
+  save({ key: "notes", payload: [newNote].concat(notes) });
 
   return { note: newNote };
 };
@@ -67,7 +86,7 @@ export const updateNote = ({ id, updates }) => {
 export const deleteNote = ({ id }) => {
   const notes = getLocalNotes();
 
-  saveLocalNotes(notes.filter(note => note.id !== id));
+  save({ key: "notes", payload: notes.filter(note => note.id !== id) });
 };
 
 export const convertToList = ({ id }) => {
@@ -86,7 +105,7 @@ export const convertToList = ({ id }) => {
     updatedAt: moment().format(),
   };
 
-  saveLocalNotes([list].concat(notes));
+  save({ key: "notes", payload: [list].concat(notes) });
 
   return { note: list };
 };
@@ -99,7 +118,7 @@ export const addListItem = ({ listId, value }) => {
   list.items.push({ id: list.items.length + 1, value, checked: false });
   list.updatedAt = moment().format();
 
-  saveLocalNotes([list].concat(notes));
+  save({ key: "notes", payload: [list].concat(notes) });
 
   return { note: list };
 };
@@ -113,7 +132,7 @@ export const updateListItem = ({ listId, itemId, updates }) => {
   list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
   list.updatedAt = moment().format();
 
-  saveLocalNotes([list].concat(notes));
+  save({ key: "notes", payload: [list].concat(notes) });
 
   return { note: list };
 };
