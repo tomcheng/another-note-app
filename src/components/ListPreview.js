@@ -15,7 +15,6 @@ class ListPreview extends Component {
     }).isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
-    onConvertNoteToList: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -68,11 +67,7 @@ class ListPreview extends Component {
   renderCardHeader = () => {
     const {
       isEditing,
-      selectedNote,
-      onConvertNoteToList,
-      onDeleteNote,
       onEditNoteTitle,
-      onUpdateNote,
     } = this.props;
     const { title } = this.state;
 
@@ -94,12 +89,7 @@ class ListPreview extends Component {
           singleLine
         />
         {!isEditing && (
-          <NoteMenu
-            selectedNote={selectedNote}
-            onConvertNoteToList={onConvertNoteToList}
-            onDeleteNote={onDeleteNote}
-            onUpdateNote={onUpdateNote}
-          />
+          <NoteMenu />
         )}
       </div>
     );
@@ -171,8 +161,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onCancelEditing: actions.cancelEditing,
-  onConvertNoteToList: actions.requestConvertNoteToList,
-  onDeleteNote: actions.requestDeleteNote,
   onEditNoteTitle: actions.editNoteTitle,
   onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,
