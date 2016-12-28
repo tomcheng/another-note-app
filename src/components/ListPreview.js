@@ -23,6 +23,7 @@ class ListPreview extends Component {
 
     this.state = {
       title: this.props.selectedNote.title,
+      addItemValue: "",
     };
   }
 
@@ -54,13 +55,21 @@ class ListPreview extends Component {
     this.props.onSetAddListItem();
   };
 
+  handleChangeAddItem = ({ target }) => {
+    this.setState({ addItemValue: target.value });
+  };
+
+  handleClearAddItem = () => {
+    this.setState({ addItemValue: "" })
+  };
+
   handleClickDone = () => {
     this.props.onCancelEditing();
   };
 
   render () {
     const { isEditing, selectedNote } = this.props;
-    const { title } = this.state;
+    const { title, addItemValue } = this.state;
 
     return (
       <div style={{
@@ -96,7 +105,12 @@ class ListPreview extends Component {
               overflow: "auto",
               padding: "7px 12px 10px",
             }}>
-              <ListManager list={selectedNote} />
+              <ListManager
+                list={selectedNote}
+                addItemValue={addItemValue}
+                onChangeAddItem={this.handleChangeAddItem}
+                onClearAddItem={this.handleClearAddItem}
+              />
             </div>
           </div>
         </div>

@@ -18,15 +18,14 @@ class ListManager extends Component {
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
+    addItemValue: PropTypes.string.isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onCancelAddListItem: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
+    onChangeAddItem: PropTypes.func.isRequired,
+    onClearAddItem: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
-  };
-
-  state = {
-    newItemValue: "",
   };
 
   componentDidMount () {
@@ -43,41 +42,38 @@ class ListManager extends Component {
     }
   }
 
-  handleChangeAddItem = ({ target }) => {
-    this.setState({ newItemValue: target.value });
-  };
-
   handleEnterAddItem = () => {
-    const { onAddListItem, list, onCancelEditing } = this.props;
-    const { newItemValue } = this.state;
+    const { onAddListItem, list, onCancelEditing, addItemValue, onClearAddItem } = this.props;
 
-    if (newItemValue.trim() === "") {
+    if (addItemValue.trim() === "") {
       this.addItemField.blur();
       onCancelEditing();
       return;
     }
 
-    this.setState({ newItemValue: "" });
-
-    onAddListItem({ listId: list.id, value: newItemValue });
+    onAddListItem({ listId: list.id, value: addItemValue });
+    onClearAddItem();
   };
 
   handleBlurAddItem = () => {
-    const { onAddListItem, onCancelAddListItem, list } = this.props;
-    const { newItemValue } = this.state;
+    const { onAddListItem, onCancelAddListItem, list, addItemValue, onClearAddItem } = this.props;
 
     onCancelAddListItem();
 
-    if (newItemValue.trim() === "") { return; }
+    if (addItemValue.trim() === "") { return; }
 
-    this.setState({ newItemValue: "" });
-
-    onAddListItem({ listId: list.id, value: newItemValue });
+    onAddListItem({ listId: list.id, value: addItemValue });
+    onClearAddItem();
   };
 
   render () {
-    const { list, onUpdateListItem, onSetAddListItem } = this.props;
-    const { newItemValue } = this.state;
+    const {
+      list,
+      addItemValue,
+      onChangeAddItem,
+      onSetAddListItem,
+      onUpdateListItem,
+    } = this.props;
 
     return (
       <div>
@@ -97,9 +93,9 @@ class ListManager extends Component {
             label={(
               <TextInput
                 refCallback={el => { this.addItemField = el; }}
-                value={newItemValue}
+                value={addItemValue}
                 placeholder="+ Add item"
-                onChange={this.handleChangeAddItem}
+                onChange={onChangeAddItem}
                 style={{ flexGrow: 1, marginLeft: -5 }}
                 onEnter={this.handleEnterAddItem}
                 onBlur={this.handleBlurAddItem}
