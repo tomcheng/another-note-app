@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Search from "./Search";
 import Notes from "./Notes";
-import Preview from "./Preview";
+import NotePreview from "./NotePreview";
+import ListPreview from "./ListPreview";
 import SectionDivider from "./SectionDivider";
 
 const DRAG_HANDLE_HEIGHT = 10;
@@ -72,8 +73,10 @@ class App extends Component {
             flexGrow: 1,
             marginTop: isEditing ? null : 10,
           }}>
-            {selectedNote ? (
-              <Preview selectedNote={selectedNote} />
+            {selectedNote && selectedNote.type === "list" ? (
+              <ListPreview selectedNote={selectedNote} />
+            ) : selectedNote && selectedNote.type === "note" ? (
+              <NotePreview selectedNote={selectedNote} />
             ) : (
               <div style={{
                 lineHeight: "42px",

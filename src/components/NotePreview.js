@@ -1,26 +1,24 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
+import PreviewFooter from "./PreviewFooter";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import NoteMenu from "./NoteMenu";
-import ListManager from "./ListManager";
 
-class Preview extends Component {
+class NotePreview extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
     isEditingNoteBody: PropTypes.bool.isRequired,
     selectedNote: PropTypes.shape({
-      body: PropTypes.string,
-      title: PropTypes.string,
-      type: PropTypes.oneOf(["list", "note"]).isRequired,
+      body: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
     }).isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
     onEditNoteTitle: PropTypes.func.isRequired,
-    onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -84,13 +82,7 @@ class Preview extends Component {
   };
 
   handleEnterTitle = () => {
-    const { selectedNote, onEditNoteBody, onSetAddListItem } = this.props;
-
-    if (selectedNote.type === "note") {
-      onEditNoteBody();
-    } else {
-      onSetAddListItem();
-    }
+    this.props.onEditNoteBody();
   };
 
   handleClickDone = () => {
@@ -138,58 +130,27 @@ class Preview extends Component {
   };
 
   renderCardContent = () => {
-    const { selectedNote, onEditNoteBody } = this.props;
+    const { onEditNoteBody } = this.props;
     const { body } = this.state;
 
-    switch (selectedNote.type) {
-      case "list":
-        return (
-          <div style={{ margin: "7px 12px 10px" }}>
-            <ListManager list={selectedNote} />
-          </div>
-        );
-
-      case "note":
-        return (
-          <TextInput
-            name="body"
-            value={body}
-            placeholder="Add to this note"
-            refCallback={el => { this.bodyField = el; }}
-            onChange={this.handleChangeBody}
-            onBlur={this.handleBlurBody}
-            onFocus={onEditNoteBody}
-            minRows={2}
-            style={{
-              width: "100%",
-              padding: "10px 12px 12px",
-              borderRadius: "0 0 3px 3px",
-            }}
-          />
-        );
-
-      default:
-        return <noscript />
-    }
+    return (
+      <TextInput
+        name="body"
+        value={body}
+        placeholder="Add to this note"
+        refCallback={el => { this.bodyField = el; }}
+        onChange={this.handleChangeBody}
+        onBlur={this.handleBlurBody}
+        onFocus={onEditNoteBody}
+        minRows={2}
+        style={{
+          width: "100%",
+          padding: "10px 12px 12px",
+          borderRadius: "0 0 3px 3px",
+        }}
+      />
+    );
   };
-
-  renderEditingFooter = () => (
-    <div style={{
-      flexShrink: 0,
-      textAlign: "right",
-      padding: 6,
-      backgroundColor: "rgba(0,0,0,0.4)",
-      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",
-      borderTop: "1px solid rgba(0,0,0,0.15)",
-    }}>
-      <Button
-        buttonStyle="ghost"
-        onClick={this.handleClickDone}
-      >
-        Done
-      </Button>
-    </div>
-  );
 
   render () {
     const { isEditing } = this.props;
@@ -225,7 +186,14 @@ class Preview extends Component {
         </div>
         {isEditing && (
           <div style={{ flexShrink: 0 }}>
-            {this.renderEditingFooter()}
+            <PreviewFooter>
+              <Button
+                buttonStyle="ghost"
+                onClick={this.handleClickDone}
+              >
+                Done
+              </Button>
+            </PreviewFooter>
           </div>
         )}
       </div>
@@ -245,6 +213,5 @@ export default connect(mapStateToProps, {
   onDeleteNote: actions.requestDeleteNote,
   onEditNoteBody: actions.editNoteBody,
   onEditNoteTitle: actions.editNoteTitle,
-  onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,
-})(Preview);
+})(NotePreview);
