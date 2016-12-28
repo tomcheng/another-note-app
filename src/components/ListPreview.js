@@ -1,10 +1,9 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import PreviewFooter from "./PreviewFooter";
-import TextInput from "./TextInput";
 import Button from "./Button";
-import NoteMenu from "./NoteMenu";
+import PreviewHeader from "./PreviewHeader";
+import PreviewFooter from "./PreviewFooter";
 import ListManager from "./ListManager";
 
 class ListPreview extends Component {
@@ -15,7 +14,6 @@ class ListPreview extends Component {
     }).isRequired,
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
-    onEditNoteTitle: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -55,44 +53,11 @@ class ListPreview extends Component {
   };
 
   handleEnterTitle = () => {
-    const { onSetAddListItem } = this.props;
-
-    onSetAddListItem();
+    this.props.onSetAddListItem();
   };
 
   handleClickDone = () => {
     this.props.onCancelEditing();
-  };
-
-  renderCardHeader = () => {
-    const {
-      isEditing,
-      onEditNoteTitle,
-    } = this.props;
-    const { title } = this.state;
-
-    return (
-      <div style={{ display: "flex", borderBottom: "1px solid #2e8486" }}>
-        <TextInput
-          name="title"
-          value={title}
-          style={{
-            padding: "10px 12px",
-            fontWeight: 600,
-            flexGrow: 1,
-            borderRadius: "3px 3px 0 0",
-          }}
-          onFocus={onEditNoteTitle}
-          onBlur={this.handleBlurTitle}
-          onChange={this.handleChangeTitle}
-          onEnter={this.handleEnterTitle}
-          singleLine
-        />
-        {!isEditing && (
-          <NoteMenu />
-        )}
-      </div>
-    );
   };
 
   renderCardContent = () => {
@@ -107,6 +72,7 @@ class ListPreview extends Component {
 
   render () {
     const { isEditing } = this.props;
+    const { title } = this.state;
 
     return (
       <div style={{
@@ -130,7 +96,12 @@ class ListPreview extends Component {
             flexDirection: "column",
           }}>
             <div style={{ flexShrink: 0 }}>
-              {this.renderCardHeader()}
+              <PreviewHeader
+                title={title}
+                onBlurTitle={this.handleBlurTitle}
+                onChangeTitle={this.handleChangeTitle}
+                onEnter={this.handleEnterTitle}
+              />
             </div>
             <div style={{ flexShrink: 1, overflow: "auto" }}>
               {this.renderCardContent()}
@@ -161,7 +132,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onCancelEditing: actions.cancelEditing,
-  onEditNoteTitle: actions.editNoteTitle,
   onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(ListPreview);

@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import PreviewFooter from "./PreviewFooter";
 import TextInput from "./TextInput";
 import Button from "./Button";
-import NoteMenu from "./NoteMenu";
+import PreviewHeader from "./PreviewHeader";
+import PreviewFooter from "./PreviewFooter";
 
 class NotePreview extends Component {
   static propTypes = {
@@ -17,7 +17,6 @@ class NotePreview extends Component {
     onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
     onEditNoteBody: PropTypes.func.isRequired,
-    onEditNoteTitle: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -88,37 +87,6 @@ class NotePreview extends Component {
     this.props.onCancelEditing();
   };
 
-  renderCardHeader = () => {
-    const {
-      isEditing,
-      onEditNoteTitle,
-    } = this.props;
-    const { title } = this.state;
-
-    return (
-      <div style={{ display: "flex", borderBottom: "1px solid #2e8486" }}>
-        <TextInput
-          name="title"
-          value={title}
-          style={{
-            padding: "10px 12px",
-            fontWeight: 600,
-            flexGrow: 1,
-            borderRadius: "3px 3px 0 0",
-          }}
-          onFocus={onEditNoteTitle}
-          onBlur={this.handleBlurTitle}
-          onChange={this.handleChangeTitle}
-          onEnter={this.handleEnterTitle}
-          singleLine
-        />
-        {!isEditing && (
-          <NoteMenu />
-        )}
-      </div>
-    );
-  };
-
   renderCardContent = () => {
     const { onEditNoteBody } = this.props;
     const { body } = this.state;
@@ -144,6 +112,7 @@ class NotePreview extends Component {
 
   render () {
     const { isEditing } = this.props;
+    const { title } = this.state;
 
     return (
       <div style={{
@@ -167,7 +136,12 @@ class NotePreview extends Component {
             flexDirection: "column",
           }}>
             <div style={{ flexShrink: 0 }}>
-              {this.renderCardHeader()}
+              <PreviewHeader
+                title={title}
+                onBlurTitle={this.handleBlurTitle}
+                onChangeTitle={this.handleChangeTitle}
+                onEnter={this.handleEnterTitle}
+              />
             </div>
             <div style={{ flexShrink: 1, overflow: "auto" }}>
               {this.renderCardContent()}
@@ -200,6 +174,5 @@ export default connect(mapStateToProps, {
   onAddNote: actions.requestAddNote,
   onCancelEditing: actions.cancelEditing,
   onEditNoteBody: actions.editNoteBody,
-  onEditNoteTitle: actions.editNoteTitle,
   onUpdateNote: actions.requestUpdateNote,
 })(NotePreview);
