@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 
-const Button = ({ buttonStyle, onClick, children }) => {
+const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
   let styles = {};
 
   switch (buttonStyle) {
@@ -35,8 +35,11 @@ const Button = ({ buttonStyle, onClick, children }) => {
         padding: "0 12px",
         border: 0,
         borderRadius: 3,
+        opacity: disabled ? 0.4 : null,
         ...styles,
+        ...style,
       }}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -46,6 +49,8 @@ const Button = ({ buttonStyle, onClick, children }) => {
 Button.propTypes = {
   buttonStyle: PropTypes.oneOf(["link", "danger", "ghost"]).isRequired,
   children: PropTypes.any.isRequired,
+  disabled: PropTypes.bool,
+  style: PropTypes.object,
   onClick: PropTypes.func,
 };
 

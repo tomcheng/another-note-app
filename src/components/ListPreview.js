@@ -10,9 +10,10 @@ class ListPreview extends Component {
   static propTypes = {
     isEditing: PropTypes.bool.isRequired,
     selectedNote: PropTypes.shape({
+      id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
     }).isRequired,
-    onAddNote: PropTypes.func.isRequired,
+    onAddListItem: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -63,8 +64,27 @@ class ListPreview extends Component {
     this.setState({ addItemValue: "" })
   };
 
+  handleClickAddAnother = () => {
+    const { onAddListItem, onSetAddListItem, selectedNote } = this.props;
+    const { addItemValue } = this.state;
+
+    if (addItemValue.trim() === "") { return; }
+
+    onAddListItem({ listId: selectedNote.id, value: addItemValue });
+    onSetAddListItem();
+    this.setState({ addItemValue: "" });
+  };
+
   handleClickDone = () => {
-    this.props.onCancelEditing();
+    const { onAddListItem, selectedNote, onCancelEditing } = this.props;
+    const { addItemValue } = this.state;
+
+    onCancelEditing();
+
+    if (addItemValue.trim() === "") { return; }
+
+    onAddListItem({ listId: selectedNote.id, value: addItemValue });
+    this.setState({ addItemValue: "" });
   };
 
   render () {
@@ -119,6 +139,14 @@ class ListPreview extends Component {
             <PreviewFooter>
               <Button
                 buttonStyle="ghost"
+                onClick={this.handleClickAddAnother}
+                style={{ marginRight: 10 }}
+                disabled={addItemValue.trim() === ""}
+              >
+                Add Another
+              </Button>
+              <Button
+                buttonStyle="ghost"
                 onClick={this.handleClickDone}
               >
                 Done
@@ -136,7 +164,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onAddNote: actions.requestAddNote,
+  onAddListItem: actions.requestAddListItem,
   onCancelEditing: actions.cancelEditing,
   onSetAddListItem: actions.setAddListItem,
   onUpdateNote: actions.requestUpdateNote,

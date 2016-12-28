@@ -35,6 +35,7 @@ class ListManager extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(this.props.isAddingListItem);
     if (!this.props.isAddingListItem && nextProps.isAddingListItem) {
       setTimeout(() => {
         this.addItemField.focus();
@@ -56,14 +57,7 @@ class ListManager extends Component {
   };
 
   handleBlurAddItem = () => {
-    const { onAddListItem, onCancelAddListItem, list, addItemValue, onClearAddItem } = this.props;
-
-    onCancelAddListItem();
-
-    if (addItemValue.trim() === "") { return; }
-
-    onAddListItem({ listId: list.id, value: addItemValue });
-    onClearAddItem();
+    this.props.onCancelAddListItem();
   };
 
   render () {

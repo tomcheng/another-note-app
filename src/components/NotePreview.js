@@ -14,7 +14,6 @@ class NotePreview extends Component {
       body: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
     }).isRequired,
-    onAddNote: PropTypes.func.isRequired,
     onCancelEditing: PropTypes.func.isRequired,
     onCancelEditNoteBody: PropTypes.func.isRequired,
     onSetEditNoteBody: PropTypes.func.isRequired,
@@ -165,7 +164,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onAddNote: actions.requestAddNote,
   onCancelEditing: actions.cancelEditing,
   onCancelEditNoteBody: actions.cancelEditNoteBody,
   onSetEditNoteBody: actions.setEditNoteBody,
