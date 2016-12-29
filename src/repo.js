@@ -76,8 +76,12 @@ export const updateNote = ({ id, updates }) => {
   const updatedNote = {
     ...notes[noteIndex],
     ...updates,
-    updatedAt: moment().format(),
   };
+
+  if (updates.hideChecked === undefined) {
+    updatedNote.updatedAt = moment.format();
+  }
+
   notes[noteIndex] = updatedNote;
 
   save({ key: "notes", payload: notes });

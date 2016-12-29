@@ -35,7 +35,6 @@ class ListManager extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props.isAddingListItem);
     if (!this.props.isAddingListItem && nextProps.isAddingListItem) {
       setTimeout(() => {
         this.addItemField.focus();
