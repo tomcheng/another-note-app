@@ -79,7 +79,7 @@ export const updateNote = ({ id, updates }) => {
   };
 
   if (updates.hideChecked === undefined) {
-    updatedNote.updatedAt = moment.format();
+    updatedNote.updatedAt = moment().format();
   }
 
   notes[noteIndex] = updatedNote;

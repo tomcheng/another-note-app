@@ -65,7 +65,7 @@ class App extends Component {
           display: "flex",
           flexDirection: "column",
         }}>
-          {(!isEditing && UISettingsLoaded) && (
+          {(!isEditing && UISettingsLoaded && selectedNote) && (
             <SectionDivider
               height={DRAG_HANDLE_HEIGHT}
               listHeight={listHeight}
@@ -79,19 +79,11 @@ class App extends Component {
             flexGrow: 1,
             marginTop: isEditing ? null : 10,
           }}>
-            {selectedNote && selectedNote.type === "list" ? (
+            {selectedNote && selectedNote.type === "list" && (
               <ListPreview selectedNote={selectedNote} />
-            ) : selectedNote && selectedNote.type === "note" ? (
+            )}
+            {selectedNote && selectedNote.type === "note" && (
               <NotePreview selectedNote={selectedNote} />
-            ) : (
-              <div style={{
-                lineHeight: "42px",
-                color: "#fff",
-                opacity: 0.3,
-                textAlign: "center",
-              }}>
-                Nothing selected
-              </div>
             )}
           </div>
         </div>

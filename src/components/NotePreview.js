@@ -52,41 +52,32 @@ class NotePreview extends Component {
   };
 
   handleChangeBody = ({ target }) => {
-    this.setState({ body: target.value })
-  };
-
-  handleBlurTitle = () => {
-    const { onUpdateNote, selectedNote } = this.props;
-    const { title } = this.state;
-
-    if (title !== selectedNote.title) {
-      onUpdateNote({
-        id: selectedNote.id,
-        updates: { title },
-      });
-    }
+    this.setState({ body: target.value });
   };
 
   handleBlurBody = () => {
-    const { onUpdateNote, selectedNote, onCancelEditNoteBody } = this.props;
-    const { body } = this.state;
-
-    onCancelEditNoteBody();
-
-    if (body !== selectedNote.body) {
-      onUpdateNote({
-        id: selectedNote.id,
-        updates: { body },
-      });
-    }
+    this.props.onCancelEditNoteBody();
   };
 
   handleEnterTitle = () => {
     this.props.onSetEditNoteBody();
   };
 
+  handleClickCancel = () => {
+    const { onCancelEditing, selectedNote } = this.props;
+
+    this.setState({
+      body: selectedNote.body,
+      title: selectedNote.title,
+    });
+    onCancelEditing();
+  };
+
   handleClickDone = () => {
-    this.props.onCancelEditing();
+    const { selectedNote, onCancelEditing, onUpdateNote } = this.props;
+
+    onUpdateNote({ id: selectedNote.id, updates: this.state });
+    onCancelEditing();
   };
 
   render () {
@@ -117,7 +108,6 @@ class NotePreview extends Component {
             <div style={{ flexShrink: 0 }}>
               <PreviewHeader
                 title={title}
-                onBlurTitle={this.handleBlurTitle}
                 onChangeTitle={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
               />
@@ -144,6 +134,16 @@ class NotePreview extends Component {
         {isEditing && (
           <div style={{ flexShrink: 0 }}>
             <PreviewFooter>
+              <Button
+                buttonStyle="link"
+                style={{
+                  marginRight: 10,
+                  opacity: 0.8,
+                }}
+                onClick={this.handleClickCancel}
+              >
+                Cancel
+              </Button>
               <Button
                 buttonStyle="ghost"
                 onClick={this.handleClickDone}

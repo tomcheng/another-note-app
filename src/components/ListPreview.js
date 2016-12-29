@@ -40,18 +40,6 @@ class ListPreview extends Component {
     this.setState({ title: target.value });
   };
 
-  handleBlurTitle = () => {
-    const { onUpdateNote, selectedNote } = this.props;
-    const { title } = this.state;
-
-    if (title !== selectedNote.title) {
-      onUpdateNote({
-        id: selectedNote.id,
-        updates: { title },
-      });
-    }
-  };
-
   handleEnterTitle = () => {
     this.props.onSetAddListItem();
   };
@@ -76,15 +64,16 @@ class ListPreview extends Component {
   };
 
   handleClickDone = () => {
-    const { onAddListItem, selectedNote, onCancelEditing } = this.props;
+    const { onAddListItem, onUpdateNote, selectedNote, onCancelEditing } = this.props;
     const { addItemValue } = this.state;
 
+    if (addItemValue.trim() !== "") {
+      onAddListItem({ listId: selectedNote.id, value: addItemValue });
+      this.setState({ addItemValue: "" });
+    }
+
+    onUpdateNote({ id: selectedNote.id, updates: { title: this.state.title } });
     onCancelEditing();
-
-    if (addItemValue.trim() === "") { return; }
-
-    onAddListItem({ listId: selectedNote.id, value: addItemValue });
-    this.setState({ addItemValue: "" });
   };
 
   render () {
@@ -115,7 +104,6 @@ class ListPreview extends Component {
             <div style={{ flexShrink: 0 }}>
               <PreviewHeader
                 title={title}
-                onBlurTitle={this.handleBlurTitle}
                 onChangeTitle={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
               />

@@ -8,7 +8,6 @@ const PreviewHeader = ({
   title,
   isEditing,
   onSetEditing,
-  onBlurTitle,
   onChangeTitle,
   onEnter,
 }) => (
@@ -23,7 +22,6 @@ const PreviewHeader = ({
         borderRadius: "3px 3px 0 0",
       }}
       onFocus={onSetEditing}
-      onBlur={onBlurTitle}
       onChange={onChangeTitle}
       onEnter={onEnter}
       singleLine
@@ -37,7 +35,6 @@ const PreviewHeader = ({
 PreviewHeader.propTypes = {
   isEditing: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
-  onBlurTitle: PropTypes.func.isRequired,
   onChangeTitle: PropTypes.func.isRequired,
   onSetEditing: PropTypes.func.isRequired,
   onEnter: PropTypes.func.isRequired,
