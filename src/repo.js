@@ -44,8 +44,9 @@ export const addNote = ({ title }) => {
     createdAt: moment().format(),
     updatedAt: moment().format(),
   };
+  notes.push(note);
 
-  save({ key: "notes", payload: [note].concat(notes) });
+  save({ key: "notes", payload: notes });
 
   return { note };
 };
@@ -62,8 +63,9 @@ export const addList = ({ title }) => {
     createdAt: moment().format(),
     updatedAt: moment().format(),
   };
+  notes.push(list);
 
-  save({ key: "notes", payload: [list].concat(notes) });
+  save({ key: "notes", payload: notes });
 
   return { note: list };
 };
@@ -71,16 +73,16 @@ export const addList = ({ title }) => {
 export const updateNote = ({ id, updates }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });
-  const oldNote = notes.splice(noteIndex, 1)[0];
-  const newNote = {
-    ...oldNote,
+  const updatedNote = {
+    ...notes[noteIndex],
     ...updates,
     updatedAt: moment().format(),
   };
+  notes[noteIndex] = updatedNote;
 
-  save({ key: "notes", payload: [newNote].concat(notes) });
+  save({ key: "notes", payload: notes });
 
-  return { note: newNote };
+  return { note: updatedNote };
 };
 
 export const deleteNote = ({ id }) => {
@@ -92,7 +94,7 @@ export const deleteNote = ({ id }) => {
 export const convertToList = ({ id }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });
-  const oldNote = notes.splice(noteIndex, 1)[0];
+  const oldNote = notes[noteIndex];
   const list = {
     id,
     title: oldNote.title,
@@ -105,7 +107,9 @@ export const convertToList = ({ id }) => {
     updatedAt: moment().format(),
   };
 
-  save({ key: "notes", payload: [list].concat(notes) });
+  notes[noteIndex] = list;
+
+  save({ key: "notes", payload: notes });
 
   return { note: list };
 };
@@ -113,12 +117,12 @@ export const convertToList = ({ id }) => {
 export const addListItem = ({ listId, value }) => {
   const notes = getLocalNotes();
   const listIndex = findIndex(notes, { id: listId });
-  const list = notes.splice(listIndex, 1)[0];
+  const list = notes[listIndex];
 
   list.items.push({ id: list.items.length + 1, value, checked: false });
   list.updatedAt = moment().format();
 
-  save({ key: "notes", payload: [list].concat(notes) });
+  save({ key: "notes", payload: notes });
 
   return { note: list };
 };
@@ -126,13 +130,13 @@ export const addListItem = ({ listId, value }) => {
 export const updateListItem = ({ listId, itemId, updates }) => {
   const notes = getLocalNotes();
   const listIndex = findIndex(notes, { id: listId });
-  const list = notes.splice(listIndex, 1)[0];
+  const list = notes[listIndex];
   const itemIndex = findIndex(list.items, { id: itemId });
 
   list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
   list.updatedAt = moment().format();
 
-  save({ key: "notes", payload: [list].concat(notes) });
+  save({ key: "notes", payload: notes });
 
   return { note: list };
 };

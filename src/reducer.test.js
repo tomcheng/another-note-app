@@ -49,9 +49,9 @@ it("keeps selected note when clearing search", () => {
 it("updates visible notes based on search", () => {
   let state = reducer(undefined, actions.loadNotes({
     notes: [
-      { id: 1, title: "foo", body: "" },
-      { id: 2, title: "bar", body: "" },
-      { id: 3, title: "foo", body: "bar" },
+      { id: 1, title: "foo", body: "", updatedAt: "3" },
+      { id: 2, title: "bar", body: "", updatedAt: "2" },
+      { id: 3, title: "foo", body: "bar", updatedAt: "1" },
     ],
   }));
   state = reducer(state, actions.updateSearch({ search: "b" }));
@@ -103,15 +103,17 @@ it("initializes with notes not loaded", () => {
   expect(selectors.getNotesLoaded(state)).toBe(false);
 });
 
-it("loads notes", () => {
+it("loads notes and sorts them by updated time", () => {
   const state = reducer(undefined, actions.loadNotes({ notes: [
-    { id: 1, title: "foo", body: "" },
-    { id: 2, title: "bar", body: "" },
+    { id: 1, title: "foo", body: "", updatedAt: "2" },
+    { id: 2, title: "bar", body: "", updatedAt: "3" },
+    { id: 3, title: "bar", body: "", updatedAt: "1" },
   ] }));
 
   expect(selectors.getNotes(state)).toEqual([
-    { id: 1, title: "foo", body: "" },
-    { id: 2, title: "bar", body: "" },
+    { id: 2, title: "bar", body: "", updatedAt: "3" },
+    { id: 1, title: "foo", body: "", updatedAt: "2" },
+    { id: 3, title: "bar", body: "", updatedAt: "1" },
   ]);
   expect(selectors.getNotesLoaded(state)).toBe(true);
 });
@@ -125,15 +127,15 @@ it("memoizes notes", () => {
 
 it("adds a note to the beginning of the list", () => {
   let state = reducer(undefined, actions.loadNotes({ notes: [
-    { id: 1, title: "foo", body: "" },
+    { id: 1, title: "foo", body: "", updatedAt: "1" },
   ] }));
-  state = reducer(state, actions.addNote({ note: { id: 2, title: "bar", body: "" } }));
+  state = reducer(state, actions.addNote({ note: { id: 2, title: "bar", body: "", updatedAt: "2" } }));
 
   expect(selectors.getNotes(state)).toEqual([
-    { id: 2, title: "bar", body: "" },
-    { id: 1, title: "foo", body: "" },
+    { id: 2, title: "bar", body: "", updatedAt: "2" },
+    { id: 1, title: "foo", body: "", updatedAt: "1" },
   ]);
-  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "", updatedAt: "2" });
 });
 
 it("sets editing note body flag after adding a note", () => {
@@ -151,14 +153,14 @@ it("sets adding item flag after adding a list", () => {
 
 it("updates a note", () => {
   let state = reducer(undefined, actions.loadNotes({ notes: [
-    { id: 2, title: "bar", body: "" },
-    { id: 1, title: "foo", body: "" },
+    { id: 2, title: "bar", body: "", updatedAt: "2" },
+    { id: 1, title: "foo", body: "", updatedAt: "1" },
   ] }));
-  state = reducer(state, actions.updateNote({ note: { id: 1, title: "foo", body: "bar" } }));
+  state = reducer(state, actions.updateNote({ note: { id: 1, title: "foo", body: "bar", updatedAt: "3" } }));
 
   expect(selectors.getNotes(state)).toEqual([
-    { id: 1, title: "foo", body: "bar" },
-    { id: 2, title: "bar", body: "" },
+    { id: 1, title: "foo", body: "bar", updatedAt: "3" },
+    { id: 2, title: "bar", body: "", updatedAt: "2" },
   ]);
 });
 
@@ -246,27 +248,27 @@ it("selects the first visible note as next if none is selected", () => {
 it("selects the next visible note if a note is selected", () => {
   let state = reducer(undefined, actions.loadNotes({
     notes: [
-      { id: 1, title: "foo", body: "" },
-      { id: 2, title: "bar", body: "" },
+      { id: 1, title: "foo", body: "", updatedAt: "2" },
+      { id: 2, title: "bar", body: "", updatedAt: "1" },
     ],
   }));
   state = reducer(state, actions.selectNote({ id: 1 }));
   state = reducer(state, actions.selectNextNote());
 
-  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "" });
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 2, title: "bar", body: "", updatedAt: "1" });
 });
 
 it("it selects the previous note", () => {
   let state = reducer(undefined, actions.loadNotes({
     notes: [
-      { id: 1, title: "foo", body: "" },
-      { id: 2, title: "bar", body: "" },
+      { id: 1, title: "foo", body: "", updatedAt: "2" },
+      { id: 2, title: "bar", body: "", updatedAt: "1" },
     ],
   }));
   state = reducer(state, actions.selectNote({ id: 2 }));
   state = reducer(state, actions.selectPreviousNote());
 
-  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "" });
+  expect(selectors.getSelectedNote(state)).toEqual({ id: 1, title: "foo", body: "", updatedAt: "2" });
 });
 
 it("it sets isNavigating when selecting next", () => {

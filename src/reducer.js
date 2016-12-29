@@ -1,4 +1,6 @@
 import { createSelector } from "reselect";
+import sortBy from "lodash/sortBy";
+import omit from "lodash/omit";
 
 export const actions = {};
 export const selectors = {};
@@ -51,6 +53,8 @@ const initialState = {
   UISettingsLoaded: false,
 };
 
+const notesToIds = notes => sortBy(notes, "updatedAt").reverse().map(note => note.id);
+
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
@@ -86,40 +90,46 @@ const reducer = (state = initialState, action) => {
           ...acc,
           [curr.id]: curr,
         }), {}),
-        noteIds: payload.notes.map(note => note.id),
+        noteIds: notesToIds(payload.notes),
         notesLoaded: true,
       };
-    case "ADD_NOTE":
+    case "ADD_NOTE": {
+      const newNotes = {
+        ...state.notes,
+        [payload.note.id]: payload.note,
+      };
+
       return {
         ...state,
-        notes: {
-          ...state.notes,
-          [payload.note.id]: payload.note,
-        },
-        noteIds: [payload.note.id].concat(state.noteIds),
+        notes: newNotes,
+        noteIds: notesToIds(newNotes),
         search: "",
         isEditingNoteBody: payload.note.type === "note",
         isAddingListItem: payload.note.type === "list",
         selectedNoteId: payload.note.id,
       };
-    case "UPDATE_NOTE":
+    }
+    case "UPDATE_NOTE": {
+      const newNotes = {
+        ...state.notes,
+        [payload.note.id]: payload.note,
+      };
+
       return {
         ...state,
-        notes: {
-          ...state.notes,
-          [payload.note.id]: payload.note,
-        },
-        noteIds: [payload.note.id].concat(state.noteIds.filter(id => id !== payload.note.id)),
+        notes: newNotes,
+        noteIds: notesToIds(newNotes),
       };
-    case "DELETE_NOTE":
+    }
+    case "DELETE_NOTE": {
+      const newNotes = omit(state.notes, [payload.id]);
+
       return {
         ...state,
-        notes: {
-          ...state.notes,
-          [payload.id]: undefined,
-        },
-        noteIds: state.noteIds.filter(id => id !== payload.id),
+        notes: newNotes,
+        noteIds: notesToIds(newNotes),
       };
+    }
     case "SELECT_NOTE":
       return { ...state, selectedNoteId: payload.id };
     case "DESELECT_NOTE":

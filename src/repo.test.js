@@ -50,13 +50,13 @@ it("adds a list", () => {
   expect(response).toEqual({ note: addListDefaults({ id: 1, title: "foo" }) });
 });
 
-it("save multiple notes and puts latest ones first", () => {
+it("save multiple notes", () => {
   api.addNote({ title: "foo" });
   api.addNote({ title: "bar" });
 
   expect(api.getNotes()).toEqual({ notes: [
-    addNoteDefaults({ id: 2, title: "bar" }),
     addNoteDefaults({ id: 1, title: "foo" }),
+    addNoteDefaults({ id: 2, title: "bar" }),
   ] })
 });
 
@@ -66,9 +66,9 @@ it("increments ids properly", () => {
   api.addNote({ title: "baz" });
 
   expect(api.getNotes()).toEqual({ notes: [
-    addNoteDefaults({ id: 3, title: "baz" }),
-    addNoteDefaults({ id: 2, title: "bar" }),
     addNoteDefaults({ id: 1, title: "foo" }),
+    addNoteDefaults({ id: 2, title: "bar" }),
+    addNoteDefaults({ id: 3, title: "baz" }),
   ] })
 });
 
@@ -80,17 +80,6 @@ it("updates a note", () => {
     addNoteDefaults({ id: 1, title: "foo", body: "bar" }),
   ] });
   expect(response).toEqual({ note: addNoteDefaults({ id: 1, title: "foo", body: "bar" }) });
-});
-
-it("puts updated notes at the beginning of the list", () => {
-  api.addNote({ title: "foo" });
-  api.addNote({ title: "bar" });
-  api.updateNote({ id: 1, updates: { body: "baz" } });
-
-  expect(api.getNotes()).toEqual({ notes: [
-    addNoteDefaults({ id: 1, title: "foo", body: "baz" }),
-    addNoteDefaults({ id: 2, title: "bar" }),
-  ] })
 });
 
 it("deletes a note", () => {
