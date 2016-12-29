@@ -2,17 +2,20 @@ import React, { PropTypes } from "react";
 import classNames from "classnames";
 
 const Icon = ({ icon, style, action, onClick }) => (
-  <i
-    className={classNames("fa fa-" + icon, {
-      "fa-fw": action,
-    })}
+  <span
     style={{
-      padding: action ? "0 20px" : null,
+      padding: action ? "0 10px" : null,
       lineHeight: action ? "42px" : null,
-      ...style,
     }}
     onClick={onClick}
-  />
+  >
+    <i
+      className={classNames("fa fa-" + icon, {
+        "fa-fw": action,
+      })}
+      style={style}
+    />
+  </span>
 );
 
 Icon.propTypes = {

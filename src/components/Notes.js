@@ -6,7 +6,6 @@ import Note from "./Note";
 class Notes extends Component {
   static propTypes = {
     containerStyle: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
     listHeight: PropTypes.number.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -32,7 +31,6 @@ class Notes extends Component {
       onDeselectNote,
       notesLoaded,
       visibleNoteIds,
-      isEditing,
       listHeight,
     } = this.props;
 
@@ -46,7 +44,6 @@ class Notes extends Component {
           overflow: "auto",
           borderTop: "1px solid rgba(255,255,255,0.12)",
           padding: "6px 5px",
-          display: isEditing ? "none" : null,
         }}
         onClick={onDeselectNote}
       >
@@ -84,7 +81,6 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
   visibleNoteIds: selectors.getVisibleNoteIds(state),
-  isEditing: selectors.getIsEditing(state),
 });
 
 export default connect(mapStateToProps, {

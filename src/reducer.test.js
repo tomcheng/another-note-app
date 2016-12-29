@@ -295,3 +295,9 @@ it("handles loading lists", () => {
   ]);
   expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
 });
+
+it("toggles viewing mode", () => {
+  const state = reducer(undefined, actions.toggleViewing());
+
+  expect(selectors.getIsViewing(state)).toBe(true);
+});

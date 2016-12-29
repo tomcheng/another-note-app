@@ -10,22 +10,37 @@ const PreviewHeader = ({
   onSetEditing,
   onChangeTitle,
   onEnter,
+  onToggleViewing,
 }) => (
   <div style={{ display: "flex", borderBottom: "1px solid #2e8486" }}>
-    <TextInput
-      name="title"
-      value={title}
-      style={{
-        padding: "10px 12px",
-        fontWeight: 600,
-        flexGrow: 1,
-        borderRadius: "3px 3px 0 0",
-      }}
-      onFocus={onSetEditing}
-      onChange={onChangeTitle}
-      onEnter={onEnter}
-      singleLine
-    />
+    {!isEditing && (
+      <div
+        style={{
+          padding: "10px 12px",
+          fontWeight: 600,
+          flexGrow: 1,
+        }}
+        onClick={onToggleViewing}
+      >
+        {title}
+      </div>
+    )}
+    {isEditing && (
+      <TextInput
+        name="title"
+        value={title}
+        style={{
+          padding: "10px 12px",
+          fontWeight: 600,
+          flexGrow: 1,
+          borderRadius: "3px 3px 0 0",
+        }}
+        onFocus={onSetEditing}
+        onChange={onChangeTitle}
+        onEnter={onEnter}
+        singleLine
+      />
+    )}
     {!isEditing && (
       <NoteMenu />
     )}
@@ -36,8 +51,9 @@ PreviewHeader.propTypes = {
   isEditing: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   onChangeTitle: PropTypes.func.isRequired,
-  onSetEditing: PropTypes.func.isRequired,
   onEnter: PropTypes.func.isRequired,
+  onSetEditing: PropTypes.func.isRequired,
+  onToggleViewing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -46,4 +62,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onSetEditing: actions.setEditing,
+  onToggleViewing: actions.toggleViewing,
 })(PreviewHeader);

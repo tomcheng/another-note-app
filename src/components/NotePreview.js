@@ -94,7 +94,7 @@ class NotePreview extends Component {
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          padding: "6px 5px",
+          padding: "0 5px 6px",
         }}>
           <div style={{
             backgroundColor: "#fff",
