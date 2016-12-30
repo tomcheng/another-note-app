@@ -41,13 +41,21 @@ class Single extends Component {
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
+          flexShrink: 1,
+          overflow: "hidden",
         }}>
-          {selectedNote.type === "list" && (
-            <SingleList list={selectedNote} />
-          )}
-          {selectedNote.type === "note" && (
-            <SingleNote note={selectedNote} />
-          )}
+          <div style={{
+            padding: "0 5px 6px",
+            display: "flex",
+            flexDirection: "column",
+          }}>
+            {selectedNote.type === "list" && (
+              <SingleList list={selectedNote} />
+            )}
+            {selectedNote.type === "note" && (
+              <SingleNote note={selectedNote} />
+            )}
+          </div>
         </div>
       </div>
     );

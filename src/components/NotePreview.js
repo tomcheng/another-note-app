@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import TextInput from "./TextInput";
 import Button from "./Button";
+import Card from "./Card";
 import PreviewHeader from "./PreviewHeader";
 import PreviewFooter from "./PreviewFooter";
 
@@ -96,23 +97,15 @@ class NotePreview extends Component {
           flexDirection: "column",
           padding: "0 5px 6px",
         }}>
-          <div style={{
-            backgroundColor: "#fff",
-            backgroundClip: "padding-box",
-            border: "1px solid rgba(0,0,0,0.1)",
-            overflow: "hidden",
-            borderRadius: 3,
-            display: "flex",
-            flexDirection: "column",
-          }}>
-            <div style={{ flexShrink: 0 }}>
+          <Card
+            header={(
               <PreviewHeader
                 title={title}
                 onChangeTitle={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
               />
-            </div>
-            <div style={{ flexShrink: 1, overflow: "auto" }}>
+            )}
+            body={(
               <TextInput
                 name="body"
                 value={body}
@@ -128,8 +121,8 @@ class NotePreview extends Component {
                   borderRadius: "0 0 3px 3px",
                 }}
               />
-            </div>
-          </div>
+            )}
+          />
         </div>
         {isEditing && (
           <div style={{ flexShrink: 0 }}>

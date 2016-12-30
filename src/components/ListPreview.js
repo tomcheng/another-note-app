@@ -5,6 +5,7 @@ import Button from "./Button";
 import PreviewHeader from "./PreviewHeader";
 import PreviewFooter from "./PreviewFooter";
 import ListManager from "./ListManager";
+import Card from "./Card";
 
 class ListPreview extends Component {
   static propTypes = {
@@ -92,35 +93,25 @@ class ListPreview extends Component {
           flexDirection: "column",
           padding: "0 5px 6px",
         }}>
-          <div style={{
-            backgroundColor: "#fff",
-            backgroundClip: "padding-box",
-            border: "1px solid rgba(0,0,0,0.1)",
-            overflow: "hidden",
-            borderRadius: 3,
-            display: "flex",
-            flexDirection: "column",
-          }}>
-            <div style={{ flexShrink: 0 }}>
+          <Card
+            header={(
               <PreviewHeader
                 title={title}
                 onChangeTitle={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
               />
-            </div>
-            <div style={{
-              flexShrink: 1,
-              overflow: "auto",
-              padding: "7px 12px 10px",
-            }}>
-              <ListManager
-                list={selectedNote}
-                addItemValue={addItemValue}
-                onChangeAddItem={this.handleChangeAddItem}
-                onClearAddItem={this.handleClearAddItem}
-              />
-            </div>
-          </div>
+            )}
+            body={(
+              <div style={{ padding: "7px 12px 10px" }}>
+                <ListManager
+                  list={selectedNote}
+                  addItemValue={addItemValue}
+                  onChangeAddItem={this.handleChangeAddItem}
+                  onClearAddItem={this.handleClearAddItem}
+                />
+              </div>
+            )}
+          />
         </div>
         {isEditing && (
           <div style={{ flexShrink: 0 }}>

@@ -13,7 +13,7 @@ const PreviewHeader = ({
   onChangeTitle,
   onEnter,
 }) => (
-  <div style={{ display: "flex", borderBottom: "1px solid #2e8486" }}>
+  <div style={{ display: "flex" }}>
     {isEditing && (
       <TextInput
         name="title"
@@ -31,16 +31,16 @@ const PreviewHeader = ({
       />
     )}
     {!isEditing && (
-      <Link to={"/" + selectedNote.id}>
-        <div
-          style={{
-            padding: "10px 12px",
-            fontWeight: 600,
-            flexGrow: 1,
-          }}
-        >
-          {title}
-        </div>
+      <Link
+        to={"/" + selectedNote.id}
+        style={{
+          padding: "10px 12px",
+          fontWeight: 600,
+          flexGrow: 1,
+          display: "block",
+        }}
+      >
+        {title}
       </Link>
     )}
     {!isEditing && (
