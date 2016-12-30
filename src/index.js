@@ -8,6 +8,7 @@ import reducer from "./reducer";
 import sagas from "./sagas";
 import App from './components/App';
 import Home from "./components/Home";
+import Single from "./components/Single";
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -26,6 +27,7 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
+        <Route path=":id" component={Single} />
       </Route>
     </Router>
   </Provider>
