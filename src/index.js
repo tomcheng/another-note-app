@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
+import { Router, Route, IndexRoute, browserHistory } from "react-router";
 import reducer from "./reducer";
 import sagas from "./sagas";
 import App from './components/App';
+import Home from "./components/Home";
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,6 +23,10 @@ sagas.forEach(saga => { sagaMiddleware.run(saga); });
 
 ReactDOM.render((
   <Provider store={store}>
-    <App />
+    <Router history={browserHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={Home} />
+      </Route>
+    </Router>
   </Provider>
 ), document.getElementById('root'));

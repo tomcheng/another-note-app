@@ -5,7 +5,6 @@ import Note from "./Note";
 
 class Notes extends Component {
   static propTypes = {
-    containerStyle: PropTypes.object.isRequired,
     listHeight: PropTypes.number.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -24,7 +23,6 @@ class Notes extends Component {
 
   render () {
     const {
-      containerStyle,
       notes,
       onSelectNote,
       selectedNote,
@@ -39,11 +37,11 @@ class Notes extends Component {
     return (
       <div
         style={{
-          ...containerStyle,
           height: selectedNote ? listHeight : null,
           overflow: "auto",
           borderTop: "1px solid rgba(255,255,255,0.12)",
           padding: "6px 5px",
+          flexShrink: selectedNote ? 0 : 1,
         }}
         onClick={onDeselectNote}
       >
