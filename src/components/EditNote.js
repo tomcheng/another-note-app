@@ -12,7 +12,6 @@ class EditNote extends Component {
     location: PropTypes.shape({
       query: PropTypes.shape({
         focus: PropTypes.string,
-        back: PropTypes.string,
       }).isRequired,
     }).isRequired,
     note: PropTypes.shape({
@@ -20,7 +19,7 @@ class EditNote extends Component {
       title: PropTypes.string.isRequired,
     }).isRequired,
     router: PropTypes.shape({
-      push: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired,
     }).isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -37,10 +36,15 @@ class EditNote extends Component {
   }
 
   componentDidMount () {
-    const { query } = this.props.location;
-
-    if (query.focus === "body") {
-      this.bodyField.focus();
+    switch (this.props.location.query.focus) {
+      case "body":
+        this.bodyField.focus();
+        break;
+      case "title":
+        this.titleField.focus();
+        break;
+      default:
+        break;
     }
   }
 
@@ -67,13 +71,7 @@ class EditNote extends Component {
   };
 
   redirect = () => {
-    const { router, note, location } = this.props;
-
-    if (location.query.back === "home") {
-      router.push("/");
-    } else {
-      router.push("/" + note.id);
-    }
+    this.props.router.goBack();
   };
 
   render () {
