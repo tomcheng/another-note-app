@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { actions, selectors } from "../reducer";
+import { actions } from "../reducer";
 import capitalize from "lodash/capitalize";
 import Icon from "./Icon";
 import Button from "./Button";
@@ -172,11 +172,7 @@ class NoteMenu extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  selectedNote: selectors.getSelectedNote(state),
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,

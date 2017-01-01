@@ -9,7 +9,8 @@ import sagas from "./sagas";
 import App from './components/App';
 import Home from "./components/Home";
 import Single from "./components/Single";
-import './index.css';
+import Edit from "./components/Edit";
+import "./index.css";
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -28,6 +29,7 @@ ReactDOM.render((
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path=":id" component={Single} />
+        <Route path=":id/edit" component={Edit} />
       </Route>
     </Router>
   </Provider>

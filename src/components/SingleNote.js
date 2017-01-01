@@ -22,9 +22,11 @@ class SingleNote extends Component {
           </Link>
         )}
         body={(
-          <pre style={{ padding: "10px 12px 12px", minHeight: 66 }}>
-            {note.body}
-          </pre>
+          <Link to={"/" + note.id + "/edit#focus-body"}>
+            <pre style={{ padding: "10px 12px 12px", minHeight: 66 }}>
+              {note.body}
+            </pre>
+          </Link>
         )}
       />
     );

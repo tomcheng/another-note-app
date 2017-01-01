@@ -44,6 +44,9 @@ sagas.push(function* () {
   yield* takeEvery("REQUEST_UPDATE_NOTE", function* ({ payload }) {
     const response = yield call(api.updateNote, payload);
     yield put(actions.updateNote(response));
+    if (payload.callback) {
+      yield call(payload.callback);
+    }
   });
 });
 
