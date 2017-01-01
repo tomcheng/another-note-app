@@ -11,7 +11,10 @@ import PreviewFooter from "./PreviewFooter";
 class EditNote extends Component {
   static propTypes = {
     location: PropTypes.shape({
-      query: PropTypes.object.isRequired,
+      query: PropTypes.shape({
+        focus: PropTypes.string,
+        back: PropTypes.string,
+      }).isRequired,
     }).isRequired,
     note: PropTypes.shape({
       body: PropTypes.string.isRequired,
@@ -54,20 +57,24 @@ class EditNote extends Component {
     // focus body
   };
 
-  handleClickCancel = () => {
-    const { note, router } = this.props;
-
-    router.push("/" + note.id);
-  };
-
   handleClickDone = () => {
-    const { note, onUpdateNote, router } = this.props;
+    const { note, onUpdateNote } = this.props;
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: () => { router.push("/" + note.id) },
+      callback: this.redirect,
     });
+  };
+
+  redirect = () => {
+    const { router, note, location } = this.props;
+
+    if (location.query.back === "home") {
+      router.push("/");
+    } else {
+      router.push("/" + note.id);
+    }
   };
 
   render () {
@@ -120,7 +127,7 @@ class EditNote extends Component {
                 marginRight: 10,
                 opacity: 0.8,
               }}
-              onClick={this.handleClickCancel}
+              onClick={this.redirect}
             >
               Cancel
             </Button>
