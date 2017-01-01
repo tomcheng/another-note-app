@@ -1,34 +1,16 @@
 import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
-import { actions, selectors } from "../reducer";
+import CSSTransition from "react-addons-css-transition-group";
 import Search from "./Search";
 import Notes from "./Notes";
-import NotePreview from "./NotePreview";
-import ListPreview from "./ListPreview";
-import SectionDivider from "./SectionDivider";
-
-const DRAG_HANDLE_HEIGHT = 10;
+import "./Home.css";
 
 class Home extends Component {
   static propTypes = {
-    listHeight: PropTypes.number.isRequired,
-    UISettingsLoaded: PropTypes.bool.isRequired,
-    onUpdateUISettings: PropTypes.func.isRequired,
-    selectedNote: PropTypes.shape({
-      type: PropTypes.string.isRequired,
-    }),
-  };
-
-  handleDrag = (e, ui) => {
-    this.props.onUpdateUISettings({ listHeight: ui.y });
+    children: PropTypes.element,
   };
 
   render () {
-    const {
-      listHeight,
-      selectedNote,
-      UISettingsLoaded,
-    } = this.props;
+    const { children } = this.props;
 
     return (
       <div style={{
@@ -37,7 +19,11 @@ class Home extends Component {
         overflow: "hidden",
         height: "100%",
       }}>
-        <div style={{ flexShrink: 0 }}>
+        <div style={{
+          flexShrink: 0,
+          opacity: children ? 0 : 1,
+          transition: children ? "opacity 0.15s ease" : "opacity 0.15s ease 0.15s",
+        }}>
           <Search />
         </div>
         <div style={{
@@ -45,42 +31,31 @@ class Home extends Component {
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
+          opacity: children ? 0 : 1,
+          transition: children ? "opacity 0.15s ease" : "opacity 0.15s ease 0.15s",
         }}>
-          {UISettingsLoaded && selectedNote && (
-            <SectionDivider
-              height={DRAG_HANDLE_HEIGHT}
-              listHeight={listHeight}
-              onDrag={this.handleDrag}
-            />
-          )}
           <Notes />
-          {selectedNote && (
+        </div>
+        <CSSTransition
+          transitionName="sidebar"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
+          {children && (
             <div style={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              marginTop: 16,
+              position: "fixed",
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
             }}>
-              {selectedNote.type === "list" && (
-                <ListPreview selectedNote={selectedNote} />
-              )}
-              {selectedNote.type === "note" && (
-                <NotePreview selectedNote={selectedNote} />
-              )}
+              {children}
             </div>
           )}
-        </div>
+        </CSSTransition>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  listHeight: selectors.getListHeight(state),
-  selectedNote: selectors.getSelectedNote(state),
-  UISettingsLoaded: selectors.getUISettingsLoaded(state),
-});
-
-export default connect(mapStateToProps, {
-  onUpdateUISettings: actions.requestUpdateUISettings
-})(Home);
+export default Home;
