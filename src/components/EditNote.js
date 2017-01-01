@@ -11,7 +11,7 @@ import PreviewFooter from "./PreviewFooter";
 class EditNote extends Component {
   static propTypes = {
     location: PropTypes.shape({
-      hash: PropTypes.string.isRequired,
+      query: PropTypes.object.isRequired,
     }).isRequired,
     note: PropTypes.shape({
       body: PropTypes.string.isRequired,
@@ -35,9 +35,9 @@ class EditNote extends Component {
   }
 
   componentDidMount () {
-    const { hash } = this.props.location;
+    const { query } = this.props.location;
 
-    if (hash === "#focus-body") {
+    if (query.focus === "body") {
       this.bodyField.focus();
     }
   }

@@ -35,7 +35,7 @@ class NotePreview extends Component {
               </Link>
             )}
             body={(
-              <Link to={"/" + selectedNote.id + "/edit#focus-body"}>
+              <Link to={"/" + selectedNote.id + "/edit?focus=body"}>
                 <pre style={{ padding: "10px 12px 12px", minHeight: 66 }}>
                   {selectedNote.body}
                 </pre>
