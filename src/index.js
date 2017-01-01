@@ -6,9 +6,9 @@ import createSagaMiddleware from "redux-saga";
 import { Router, Route, IndexRoute, browserHistory } from "react-router";
 import reducer from "./reducer";
 import sagas from "./sagas";
-import App from './components/App';
+import AppWrapper from './components/AppWrapper';
 import Home from "./components/Home";
-import Single from "./components/Single";
+import Show from "./components/Show";
 import Edit from "./components/Edit";
 import "./index.css";
 
@@ -26,9 +26,9 @@ sagas.forEach(saga => { sagaMiddleware.run(saga); });
 ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
+      <Route path="/" component={AppWrapper}>
         <IndexRoute component={Home} />
-        <Route path=":id" component={Single} />
+        <Route path=":id" component={Show} />
         <Route path=":id/edit" component={Edit} />
       </Route>
     </Router>

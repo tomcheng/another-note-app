@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 
-class App extends Component {
+class AppWrapper extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     onRequestNotes: PropTypes.func.isRequired,
@@ -35,4 +35,4 @@ class App extends Component {
 export default connect(null, {
   onRequestNotes: actions.requestNotes,
   onRequestUISettings: actions.requestUISettings,
-})(App);
+})(AppWrapper);

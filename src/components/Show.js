@@ -6,7 +6,7 @@ import Icon from "./Icon";
 import SingleNote from "./SingleNote";
 import SingleList from "./SingleList";
 
-class Single extends Component {
+class Show extends Component {
   static propTypes = {
     notes: PropTypes.object.isRequired,
     notesLoaded: PropTypes.bool.isRequired,
@@ -67,4 +67,4 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
 });
 
-export default connect(mapStateToProps)(Single);
+export default connect(mapStateToProps)(Show);
