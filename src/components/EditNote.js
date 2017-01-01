@@ -5,7 +5,6 @@ import { withRouter } from "react-router";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
-import PreviewHeader from "./PreviewHeader";
 import PreviewFooter from "./PreviewFooter";
 
 class EditNote extends Component {
@@ -54,7 +53,7 @@ class EditNote extends Component {
   };
 
   handleEnterTitle = () => {
-    // focus body
+    this.bodyField.focus();
   };
 
   handleClickDone = () => {
@@ -78,7 +77,6 @@ class EditNote extends Component {
   };
 
   render () {
-    const { note } = this.props;
     const { title, body } = this.state;
 
     return (
@@ -95,18 +93,27 @@ class EditNote extends Component {
         }}>
           <Card
             header={(
-              <PreviewHeader
-                title={title}
-                selectedNote={note}
-                onChangeTitle={this.handleChangeTitle}
+              <TextInput
+                name="body"
+                value={title}
+                placeholder="Add a title"
+                refCallback={el => { this.titleField = el; }}
+                onChange={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "3px 3px 0 0",
+                  fontWeight: 600,
+                }}
+                singleLine
               />
             )}
             body={(
               <TextInput
                 name="body"
                 value={body}
-                placeholder="Add to this note"
+                placeholder="Add a note"
                 refCallback={el => { this.bodyField = el; }}
                 onChange={this.handleChangeBody}
                 minRows={2}

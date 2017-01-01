@@ -99,6 +99,7 @@ class ListPreview extends Component {
                 title={title}
                 onChangeTitle={this.handleChangeTitle}
                 onEnter={this.handleEnterTitle}
+                selectedNote={selectedNote}
               />
             )}
             body={(
