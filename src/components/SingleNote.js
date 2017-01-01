@@ -17,7 +17,7 @@ class SingleNote extends Component {
     return (
       <Card
         header={(
-          <Link to="/" style={{ display: "block", padding: "10px 12px", fontWeight: 600 }}>
+          <Link to="/" style={{ display: "block", padding: "10px 12px", fontWeight: 500 }}>
             {note.title}
           </Link>
         )}

@@ -14,18 +14,6 @@ class Note extends Component {
       title: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
     }).isRequired,
-    onDeselectNote: PropTypes.func.isRequired,
-    onSelectNote: PropTypes.func.isRequired,
-  };
-
-  handleClick = () => {
-    const { note, isSelected, onSelectNote, onDeselectNote } = this.props;
-
-    if (isSelected) {
-      onDeselectNote();
-    } else {
-      onSelectNote({ id: note.id });
-    }
   };
 
   getTitle = () => {
@@ -58,7 +46,6 @@ class Note extends Component {
 
     return (
       <div
-        onClick={this.handleClick}
         style={{
           display: isVisible ? "flex" : "none",
           backgroundColor: isSelected ? "#d5e6e7" : "#fff",
