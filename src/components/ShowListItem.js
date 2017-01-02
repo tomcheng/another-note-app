@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import { SortableElement } from "react-sortable-hoc";
 import Checkbox from "./Checkbox";
 
 const DEFAULT_LINE_HEIGHT = 22;
@@ -34,6 +35,7 @@ class ListItem extends Component {
             <span style={{
               textDecoration: item.checked ? "line-through" : null,
               opacity: item.checked ? 0.25 : null,
+              userSelect: "none",
             }}>
               {item.value}
             </span>
@@ -47,4 +49,4 @@ class ListItem extends Component {
   }
 }
 
-export default ListItem;
+export default SortableElement(ListItem);
