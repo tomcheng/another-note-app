@@ -66,7 +66,6 @@ class Notes extends Component {
 }
 
 const mapStateToProps = state => ({
-  listHeight: selectors.getListHeight(state),
   notes: selectors.getNotes(state),
   notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),

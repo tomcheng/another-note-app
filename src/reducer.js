@@ -12,9 +12,6 @@ actions.setIsSearching           = ()      => ({ type: "SET_IS_SEARCHING" });
 actions.clearIsSearching         = ()      => ({ type: "CLEAR_IS_SEARCHING" });
 actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestUISettings        = ()      => ({ type: "REQUEST_UI_SETTINGS" });
-actions.loadUISettings           = payload => ({ type: "LOAD_UI_SETTINGS", payload });
-actions.requestUpdateUISettings  = payload => ({ type: "REQUEST_UPDATE_UI_SETTINGS", payload });
 actions.requestAddList           = payload => ({ type: "REQUEST_ADD_LIST", payload });
 actions.requestAddNote           = payload => ({ type: "REQUEST_ADD_NOTE", payload });
 actions.addNote                  = payload => ({ type: "ADD_NOTE", payload });
@@ -22,37 +19,16 @@ actions.requestUpdateNote        = payload => ({ type: "REQUEST_UPDATE_NOTE", pa
 actions.updateNote               = payload => ({ type: "UPDATE_NOTE", payload });
 actions.requestDeleteNote        = payload => ({ type: "REQUEST_DELETE_NOTE", payload });
 actions.deleteNote               = payload => ({ type: "DELETE_NOTE", payload });
-actions.selectNote               = payload => ({ type: "SELECT_NOTE", payload });
-actions.deselectNote             = ()      => ({ type: "DESELECT_NOTE" });
-actions.selectNextNote           = ()      => ({ type: "SELECT_NEXT_NOTE" });
-actions.selectPreviousNote       = ()      => ({ type: "SELECT_PREVIOUS_NOTE" });
-actions.setEditing               = ()      => ({ type: "SET_EDITING" });
-actions.cancelEditing            = ()      => ({ type: "CANCEL_EDITING" });
-actions.setEditNoteBody          = ()      => ({ type: "SET_EDIT_NOTE_BODY" });
-actions.cancelEditNoteBody       = ()      => ({ type: "CANCEL_EDIT_NOTE_BODY" });
-actions.setEditNoteTitle         = ()      => ({ type: "SET_EDIT_NOTE_TITLE" });
-actions.cancelEditNoteTitle      = ()      => ({ type: "CANCEL_EDIT_NOTE_TITLE" });
-actions.setAddListItem           = ()      => ({ type: "SET_ADD_LIST_ITEM" });
-actions.cancelAddListItem        = ()      => ({ type: "CANCEL_ADD_LIST_ITEM" });
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
-actions.toggleViewing            = ()      => ({ type: "TOGGLE_VIEWING" });
 
 const initialState = {
-  isEditing: false,
-  isEditingNoteBody: false,
-  isAddingListItem: false,
-  isNavigating: false,
   isSearching: false,
-  isViewing: false,
-  listHeight: 300,
   notes: {},
   noteIds: [],
   notesLoaded: false,
   search: "",
-  selectedNoteId: null,
-  UISettingsLoaded: false,
 };
 
 const notesToIds = notes => sortBy(notes, "updatedAt").reverse().map(note => note.id);
@@ -72,10 +48,7 @@ const reducer = (state = initialState, action) => {
     case "DELETE_SEARCH":
       return {
         ...state,
-        isEditing: false,
-        isNavigating: false,
         search: payload.search,
-        selectedNoteId: null,
       };
     case "CLEAR_SEARCH":
       return { ...state, search: "" };
@@ -83,8 +56,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, isSearching: true };
     case "CLEAR_IS_SEARCHING":
       return { ...state, isSearching: false };
-    case "LOAD_UI_SETTINGS":
-      return { ...state, listHeight: payload.listHeight, UISettingsLoaded: true };
     case "LOAD_NOTES":
       return {
         ...state,
@@ -132,42 +103,6 @@ const reducer = (state = initialState, action) => {
         noteIds: notesToIds(newNotes),
       };
     }
-    case "SELECT_NOTE":
-      return { ...state, selectedNoteId: payload.id };
-    case "DESELECT_NOTE":
-      return { ...state, selectedNoteId: null };
-    case "SELECT_NEXT_NOTE": {
-      const visibleIds = selectors.getVisibleNoteIds(state);
-      const currentId = state.selectedNoteId;
-      const selectedNoteId = currentId
-        ? visibleIds[Math.min(visibleIds.length - 1, visibleIds.indexOf(currentId) + 1)]
-        : visibleIds[0];
-
-      return { ...state, selectedNoteId, isNavigating: true };
-    }
-    case "SELECT_PREVIOUS_NOTE": {
-      const visibleIds = selectors.getVisibleNoteIds(state);
-      const currentId = state.selectedNoteId;
-      const selectedNoteId = currentId
-        ? visibleIds[Math.max(0, visibleIds.indexOf(currentId) - 1)]
-        : visibleIds[visibleIds.length - 1];
-
-      return { ...state, selectedNoteId, isNavigating: true };
-    }
-    case "SET_EDITING":
-      return { ...state, isEditing: true };
-    case "CANCEL_EDITING":
-      return { ...state, isEditing: false };
-    case "SET_EDIT_NOTE_BODY":
-      return { ...state, isEditing: true, isEditingNoteBody: true };
-    case "CANCEL_EDIT_NOTE_BODY":
-      return { ...state, isEditingNoteBody: false };
-    case "SET_ADD_LIST_ITEM":
-      return { ...state, isEditing: true, isAddingListItem: true };
-    case "CANCEL_ADD_LIST_ITEM":
-      return { ...state, isAddingListItem: false };
-    case "TOGGLE_VIEWING":
-      return { ...state, isViewing: !state.isViewing };
     default:
       return state;
   }
@@ -184,19 +119,11 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
-selectors.getUISettingsLoaded   = state => state.UISettingsLoaded;
 selectors.getNotesById          = state => state.notes;
 selectors.getNoteIds            = state => state.noteIds;
-selectors.getSelectedNote       = state => state.notes[state.selectedNoteId];
-selectors.getIsEditingNoteBody  = state => state.isEditingNoteBody;
-selectors.getIsAddingListItem   = state => state.isAddingListItem;
-selectors.getIsEditing          = state => state.isEditing;
-selectors.getIsNavigating       = state => state.isNavigating;
 selectors.getIsSearching        = state => state.isSearching;
-selectors.getIsViewing          = state => state.isViewing;
 selectors.getNotesLoaded        = state => state.notesLoaded;
 selectors.getSearch             = state => state.search;
-selectors.getListHeight         = state => state.listHeight;
 selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,

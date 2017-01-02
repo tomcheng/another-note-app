@@ -6,31 +6,15 @@ import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
-    isNavigating: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onClearIsSearching: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
-    onSelectNextNote: PropTypes.func.isRequired,
-    onSelectPreviousNote: PropTypes.func.isRequired,
     onSetIsSearching: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
-    selectedNote: PropTypes.shape({
-      id: PropTypes.number,
-    }),
   };
-
-  componentDidUpdate () {
-    const { isNavigating } = this.props;
-
-    if (this.input !== document.activeElement) { return; }
-
-    if (isNavigating) {
-      this.input.select();
-    }
-  }
 
   handleFocus = () => {
     this.input.select();
@@ -48,26 +32,6 @@ class Search extends Component {
       onDeleteSearch({ search: target.value });
     } else {
       onUpdateSearch({ search: target.value });
-    }
-  };
-
-  handleKeyDown = evt => {
-    const {
-      onSelectNextNote,
-      onSelectPreviousNote,
-    } = this.props;
-
-    switch (evt.key) {
-      case "ArrowDown":
-        evt.preventDefault();
-        onSelectNextNote();
-        break;
-      case "ArrowUp":
-        evt.preventDefault();
-        onSelectPreviousNote();
-        break;
-      default:
-        break;
     }
   };
 
@@ -130,9 +94,7 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
-  isNavigating: selectors.getIsNavigating(state),
   search: selectors.getSearch(state),
-  selectedNote: selectors.getSelectedNote(state),
 });
 
 export default connect(mapStateToProps, {
@@ -141,8 +103,6 @@ export default connect(mapStateToProps, {
   onClearSearch: actions.clearSearch,
   onClearIsSearching: actions.clearIsSearching,
   onDeleteSearch: actions.deleteSearch,
-  onSelectNextNote: actions.selectNextNote,
-  onSelectPreviousNote: actions.selectPreviousNote,
   onSetIsSearching: actions.setIsSearching,
   onUpdateSearch: actions.updateSearch,
 })(Search);
