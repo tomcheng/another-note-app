@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import EditNote from "./EditNote";
+import EditList from "./EditList";
 
 class Single extends Component {
   static propTypes = {
@@ -29,6 +30,9 @@ class Single extends Component {
       }}>
         {selectedNote.type === "note" && (
           <EditNote location={location} note={selectedNote} />
+        )}
+        {selectedNote.type === "list" && (
+          <EditList location={location} list={selectedNote} />
         )}
       </div>
     );

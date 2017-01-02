@@ -7,15 +7,14 @@ import Button from "./Button";
 import Card from "./Card";
 import PreviewFooter from "./PreviewFooter";
 
-class EditNote extends Component {
+class EditList extends Component {
   static propTypes = {
     location: PropTypes.shape({
       query: PropTypes.shape({
         focus: PropTypes.string,
       }).isRequired,
     }).isRequired,
-    note: PropTypes.shape({
-      body: PropTypes.string.isRequired,
+    list: PropTypes.shape({
       title: PropTypes.string.isRequired,
     }).isRequired,
     router: PropTypes.shape({
@@ -27,19 +26,15 @@ class EditNote extends Component {
   constructor (props) {
     super(props);
 
-    const { note } = props;
+    const { list } = props;
 
     this.state = {
-      body: note.body,
-      title: note.title,
+      title: list.title,
     };
   }
 
   componentDidMount () {
     switch (this.props.location.query.focus) {
-      case "body":
-        this.bodyField.focus();
-        break;
       case "title":
         this.titleField.focus();
         break;
@@ -52,19 +47,11 @@ class EditNote extends Component {
     this.setState({ title: target.value });
   };
 
-  handleChangeBody = ({ target }) => {
-    this.setState({ body: target.value });
-  };
-
-  handleEnterTitle = () => {
-    this.bodyField.focus();
-  };
-
   handleClickDone = () => {
-    const { note, onUpdateNote } = this.props;
+    const { list, onUpdateNote } = this.props;
 
     onUpdateNote({
-      id: note.id,
+      id: list.id,
       updates: this.state,
       callback: this.redirect,
     });
@@ -75,7 +62,7 @@ class EditNote extends Component {
   };
 
   render () {
-    const { title, body } = this.state;
+    const { title } = this.state;
 
     return (
       <div style={{
@@ -108,19 +95,7 @@ class EditNote extends Component {
               />
             )}
             body={(
-              <TextInput
-                name="body"
-                value={body}
-                placeholder="Add a note"
-                refCallback={el => { this.bodyField = el; }}
-                onChange={this.handleChangeBody}
-                minRows={2}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px 12px",
-                  borderRadius: "0 0 3px 3px",
-                }}
-              />
+              <div>List items go here.</div>
             )}
           />
         </div>
@@ -151,4 +126,4 @@ class EditNote extends Component {
 
 export default withRouter(connect(null, {
   onUpdateNote: actions.requestUpdateNote,
-})(EditNote));
+})(EditList));

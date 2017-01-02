@@ -18,13 +18,15 @@ class SingleNote extends Component {
     return (
       <Card
         header={(
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}>
+          <div style={{ display: "flex" }}>
             <Link
               to={"/" + note.id + "/edit?focus=title"}
-              style={{ display: "block", padding: "10px 12px", fontWeight: 500 }}
+              style={{
+                flexGrow: 1,
+                display: "block",
+                padding: "10px 12px",
+                fontWeight: 500,
+              }}
             >
               {note.title}
             </Link>
