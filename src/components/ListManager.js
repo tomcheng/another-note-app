@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import TextInput from "./TextInput";
-import ListItem from "./ListItem";
+import ListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
 
 const LIST_HEIGHT = 36;

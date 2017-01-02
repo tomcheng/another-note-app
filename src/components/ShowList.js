@@ -4,7 +4,7 @@ import { actions } from "../reducer";
 import { Link } from "react-router";
 import Card from "./Card";
 import NoteMenu from "./NoteMenu";
-import ListItem from "./ListItem";
+import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
 
 const LIST_HEIGHT = 36;
@@ -46,7 +46,7 @@ class ShowList extends Component {
         body={(
           <div style={{ padding: "8px 12px 10px" }}>
             {list.items.map(item => (
-              <ListItem
+              <ShowListItem
                 height={LIST_HEIGHT}
                 key={item.id}
                 isVisible={!list.hideChecked || !item.checked}
