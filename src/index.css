@@ -9,6 +9,7 @@ body, html {
   background: #2e8486;
   background: -webkit-linear-gradient(-30deg,  #2e8486 0%,#246f79 100%);
   background: linear-gradient(150deg,  #2e8486 0%,#246f79 100%);
+  overflow-y: hidden; /* disables pull to refresh on mobile browsers */
 }
 
 body, html, input, button {
