@@ -35,7 +35,12 @@ class ShowNote extends Component {
         )}
         body={(
           <Link to={"/" + note.id + "/edit?focus=body"}>
-            <pre style={{ padding: "10px 12px 12px", minHeight: 66 }}>
+            <pre style={{
+              padding: "10px 12px 12px",
+              minHeight: 66,
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
+            }}>
               {note.body}
             </pre>
           </Link>
