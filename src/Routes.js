@@ -1,12 +1,12 @@
 import React from "react";
-import { browserHistory, Router, Route, IndexRoute } from "react-router";
+import { hashHistory, Router, Route, IndexRoute } from "react-router";
 import AppWrapper from './components/AppWrapper';
 import Home from "./components/Home";
 import Show from "./components/Show";
 import Edit from "./components/Edit";
 
 const Routes = () => (
-  <Router history={browserHistory}>
+  <Router history={hashHistory}>
     <Route path="/" component={AppWrapper}>
       <Route component={Home}>
         <IndexRoute component={null} />
