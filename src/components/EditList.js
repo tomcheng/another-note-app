@@ -89,7 +89,7 @@ class EditList extends Component {
                   width: "100%",
                   padding: "10px 12px",
                   borderRadius: "3px 3px 0 0",
-                  fontWeight: 600,
+                  fontWeight: 500,
                 }}
                 singleLine
               />
