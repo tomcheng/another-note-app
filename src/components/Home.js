@@ -22,7 +22,7 @@ class Home extends Component {
         <div style={{
           flexShrink: 0,
           opacity: children ? 0 : 1,
-          transition: children ? "opacity 0.15s ease" : "opacity 0.15s ease 0.15s",
+          transition: "opacity 0.15s ease",
         }}>
           <Search />
         </div>
@@ -32,14 +32,14 @@ class Home extends Component {
           display: "flex",
           flexDirection: "column",
           opacity: children ? 0 : 1,
-          transition: children ? "opacity 0.15s ease" : "opacity 0.15s ease 0.15s",
+          transition: "opacity 0.15s ease",
         }}>
           <Notes />
         </div>
         <CSSTransition
-          transitionName="sidebar"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
+          transitionName="showContainer"
+          transitionLeave={false}
+          transitionEnterTimeout={600}
         >
           {children && (
             <div style={{

@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
-import { Link } from "react-router";
-import Icon from "./Icon";
+import { withRouter } from "react-router";
 import SingleNote from "./SingleNote";
 import SingleList from "./SingleList";
 
@@ -13,10 +12,13 @@ class Show extends Component {
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
+    router: PropTypes.shape({
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   render () {
-    const { params, notes, notesLoaded } = this.props;
+    const { params, router, notes, notesLoaded } = this.props;
 
     if (!notesLoaded) { return <noscript />; }
 
@@ -31,14 +33,23 @@ class Show extends Component {
         overflow: "hidden",
         height: "100%",
       }}>
-        <Link to="/">
-          <div style={{ flexShrink: 0, color: "#fff" }}>
-            <Icon
-              icon="long-arrow-left"
-              action
-            />
-          </div>
-        </Link>
+        <div style={{
+          flexShrink: 0,
+          color: "#fff",
+          textAlign: "right",
+        }}>
+          <span
+            className="showClose"
+            onClick={router.goBack}
+            style={{
+              fontSize: 24,
+              lineHeight: "42px",
+              padding: "0 19px",
+            }}
+          >
+            &times;
+          </span>
+        </div>
         <div style={{
           display: "flex",
           flexDirection: "column",
@@ -69,4 +80,4 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
 });
 
-export default connect(mapStateToProps)(Show);
+export default withRouter(connect(mapStateToProps)(Show));

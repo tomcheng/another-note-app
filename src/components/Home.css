@@ -1,17 +1,19 @@
-.sidebar-enter {
-  transform: translate3d(100%, 0, 0);
+.showContainer-enter {
+  opacity: 0;
+  transform: translate3d(0, 10%, 0);
 }
 
-.sidebar-enter.sidebar-enter-active {
+.showContainer-enter.showContainer-enter-active {
+  opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.1s ease-out 0.1s, opacity 0.1s ease-in-out 0.1s;
 }
 
-.sidebar-leave {
-  transform: translate3d(0, 0, 0);
+.showContainer-enter .showClose {
+  opacity: 0;
 }
 
-.sidebar-leave.sidebar-leave-active {
-  transform: translate3d(100%, 0, 0);
-  transition: transform 0.15s ease-in-out;
+.showContainer-enter.showContainer-enter-active .showClose {
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out 0.35s;
 }
