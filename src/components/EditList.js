@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
+import EditListItem from "./EditListItem";
 import Checkbox from "./Checkbox";
 import PreviewFooter from "./PreviewFooter";
 
@@ -24,6 +25,7 @@ class EditList extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
+    onUpdateListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -110,7 +112,7 @@ class EditList extends Component {
   };
 
   render () {
-    const { list } = this.props;
+    const { list, onUpdateListItem } = this.props;
     const { title, addItemValue } = this.state;
 
     return (
@@ -146,9 +148,14 @@ class EditList extends Component {
             body={(
               <div style={{ padding: "8px 12px 10px" }}>
                 {list.items.map(item => (
-                  <div>
-                    {item.value}
-                  </div>
+                  <EditListItem
+                    key={item.id}
+                    height={LIST_HEIGHT}
+                    isVisible={!list.hideChecked || !item.checked}
+                    item={item}
+                    listId={list.id}
+                    onUpdateListItem={onUpdateListItem}
+                  />
                 ))}
                 <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
                   <Checkbox
@@ -206,5 +213,6 @@ class EditList extends Component {
 
 export default withRouter(connect(null, {
   onAddListItem: actions.requestAddListItem,
+  onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(EditList));
