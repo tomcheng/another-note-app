@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { actions, selectors } from "../reducer";
+import { actions } from "../reducer";
 import TextInput from "./TextInput";
 import ListItem from "./ListItem";
 import Checkbox from "./Checkbox";
@@ -9,7 +9,6 @@ const LIST_HEIGHT = 36;
 
 class ListManager extends Component {
   static propTypes = {
-    isAddingListItem: PropTypes.bool.isRequired,
     list: PropTypes.shape({
       hideChecked: PropTypes.bool.isRequired,
       items: PropTypes.arrayOf(PropTypes.shape({
@@ -27,20 +26,6 @@ class ListManager extends Component {
     onSetAddListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
-
-  componentDidMount () {
-    if (this.props.isAddingListItem) {
-      this.addItemField.focus();
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!this.props.isAddingListItem && nextProps.isAddingListItem) {
-      setTimeout(() => {
-        this.addItemField.focus();
-      }, 0);
-    }
-  }
 
   handleEnterAddItem = () => {
     const { onAddListItem, list, onCancelEditing, addItemValue, onClearAddItem } = this.props;
@@ -104,11 +89,7 @@ class ListManager extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isAddingListItem: selectors.getIsAddingListItem(state),
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   onAddListItem: actions.requestAddListItem,
   onCancelAddListItem: actions.cancelAddListItem,
   onCancelEditing: actions.cancelEditing,

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import Card from "./Card";
 import NoteMenu from "./NoteMenu";
+import ListManager from "./ListManager";
 
 class SingleList extends Component {
   static propTypes = {
@@ -38,11 +39,7 @@ class SingleList extends Component {
         )}
         body={(
           <div style={{ padding: "10px 12px 12px", minHeight: 66 }}>
-            {list.items.map(({ id, value }) => (
-              <div key={id}>
-                {value}
-              </div>
-            ))}
+            <ListManager list={list} />
           </div>
         )}
       />
