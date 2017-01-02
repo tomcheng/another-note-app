@@ -5,7 +5,10 @@ import { withRouter } from "react-router";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
+import Checkbox from "./Checkbox";
 import PreviewFooter from "./PreviewFooter";
+
+const LIST_HEIGHT = 36;
 
 class EditList extends Component {
   static propTypes = {
@@ -20,6 +23,7 @@ class EditList extends Component {
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
     }).isRequired,
+    onAddListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -30,6 +34,7 @@ class EditList extends Component {
 
     this.state = {
       title: list.title,
+      addItemValue: "",
     };
   }
 
@@ -37,6 +42,9 @@ class EditList extends Component {
     switch (this.props.location.query.focus) {
       case "title":
         this.titleField.focus();
+        break;
+      case "addItem":
+        this.addItemField.focus();
         break;
       default:
         break;
@@ -47,12 +55,52 @@ class EditList extends Component {
     this.setState({ title: target.value });
   };
 
+  handleChangeAddItem = ({ target }) => {
+    this.setState({ addItemValue: target.value });
+  };
+
+  handleEnterTitle = () => {
+    this.addItemField.focus();
+  };
+
+  handleEnterAddItem = () => {
+    const { onAddListItem, list } = this.props;
+    const { addItemValue } = this.state;
+
+    if (addItemValue.trim() === "") {
+      this.addItemField.blur();
+      return;
+    }
+
+    onAddListItem({ listId: list.id, value: addItemValue });
+
+    this.setState({ addItemValue: "" });
+  };
+
+  handleClickAddAnother = () => {
+    const { list, onAddListItem } = this.props;
+    const { addItemValue } = this.state;
+
+    onAddListItem({
+      listId: list.id,
+      value: addItemValue
+    });
+
+    this.setState({ addItemValue: "" });
+    this.addItemField.focus();
+  };
+
   handleClickDone = () => {
-    const { list, onUpdateNote } = this.props;
+    const { list, onUpdateNote, onAddListItem } = this.props;
+    const { title, addItemValue } = this.state;
+
+    if (addItemValue.trim() !== "") {
+      onAddListItem({ listId: list.id, value: addItemValue });
+    }
 
     onUpdateNote({
       id: list.id,
-      updates: this.state,
+      updates: { title },
       callback: this.redirect,
     });
   };
@@ -62,7 +110,8 @@ class EditList extends Component {
   };
 
   render () {
-    const { title } = this.state;
+    const { list } = this.props;
+    const { title, addItemValue } = this.state;
 
     return (
       <div style={{
@@ -95,7 +144,30 @@ class EditList extends Component {
               />
             )}
             body={(
-              <div>List items go here.</div>
+              <div style={{ padding: "8px 12px 10px" }}>
+                {list.items.map(item => (
+                  <div>
+                    {item.value}
+                  </div>
+                ))}
+                <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
+                  <Checkbox
+                    checked={false}
+                    label={(
+                      <TextInput
+                        refCallback={el => { this.addItemField = el; }}
+                        value={addItemValue}
+                        placeholder="+ Add item"
+                        style={{ flexGrow: 1, marginLeft: -5 }}
+                        onChange={this.handleChangeAddItem}
+                        onEnter={this.handleEnterAddItem}
+                        singleLine
+                      />
+                    )}
+                    disabled
+                  />
+                </div>
+              </div>
             )}
           />
         </div>
@@ -113,6 +185,14 @@ class EditList extends Component {
             </Button>
             <Button
               buttonStyle="ghost"
+              style={{ marginRight: 10 }}
+              disabled={addItemValue.trim() === ""}
+              onClick={this.handleClickAddAnother}
+            >
+              Add Another
+            </Button>
+            <Button
+              buttonStyle="ghost"
               onClick={this.handleClickDone}
             >
               Done
@@ -125,5 +205,6 @@ class EditList extends Component {
 }
 
 export default withRouter(connect(null, {
+  onAddListItem: actions.requestAddListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(EditList));

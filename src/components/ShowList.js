@@ -1,8 +1,13 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
+import { actions } from "../reducer";
 import { Link } from "react-router";
 import Card from "./Card";
 import NoteMenu from "./NoteMenu";
-import ListManager from "./ListManager";
+import ListItem from "./ListItem";
+import Checkbox from "./Checkbox";
+
+const LIST_HEIGHT = 36;
 
 class ShowList extends Component {
   static propTypes = {
@@ -14,10 +19,11 @@ class ShowList extends Component {
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
+    onUpdateListItem: PropTypes.func.isRequired,
   };
 
   render () {
-    const { list } = this.props;
+    const { list, onUpdateListItem } = this.props;
 
     return (
       <Card
@@ -38,8 +44,30 @@ class ShowList extends Component {
           </div>
         )}
         body={(
-          <div style={{ padding: "10px 12px 12px", minHeight: 66 }}>
-            <ListManager list={list} />
+          <div style={{ padding: "8px 12px 10px" }}>
+            {list.items.map(item => (
+              <ListItem
+                height={LIST_HEIGHT}
+                key={item.id}
+                isVisible={!list.hideChecked || !item.checked}
+                item={item}
+                listId={list.id}
+                onUpdateListItem={onUpdateListItem}
+              />
+            ))}
+            <Link to={"/" + list.id + "/edit?focus=addItem"}>
+              <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
+                <Checkbox
+                  checked={false}
+                  label={(
+                    <div style={{ opacity: 0.4 }}>
+                      + Add item
+                    </div>
+                  )}
+                  disabled
+                />
+              </div>
+            </Link>
           </div>
         )}
       />
@@ -47,4 +75,6 @@ class ShowList extends Component {
   }
 }
 
-export default ShowList;
+export default connect(null, {
+  onUpdateListItem: actions.requestUpdateListItem,
+})(ShowList);
