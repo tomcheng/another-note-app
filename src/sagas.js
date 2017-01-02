@@ -54,6 +54,9 @@ sagas.push(function* () {
   yield* takeEvery("REQUEST_DELETE_NOTE", function* ({ payload }) {
     yield call(api.deleteNote, payload);
     yield put(actions.deleteNote(payload));
+    if (payload.callback) {
+      yield call(payload.callback);
+    }
   });
 });
 

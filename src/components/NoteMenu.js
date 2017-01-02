@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import { actions } from "../reducer";
 import capitalize from "lodash/capitalize";
 import Icon from "./Icon";
@@ -12,6 +13,9 @@ class NoteMenu extends Component {
       id: PropTypes.number.isRequired,
       type: PropTypes.oneOf(["list", "note"]).isRequired,
       hideChecked: PropTypes.bool,
+    }).isRequired,
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired,
     }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
@@ -59,11 +63,14 @@ class NoteMenu extends Component {
   };
 
   handleDeleteNote = () => {
-    const { onDeleteNote, selectedNote } = this.props;
+    const { onDeleteNote, selectedNote, router } = this.props;
 
     this.setState({ deleteModalShowing: false });
 
-    onDeleteNote({ id: selectedNote.id });
+    onDeleteNote({
+      id: selectedNote.id,
+      callback: () => { router.push("/"); },
+    });
   };
 
   handleClickConvertToList = () => {
@@ -172,8 +179,8 @@ class NoteMenu extends Component {
   }
 }
 
-export default connect(null, {
+export default withRouter(connect(null, {
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,
-})(NoteMenu);
+})(NoteMenu));

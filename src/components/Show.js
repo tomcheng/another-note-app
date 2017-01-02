@@ -22,6 +22,8 @@ class Show extends Component {
 
     const selectedNote = notes[params.id];
 
+    if (!selectedNote) { return <noscript />; }
+
     return (
       <div style={{
         display: "flex",

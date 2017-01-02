@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import Card from "./Card";
+import NoteMenu from "./NoteMenu";
 
 class SingleNote extends Component {
   static propTypes = {
@@ -17,12 +18,18 @@ class SingleNote extends Component {
     return (
       <Card
         header={(
-          <Link
-            to={"/" + note.id + "/edit?focus=title"}
-            style={{ display: "block", padding: "10px 12px", fontWeight: 500 }}
-          >
-            {note.title}
-          </Link>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}>
+            <Link
+              to={"/" + note.id + "/edit?focus=title"}
+              style={{ display: "block", padding: "10px 12px", fontWeight: 500 }}
+            >
+              {note.title}
+            </Link>
+            <NoteMenu selectedNote={note} />
+          </div>
         )}
         body={(
           <Link to={"/" + note.id + "/edit?focus=body"}>
