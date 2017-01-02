@@ -143,6 +143,7 @@ class NoteMenu extends Component {
                 right: 0,
                 bottom: 0,
                 left: 0,
+                zIndex: 1,
               }}
               onClick={this.handleCloseDeleteModal}
             />
@@ -156,6 +157,7 @@ class NoteMenu extends Component {
               boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
               borderRadius: 2,
               padding: "15px 20px 20px",
+              zIndex: 1,
             }}>
               <h3 style={{ marginBottom: 12 }}>
                 Are you sure?
