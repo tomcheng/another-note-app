@@ -1,11 +1,15 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import Button from "./Button";
 import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
@@ -33,11 +37,27 @@ class Search extends Component {
   };
 
   handleClickAddNote = () => {
-    this.props.onAddNote({ title: this.props.search });
+    const { router, onAddNote, search } = this.props;
+
+    onAddNote({
+      title: search,
+      callback: ({ note }) => {
+        router.push("/" + note.id);
+        router.push("/" + note.id + "/edit?focus=body");
+      },
+    });
   };
 
   handleClickAddList = () => {
-    this.props.onAddList({ title: this.props.search });
+    const { router, onAddList, search } = this.props;
+
+    onAddList({
+      title: search,
+      callback: ({ note }) => {
+        router.push("/" + note.id);
+        router.push("/" + note.id + "/edit?focus=addItem");
+      },
+    });
   };
 
   render () {
@@ -88,10 +108,10 @@ const mapStateToProps = state => ({
   search: selectors.getSearch(state),
 });
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   onAddList: actions.requestAddList,
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
   onDeleteSearch: actions.deleteSearch,
   onUpdateSearch: actions.updateSearch,
-})(Search);
+})(Search));

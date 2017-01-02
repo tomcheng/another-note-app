@@ -44,6 +44,7 @@ class Show extends Component {
               lineHeight: "42px",
               padding: "0 19px",
               cursor: "pointer",
+              display: "inline-block",
             }}
           >
             &times;

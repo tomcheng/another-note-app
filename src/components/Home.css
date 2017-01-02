@@ -15,5 +15,5 @@
 
 .showContainer-enter.showContainer-enter-active .showClose {
   opacity: 1;
-  transition: opacity 0.15s ease-in-out 0.35s;
+  transition: opacity 0.15s ease-in-out 0.25s;
 }
