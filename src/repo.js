@@ -12,25 +12,6 @@ const getLocalNotes = () => {
   return JSON.parse(json);
 };
 
-const getLocalUISettings = () => {
-  const json = localStorage.getItem("ui_settings");
-
-  if (!json) { return { listHeight: 300 }; }
-
-  return JSON.parse(json);
-};
-
-export const getUISettings = () => getLocalUISettings();
-
-export const updateUISettings = settings => {
-  const oldSettings = getLocalUISettings();
-  const newSettings = { ...oldSettings, ...settings };
-
-  save({ key: "ui_settings", payload: newSettings });
-
-  return newSettings;
-};
-
 export const getNotes = () => ({ notes: getLocalNotes() });
 
 export const addNote = ({ title }) => {

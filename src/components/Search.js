@@ -9,20 +9,13 @@ class Search extends Component {
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
-    onClearIsSearching: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
     onDeleteSearch: PropTypes.func.isRequired,
-    onSetIsSearching: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
   };
 
   handleFocus = () => {
     this.input.select();
-    this.props.onSetIsSearching();
-  };
-
-  handleBlur = () => {
-    this.props.onClearIsSearching();
   };
 
   handleChangeSearch = ({ target }) => {
@@ -58,14 +51,12 @@ class Search extends Component {
       }}>
         <input
           className="SearchInput"
-          placeholder="Search or add notes"
+          placeholder="Search or add notes and lists"
           ref={el => { this.input = el; }}
           type="text"
           value={search}
           onChange={this.handleChangeSearch}
-          onKeyDown={this.handleKeyDown}
           onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
         />
         {search.trim() !== "" && (
           <div style={{
@@ -101,8 +92,6 @@ export default connect(mapStateToProps, {
   onAddList: actions.requestAddList,
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
-  onClearIsSearching: actions.clearIsSearching,
   onDeleteSearch: actions.deleteSearch,
-  onSetIsSearching: actions.setIsSearching,
   onUpdateSearch: actions.updateSearch,
 })(Search);

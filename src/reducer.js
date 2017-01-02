@@ -8,8 +8,6 @@ export const selectors = {};
 actions.updateSearch             = payload => ({ type: "UPDATE_SEARCH", payload });
 actions.deleteSearch             = payload => ({ type: "DELETE_SEARCH", payload });
 actions.clearSearch              = ()      => ({ type: "CLEAR_SEARCH" });
-actions.setIsSearching           = ()      => ({ type: "SET_IS_SEARCHING" });
-actions.clearIsSearching         = ()      => ({ type: "CLEAR_IS_SEARCHING" });
 actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
 actions.requestAddList           = payload => ({ type: "REQUEST_ADD_LIST", payload });
@@ -24,7 +22,6 @@ actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", 
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
 
 const initialState = {
-  isSearching: false,
   notes: {},
   noteIds: [],
   notesLoaded: false,
@@ -52,10 +49,6 @@ const reducer = (state = initialState, action) => {
       };
     case "CLEAR_SEARCH":
       return { ...state, search: "" };
-    case "SET_IS_SEARCHING":
-      return { ...state, isSearching: true };
-    case "CLEAR_IS_SEARCHING":
-      return { ...state, isSearching: false };
     case "LOAD_NOTES":
       return {
         ...state,
@@ -121,7 +114,6 @@ const matches = (note, search) => {
 
 selectors.getNotesById          = state => state.notes;
 selectors.getNoteIds            = state => state.noteIds;
-selectors.getIsSearching        = state => state.isSearching;
 selectors.getNotesLoaded        = state => state.notesLoaded;
 selectors.getSearch             = state => state.search;
 selectors.getNotes = createSelector(

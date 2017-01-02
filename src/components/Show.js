@@ -10,7 +10,7 @@ class Show extends Component {
     notes: PropTypes.object.isRequired,
     notesLoaded: PropTypes.bool.isRequired,
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string,
     }).isRequired,
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
@@ -20,11 +20,9 @@ class Show extends Component {
   render () {
     const { params, router, notes, notesLoaded } = this.props;
 
-    if (!notesLoaded) { return <noscript />; }
+    if (!notesLoaded || !params.id || !notes[params.id]) { return <noscript />; }
 
     const selectedNote = notes[params.id];
-
-    if (!selectedNote) { return <noscript />; }
 
     return (
       <div style={{
