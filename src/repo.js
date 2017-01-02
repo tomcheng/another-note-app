@@ -125,3 +125,16 @@ export const updateListItem = ({ listId, itemId, updates }) => {
 
   return { note: list };
 };
+
+export const deleteListItem = ({ listId, itemId }) => {
+  const notes = getLocalNotes();
+  const listIndex = findIndex(notes, { id: listId });
+  const list = notes[listIndex];
+
+  list.items = list.items.filter(item => item.id !== itemId);
+  list.updatedAt = moment().format();
+
+  save({ key: "notes", payload: notes });
+
+  return { note: list };
+};

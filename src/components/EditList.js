@@ -25,6 +25,7 @@ class EditList extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
+    onDeleteListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -112,7 +113,7 @@ class EditList extends Component {
   };
 
   render () {
-    const { list, onUpdateListItem } = this.props;
+    const { list, onUpdateListItem, onDeleteListItem } = this.props;
     const { title, addItemValue } = this.state;
 
     return (
@@ -154,6 +155,7 @@ class EditList extends Component {
                     isVisible={!list.hideChecked || !item.checked}
                     item={item}
                     listId={list.id}
+                    onDeleteListItem={onDeleteListItem}
                     onUpdateListItem={onUpdateListItem}
                   />
                 ))}
@@ -213,6 +215,7 @@ class EditList extends Component {
 
 export default withRouter(connect(null, {
   onAddListItem: actions.requestAddListItem,
+  onDeleteListItem: actions.requestDeleteListItem,
   onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(EditList));

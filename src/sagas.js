@@ -72,4 +72,11 @@ sagas.push(function* () {
   });
 });
 
+sagas.push(function* () {
+  yield takeEvery("REQUEST_DELETE_LIST_ITEM", function* ({ payload }) {
+    const response = yield call(api.deleteListItem, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
 export default sagas;

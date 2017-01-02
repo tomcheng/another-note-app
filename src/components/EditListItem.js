@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import TextInput from "./TextInput";
+import Icon from "./Icon";
 import Checkbox from "./Checkbox";
 
 class EditListItem extends Component {
@@ -12,6 +13,7 @@ class EditListItem extends Component {
       value: PropTypes.string.isRequired,
     }).isRequired,
     listId: PropTypes.number.isRequired,
+    onDeleteListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
 
@@ -31,6 +33,12 @@ class EditListItem extends Component {
     onUpdateListItem({ listId, itemId: item.id, updates: this.state });
   };
 
+  handleClickDelete = () => {
+    const { onDeleteListItem, listId, item } = this.props;
+
+    onDeleteListItem({ listId, itemId: item.id });
+  };
+
   render () {
     const { item, isVisible, height } = this.props;
     const { value } = this.state;
@@ -44,13 +52,20 @@ class EditListItem extends Component {
         <Checkbox
           checked={item.checked}
           label={(
-            <TextInput
-              style={{ flexGrow: 1, marginLeft: -5 }}
-              value={value}
-              onBlur={this.handleBlur}
-              onChange={this.handleChange}
-              singleLine
-            />
+            <div style={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+              <TextInput
+                style={{ flexGrow: 1, marginLeft: -5 }}
+                value={value}
+                onBlur={this.handleBlur}
+                onChange={this.handleChange}
+                singleLine
+              />
+              <Icon
+                onClick={this.handleClickDelete}
+                icon="trash-o"
+                action
+              />
+            </div>
           )}
           disabled
         />

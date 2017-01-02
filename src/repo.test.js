@@ -101,8 +101,7 @@ it("converts an empty note to a list with no items", () => {
 });
 
 it("adds a list item", () => {
-  api.addNote({ title: "foo" });
-  api.convertToList({ id: 1 });
+  api.addList({ title: "foo" });
   const response = api.addListItem({ listId: 1, value: "bar" });
 
   expect(response).toEqual({ note: addListDefaults({
@@ -113,14 +112,25 @@ it("adds a list item", () => {
 });
 
 it("updates a list item", () => {
-  api.addNote({ title: "foo" });
-  api.updateNote({ id: 1, updates: { body: "bar" } });
-  api.convertToList({ id: 1 });
+  api.addList({ title: "foo" });
+  api.addListItem({ listId: 1, value: "bar" });
   const response = api.updateListItem({ listId: 1, itemId: 1, updates: { checked: true } });
 
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
     items: [{ id: 1, checked: true, value: "bar" }],
+  }) });
+});
+
+it("deletes a list item", () => {
+  api.addList({ title: "foo" });
+  api.addListItem({ listId: 1, value: "bar" });
+  const response = api.deleteListItem({ listId: 1, itemId: 1 });
+
+  expect(response).toEqual({ note: addListDefaults({
+    id: 1,
+    title: "foo",
+    items: [],
   }) });
 });

@@ -20,6 +20,7 @@ actions.deleteNote               = payload => ({ type: "DELETE_NOTE", payload })
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
+actions.requestDeleteListItem    = payload => ({ type: "REQUEST_DELETE_LIST_ITEM", payload });
 
 const initialState = {
   notes: {},
