@@ -2,29 +2,25 @@ import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import Card from "./Card";
 import NoteMenu from "./NoteMenu";
-import ListManager from "./ListManager";
 
-class SingleList extends Component {
+class ShowNote extends Component {
   static propTypes = {
-    list: PropTypes.shape({
+    note: PropTypes.shape({
+      body: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired,
-      })).isRequired,
     }).isRequired,
   };
 
   render () {
-    const { list } = this.props;
+    const { note } = this.props;
 
     return (
       <Card
         header={(
           <div style={{ display: "flex" }}>
             <Link
-              to={"/" + list.id + "/edit?focus=title"}
+              to={"/" + note.id + "/edit?focus=title"}
               style={{
                 flexGrow: 1,
                 display: "block",
@@ -32,19 +28,21 @@ class SingleList extends Component {
                 fontWeight: 500,
               }}
             >
-              {list.title}
+              {note.title}
             </Link>
-            <NoteMenu selectedNote={list} />
+            <NoteMenu selectedNote={note} />
           </div>
         )}
         body={(
-          <div style={{ padding: "10px 12px 12px", minHeight: 66 }}>
-            <ListManager list={list} />
-          </div>
+          <Link to={"/" + note.id + "/edit?focus=body"}>
+            <pre style={{ padding: "10px 12px 12px", minHeight: 66 }}>
+              {note.body}
+            </pre>
+          </Link>
         )}
       />
     );
   }
 }
 
-export default SingleList;
+export default ShowNote;

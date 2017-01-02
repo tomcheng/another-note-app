@@ -2,8 +2,8 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import { withRouter } from "react-router";
-import SingleNote from "./SingleNote";
-import SingleList from "./SingleList";
+import ShowNote from "./ShowNote";
+import ShowList from "./ShowList";
 
 class Show extends Component {
   static propTypes = {
@@ -45,6 +45,7 @@ class Show extends Component {
               fontSize: 24,
               lineHeight: "42px",
               padding: "0 19px",
+              cursor: "pointer",
             }}
           >
             &times;
@@ -63,10 +64,10 @@ class Show extends Component {
             flexDirection: "column",
           }}>
             {selectedNote.type === "list" && (
-              <SingleList list={selectedNote} />
+              <ShowList list={selectedNote} />
             )}
             {selectedNote.type === "note" && (
-              <SingleNote note={selectedNote} />
+              <ShowNote note={selectedNote} />
             )}
           </div>
         </div>
