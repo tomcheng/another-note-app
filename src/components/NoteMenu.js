@@ -42,22 +42,6 @@ class NoteMenu extends Component {
     });
   };
 
-  handleClickHideChecked = () => {
-    const { onUpdateNote, selectedNote } = this.props;
-
-    this.setState({ menuOpen: false });
-
-    onUpdateNote({ id: selectedNote.id, updates: { hideChecked: true } });
-  };
-
-  handleClickShowChecked = () => {
-    const { onUpdateNote, selectedNote } = this.props;
-
-    this.setState({ menuOpen: false });
-
-    onUpdateNote({ id: selectedNote.id, updates: { hideChecked: false } });
-  };
-
   handleCloseDeleteModal = () => {
     this.setState({ deleteModalShowing: false });
   };
@@ -115,16 +99,6 @@ class NoteMenu extends Component {
               {selectedNote.type !== "list" && (
                 <PopoverItem onClick={this.handleClickConvertToList}>
                   Convert to List
-                </PopoverItem>
-              )}
-              {(selectedNote.type === "list" && !selectedNote.hideChecked) && (
-                <PopoverItem onClick={this.handleClickHideChecked}>
-                  Hide Completed Items
-                </PopoverItem>
-              )}
-              {(selectedNote.type === "list" && selectedNote.hideChecked) && (
-                <PopoverItem onClick={this.handleClickShowChecked}>
-                  Show Completed Items
                 </PopoverItem>
               )}
               <PopoverItem onClick={this.handleClickDelete}>

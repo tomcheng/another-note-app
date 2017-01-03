@@ -1,9 +1,11 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import { SortableContainer, arrayMove } from "react-sortable-hoc";
+import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
 import { Link } from "react-router";
+import sortBy from "lodash/sortBy";
 import Card from "./Card";
+import Button from "./Button";
 import NoteMenu from "./NoteMenu";
 import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
@@ -34,6 +36,17 @@ class ShowList extends Component {
         items: arrayMove(list.items, oldIndex, newIndex),
       },
     })
+  };
+
+  handleClickToggleShowChecked = () => {
+    const { onUpdateNote, list } = this.props;
+
+    onUpdateNote({
+      id: list.id,
+      updates: {
+        hideChecked: !list.hideChecked,
+      }
+    });
   };
 
   render () {
@@ -81,6 +94,30 @@ class ShowList extends Component {
                 />
               </div>
             </Link>
+            {list.items.some(item => item.checked) && (
+              <div style={{
+                textAlign: "center",
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}>
+                <Button
+                  buttonStyle="outline"
+                  onClick={this.handleClickToggleShowChecked}
+                >
+                  {list.hideChecked ? "Show completed items" : "Hide completed items"}
+                </Button>
+              </div>
+            )}
+            {!list.hideChecked && sortBy(list.items, "checkedAt").reverse().map(item => (
+              <ShowListItem
+                key={item.id}
+                height={LIST_HEIGHT}
+                isVisible={item.checked}
+                item={item}
+                listId={list.id}
+                onUpdateListItem={onUpdateListItem}
+              />
+            ))}
           </div>
         )}
       />
@@ -91,18 +128,22 @@ class ShowList extends Component {
 const ShowListItems = SortableContainer(({ items, list, onUpdateListItem }) => (
   <div>
     {items.map((item, index) => (
-      <ShowListItem
+      <SortableListItem
         key={item.id}
         index={index}
         height={LIST_HEIGHT}
-        isVisible={!list.hideChecked || !item.checked}
+        isVisible={!item.checked}
         item={item}
         listId={list.id}
         onUpdateListItem={onUpdateListItem}
       />
     ))}
   </div>
-))
+));
+
+const SortableListItem = SortableElement(props => (
+  <ShowListItem {...props} />
+));
 
 export default connect(null, {
   onUpdateListItem: actions.requestUpdateListItem,

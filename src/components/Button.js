@@ -23,6 +23,13 @@ const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
         border: "1px solid rgba(255,255,255,0.7)",
       };
       break;
+    case "outline":
+      styles = {
+        backgroundColor: "transparent",
+        color: "rgba(0,0,0,0.6)",
+        border: "1px solid rgba(0,0,0,0.2)",
+      };
+      break;
     default:
       break;
   }
@@ -47,7 +54,7 @@ const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
 };
 
 Button.propTypes = {
-  buttonStyle: PropTypes.oneOf(["link", "danger", "ghost"]).isRequired,
+  buttonStyle: PropTypes.oneOf(["link", "danger", "ghost", "outline"]).isRequired,
   children: PropTypes.any.isRequired,
   disabled: PropTypes.bool,
   style: PropTypes.object,

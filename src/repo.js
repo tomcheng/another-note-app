@@ -87,7 +87,7 @@ export const convertToList = ({ id }) => {
     hideChecked: false,
     items: oldNote.body.split("\n")
       .filter(value => value.trim() !== "")
-      .map((value, index) => ({ id: index + 1, value, checked: false })),
+      .map((value, index) => ({ id: index + 1, value, checked: false, checkedAt: null })),
     createdAt: oldNote.createdAt,
     updatedAt: moment().format(),
   };
@@ -103,8 +103,9 @@ export const addListItem = ({ listId, value }) => {
   const notes = getLocalNotes();
   const listIndex = findIndex(notes, { id: listId });
   const list = notes[listIndex];
+  const id = (max(list.items.map(item => item.id)) || 0) + 1;
 
-  list.items.push({ id: list.items.length + 1, value, checked: false });
+  list.items.push({ id, value, checked: false, checkedAt: null });
   list.updatedAt = moment().format();
 
   save({ key: "notes", payload: notes });
@@ -120,6 +121,14 @@ export const updateListItem = ({ listId, itemId, updates }) => {
 
   list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
   list.updatedAt = moment().format();
+
+  if (updates.checked === true) {
+    list.items[itemIndex].checkedAt = moment().format();
+  }
+
+  if (updates.checked === false) {
+    list.items[itemIndex].checkedAt = null;
+  }
 
   save({ key: "notes", payload: notes });
 

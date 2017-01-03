@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import { SortableElement } from "react-sortable-hoc";
 import Checkbox from "./Checkbox";
 
 const DEFAULT_LINE_HEIGHT = 22;
@@ -49,4 +48,4 @@ class ListItem extends Component {
   }
 }
 
-export default SortableElement(ListItem);
+export default ListItem;

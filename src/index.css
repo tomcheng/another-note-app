@@ -52,3 +52,7 @@ pre {
   font-weight: inherit;
   line-height: inherit;
 }
+
+button:focus {
+  outline: 0;
+}
