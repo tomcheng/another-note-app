@@ -40,7 +40,7 @@ export const addList = ({ title }) => {
     title,
     type: "list",
     items: [],
-    hideChecked: false,
+    hideChecked: true,
     createdAt: moment().format(),
     updatedAt: moment().format(),
   };
@@ -84,7 +84,7 @@ export const convertToList = ({ id }) => {
     id,
     title: oldNote.title,
     type: "list",
-    hideChecked: false,
+    hideChecked: true,
     items: oldNote.body.split("\n")
       .filter(value => value.trim() !== "")
       .map((value, index) => ({ id: index + 1, value, checked: false, checkedAt: null })),

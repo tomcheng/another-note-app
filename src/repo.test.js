@@ -12,7 +12,7 @@ const addNoteDefaults = note => defaults(note, {
 const addListDefaults = list => defaults(list, {
   type: "list",
   items: [],
-  hideChecked: false,
+  hideChecked: true,
   createdAt: moment().format(),
   updatedAt: moment().format(),
 });
