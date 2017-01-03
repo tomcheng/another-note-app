@@ -37,14 +37,13 @@ class TextInput extends Component {
   };
 
   render () {
-    const { style, refCallback, singleLine, maxRows, ...other } = this.props;
+    const { style, refCallback, ...other } = this.props;
 
     return (
       <Textarea
-        {...omit(other, ["onEnter"])}
+        {...omit(other, ["onEnter", "singleLine"])}
         onChange={this.handleChange}
         ref={refCallback}
-        maxRows={singleLine ? 1 : maxRows}
         style={{
           display: "block",
           fontFamily: "inherit",

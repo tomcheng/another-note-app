@@ -1,11 +1,11 @@
 import React, { PropTypes } from "react";
 import classNames from "classnames";
 
-const Icon = ({ icon, style, action, onClick }) => (
+const Icon = ({ icon, style, action, onClick, height }) => (
   <span
     style={{
       padding: action ? "0 10px" : null,
-      lineHeight: action ? "42px" : null,
+      lineHeight: action ? height + "px" : null,
     }}
     onClick={onClick}
   >
@@ -21,8 +21,13 @@ const Icon = ({ icon, style, action, onClick }) => (
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   action: PropTypes.bool,
+  height: PropTypes.number,
   style: PropTypes.object,
   onClick: PropTypes.func,
+};
+
+Icon.defaultProps = {
+  height: 42,
 };
 
 export default Icon;
