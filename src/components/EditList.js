@@ -20,6 +20,10 @@ class EditList extends Component {
     }).isRequired,
     list: PropTypes.shape({
       title: PropTypes.string.isRequired,
+      items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        checked: PropTypes.bool.isRequired,
+      })).isRequired,
     }).isRequired,
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
@@ -152,7 +156,7 @@ class EditList extends Component {
                   <EditListItem
                     key={item.id}
                     height={LIST_HEIGHT}
-                    isVisible={!list.hideChecked || !item.checked}
+                    isVisible={!item.checked}
                     item={item}
                     listId={list.id}
                     onDeleteListItem={onDeleteListItem}
