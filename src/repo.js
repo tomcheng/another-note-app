@@ -1,5 +1,6 @@
 import findIndex from "lodash/findIndex";
 import max from "lodash/max";
+import values from "lodash/values";
 import moment from "moment"
 
 const save = ({ key, payload }) => { localStorage.setItem(key, JSON.stringify(payload)); };
@@ -12,7 +13,10 @@ const getLocalNotes = () => {
   return JSON.parse(json);
 };
 
-export const getNotes = () => ({ notes: getLocalNotes() });
+export const getNotes = () => {
+  const notes = getLocalNotes();
+  return { notes };
+};
 
 export const addNote = ({ title }) => {
   const notes = getLocalNotes();
@@ -39,7 +43,8 @@ export const addList = ({ title }) => {
     id,
     title,
     type: "list",
-    items: [],
+    items: {},
+    order: [],
     hideChecked: true,
     createdAt: moment().format(),
     updatedAt: moment().format(),
@@ -80,14 +85,16 @@ export const convertToList = ({ id }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });
   const oldNote = notes[noteIndex];
+  const items = oldNote.body.split("\n")
+    .filter(value => value.trim() !== "")
+    .map((value, index) => ({ id: index + 1, value, checked: false, checkedAt: null }));
   const list = {
     id,
     title: oldNote.title,
     type: "list",
     hideChecked: true,
-    items: oldNote.body.split("\n")
-      .filter(value => value.trim() !== "")
-      .map((value, index) => ({ id: index + 1, value, checked: false, checkedAt: null })),
+    items,
+    order: items.map(item => item.id),
     createdAt: oldNote.createdAt,
     updatedAt: moment().format(),
   };
@@ -103,9 +110,10 @@ export const addListItem = ({ listId, value }) => {
   const notes = getLocalNotes();
   const listIndex = findIndex(notes, { id: listId });
   const list = notes[listIndex];
-  const id = (max(list.items.map(item => item.id)) || 0) + 1;
+  const id = (max(values(list.items).map(item => item.id)) || 0) + 1;
 
-  list.items.push({ id, value, checked: false, checkedAt: null });
+  list.items[id] = ({ id, value, checked: false, checkedAt: null });
+  list.order.push(id);
   list.updatedAt = moment().format();
 
   save({ key: "notes", payload: notes });
@@ -117,18 +125,45 @@ export const updateListItem = ({ listId, itemId, updates }) => {
   const notes = getLocalNotes();
   const listIndex = findIndex(notes, { id: listId });
   const list = notes[listIndex];
-  const itemIndex = findIndex(list.items, { id: itemId });
 
-  list.items[itemIndex] = { ...list.items[itemIndex], ...updates };
+  list.items[itemId] = { ...list.items[itemId], ...updates };
   list.updatedAt = moment().format();
 
-  if (updates.checked === true) {
-    list.items[itemIndex].checkedAt = moment().format();
-  }
+  save({ key: "notes", payload: notes });
 
-  if (updates.checked === false) {
-    list.items[itemIndex].checkedAt = null;
-  }
+  return { note: list };
+};
+
+export const checkListItem = ({ listId, itemId }) => {
+  const notes = getLocalNotes();
+  const listIndex = findIndex(notes, { id: listId });
+  const list = notes[listIndex];
+
+  list.items[itemId] = {
+    ...list.items[itemId],
+    checked: true,
+    checkedAt: moment().format(),
+  };
+  list.updatedAt = moment().format();
+  list.order = list.order.filter(id => id !== itemId);
+
+  save({ key: "notes", payload: notes });
+
+  return { note: list };
+};
+
+export const uncheckListItem = ({ listId, itemId }) => {
+  const notes = getLocalNotes();
+  const listIndex = findIndex(notes, { id: listId });
+  const list = notes[listIndex];
+
+  list.items[itemId] = {
+    ...list.items[itemId],
+    checked: false,
+    checkedAt: null,
+  };
+  list.updatedAt = moment().format();
+  list.order.push(itemId);
 
   save({ key: "notes", payload: notes });
 
@@ -140,7 +175,8 @@ export const deleteListItem = ({ listId, itemId }) => {
   const listIndex = findIndex(notes, { id: listId });
   const list = notes[listIndex];
 
-  list.items = list.items.filter(item => item.id !== itemId);
+  delete list.items[itemId];
+  list.order = list.order.filter(id => id !== itemId);
   list.updatedAt = moment().format();
 
   save({ key: "notes", payload: notes });

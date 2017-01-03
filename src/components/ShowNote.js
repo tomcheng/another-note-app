@@ -30,7 +30,9 @@ class ShowNote extends Component {
             >
               {note.title}
             </Link>
-            <NoteMenu selectedNote={note} />
+            <div style={{ flexShrink: 0 }}>
+              <NoteMenu selectedNote={note} />
+            </div>
           </div>
         )}
         body={(

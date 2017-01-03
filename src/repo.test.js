@@ -11,7 +11,8 @@ const addNoteDefaults = note => defaults(note, {
 
 const addListDefaults = list => defaults(list, {
   type: "list",
-  items: [],
+  items: {},
+  order: [],
   hideChecked: true,
   createdAt: moment().format(),
   updatedAt: moment().format(),
@@ -86,6 +87,7 @@ it("converts a note to a list", () => {
     id: 1,
     title: "foo",
     items: [{ id: 1, checked: false, value: "bar", checkedAt: null }],
+    order: [1]
   }) });
 });
 
@@ -108,7 +110,8 @@ it("adds a list item", () => {
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [{ id: 1, checked: false, value: "bar", checkedAt: null }],
+    items: { 1: { id: 1, checked: false, value: "bar", checkedAt: null } },
+    order: [1],
   }) });
 });
 
@@ -122,35 +125,59 @@ it("does not duplicate ids when adding a list item", () => {
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [
-      { id: 2, checked: false, value: "baz", checkedAt: null },
-      { id: 3, checked: false, value: "qux", checkedAt: null },
-    ],
+    items: {
+      2: {id: 2, checked: false, value: "baz", checkedAt: null},
+      3: {id: 3, checked: false, value: "qux", checkedAt: null},
+    },
+    order: [2, 3]
   }) });
 });
 
 it("updates a list item", () => {
   api.addList({ title: "foo" });
   api.addListItem({ listId: 1, value: "bar" });
-  const response = api.updateListItem({ listId: 1, itemId: 1, updates: { checked: true } });
+  const response = api.updateListItem({ listId: 1, itemId: 1, updates: { value: "baz" } });
 
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [{ id: 1, checked: true, value: "bar", checkedAt: moment().format() }],
+    items: { 1: { id: 1, checked: false, value: "baz", checkedAt: null } },
+    order: [1],
   }) });
 });
 
-it("it nulls checkedAt when unchecking a list item", () => {
+it("checks a list item", () => {
   api.addList({ title: "foo" });
   api.addListItem({ listId: 1, value: "bar" });
-  api.updateListItem({ listId: 1, itemId: 1, updates: { checked: true } });
-  const response = api.updateListItem({ listId: 1, itemId: 1, updates: { checked: false } });
+  api.addListItem({ listId: 1, value: "baz" });
+  const response = api.checkListItem({ listId: 1, itemId: 1 });
 
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [{ id: 1, checked: false, value: "bar", checkedAt: null }],
+    items: {
+      1: {id: 1, checked: true, value: "bar", checkedAt: moment().format()},
+      2: {id: 2, checked: false, value: "baz", checkedAt: null},
+    },
+    order: [2],
+  }) });
+});
+
+it("unchecks a list item", () => {
+  api.addList({ title: "foo" });
+  api.addListItem({ listId: 1, value: "bar" });
+  api.addListItem({ listId: 1, value: "baz" });
+  api.checkListItem({ listId: 1, itemId: 1 });
+  const response = api.uncheckListItem({ listId: 1, itemId: 1 });
+
+  expect(response).toEqual({ note: addListDefaults({
+    id: 1,
+    title: "foo",
+    items: {
+      1: {id: 1, checked: false, value: "bar", checkedAt: null},
+      2: {id: 2, checked: false, value: "baz", checkedAt: null},
+    },
+    order: [2, 1],
   }) });
 });
 
@@ -162,6 +189,7 @@ it("deletes a list item", () => {
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [],
+    items: {},
+    order: [],
   }) });
 });

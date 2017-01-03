@@ -73,6 +73,20 @@ sagas.push(function* () {
 });
 
 sagas.push(function* () {
+  yield takeEvery("REQUEST_CHECK_LIST_ITEM", function* ({ payload }) {
+    const response = yield call(api.checkListItem, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
+sagas.push(function* () {
+  yield takeEvery("REQUEST_UNCHECK_LIST_ITEM", function* ({ payload }) {
+    const response = yield call(api.uncheckListItem, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
+sagas.push(function* () {
   yield takeEvery("REQUEST_DELETE_LIST_ITEM", function* ({ payload }) {
     const response = yield call(api.deleteListItem, payload);
     yield put(actions.updateNote(response));

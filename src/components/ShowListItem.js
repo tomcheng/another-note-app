@@ -13,12 +13,18 @@ class ListItem extends Component {
       checked: PropTypes.bool.isRequired,
     }).isRequired,
     listId: PropTypes.number.isRequired,
-    onUpdateListItem: PropTypes.func.isRequired,
+    onCheckListItem: PropTypes.func.isRequired,
+    onUncheckListItem: PropTypes.func.isRequired,
   };
 
   handleChange = ({ target }) => {
-    const { onUpdateListItem, listId, item } = this.props;
-    onUpdateListItem({ listId, itemId: item.id, updates: { checked: target.checked } })
+    const { onCheckListItem, onUncheckListItem, listId, item } = this.props;
+
+    if (target.checked) {
+      onCheckListItem({ listId, itemId: item.id });
+    } else {
+      onUncheckListItem({ listId, itemId: item.id });
+    }
   };
 
   render () {

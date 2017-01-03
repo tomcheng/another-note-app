@@ -19,10 +19,11 @@ class EditList extends Component {
       }).isRequired,
     }).isRequired,
     list: PropTypes.shape({
+      id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      items: PropTypes.arrayOf(PropTypes.shape({
+      uncheckedItems: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        checked: PropTypes.bool.isRequired,
+        value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
     router: PropTypes.shape({
@@ -152,11 +153,10 @@ class EditList extends Component {
             )}
             body={(
               <div style={{ padding: "8px 12px 10px" }}>
-                {list.items.map(item => (
+                {list.uncheckedItems.map(item => (
                   <EditListItem
                     key={item.id}
                     height={LIST_HEIGHT}
-                    isVisible={!item.checked}
                     item={item}
                     listId={list.id}
                     onDeleteListItem={onDeleteListItem}
@@ -171,13 +171,14 @@ class EditList extends Component {
                         refCallback={el => { this.addItemField = el; }}
                         value={addItemValue}
                         placeholder="+ Add item"
-                        style={{ flexGrow: 1, marginLeft: -5 }}
+                        style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
                         onChange={this.handleChangeAddItem}
                         onEnter={this.handleEnterAddItem}
                         singleLine
                       />
                     )}
                     disabled
+                    alignWithTextInput
                   />
                 </div>
               </div>

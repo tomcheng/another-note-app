@@ -6,13 +6,14 @@ class Note extends Component {
     isSelected: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     note: PropTypes.shape({
-      body: PropTypes.string,
       id: PropTypes.number.isRequired,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        value: PropTypes.string,
-      })),
       title: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
+      body: PropTypes.string,
+      checkedItems: PropTypes.array,
+      unCheckedItems: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string,
+      })),
     }).isRequired,
   };
 
@@ -20,8 +21,10 @@ class Note extends Component {
     const { note } = this.props;
 
     if (note.type === "list") {
+      const totalItems = note.checkedItems.length + note.uncheckedItems.length;
+      const completedItems = note.checkedItems.length;
       return note.title +
-        " (" + note.items.filter(item => item.checked).length + "/" + note.items.length + ")";
+        " (" + completedItems + "/" + totalItems + ")";
     }
 
     return note.title;
@@ -31,11 +34,9 @@ class Note extends Component {
     const { note } = this.props;
 
     if (note.type === "list") {
-      const uncheckedItems = note.items.filter(item => !item.checked);
-
-      if (note.items.length === 0) { return "No items"; }
-      if (uncheckedItems.length === 0) { return "All done!"; }
-      return uncheckedItems[0].value;
+      if (note.checkedItems.length + note.uncheckedItems.length === 0 ) { return "No items"; }
+      if (note.uncheckedItems.length === 0) { return "All done!"; }
+      return note.uncheckedItems[0].value;
     }
 
     return note.body;

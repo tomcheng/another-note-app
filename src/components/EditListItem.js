@@ -6,7 +6,6 @@ import Checkbox from "./Checkbox";
 class EditListItem extends Component {
   static propTypes = {
     height: PropTypes.number.isRequired,
-    isVisible: PropTypes.bool.isRequired,
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       checked: PropTypes.bool.isRequired,
@@ -40,14 +39,11 @@ class EditListItem extends Component {
   };
 
   render () {
-    const { item, isVisible, height } = this.props;
+    const { item, height } = this.props;
     const { value } = this.state;
 
     return (
-      <div style={{
-        display: isVisible ? "flex" : "none",
-        alignItems: "center",
-      }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <Checkbox
           checked={item.checked}
           label={(

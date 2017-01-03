@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
 import { Link } from "react-router";
-import sortBy from "lodash/sortBy";
 import Card from "./Card";
 import Button from "./Button";
 import NoteMenu from "./NoteMenu";
@@ -18,12 +17,18 @@ class ShowList extends Component {
     list: PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      items: PropTypes.arrayOf(PropTypes.shape({
+      hideChecked: PropTypes.bool.isRequired,
+      uncheckedItems: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        value: PropTypes.string.isRequired,
+      })).isRequired,
+      checkedItems: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
-    onUpdateListItem: PropTypes.func.isRequired,
+    onCheckListItem: PropTypes.func.isRequired,
+    onUncheckListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -33,7 +38,7 @@ class ShowList extends Component {
     onUpdateNote({
       id: list.id,
       updates: {
-        items: arrayMove(list.items, oldIndex, newIndex),
+        order: arrayMove(list.uncheckedItems.map(item => item.id), oldIndex, newIndex),
       },
     })
   };
@@ -50,7 +55,7 @@ class ShowList extends Component {
   };
 
   render () {
-    const { list, onUpdateListItem } = this.props;
+    const { list, onCheckListItem, onUncheckListItem } = this.props;
 
     return (
       <Card
@@ -67,15 +72,17 @@ class ShowList extends Component {
             >
               {list.title}
             </Link>
-            <NoteMenu selectedNote={list} />
+            <div style={{ flexShrink: 0 }}>
+              <NoteMenu selectedNote={list} />
+            </div>
           </div>
         )}
         body={(
           <div style={{ padding: "8px 12px 10px" }}>
             <ShowListItems
-              items={list.items}
               list={list}
-              onUpdateListItem={onUpdateListItem}
+              onCheckListItem={onCheckListItem}
+              onUncheckListItem={onUncheckListItem}
               onSortEnd={this.onSortEnd}
               pressDelay={200}
               transitionDuration={200}
@@ -94,7 +101,7 @@ class ShowList extends Component {
                 />
               </div>
             </Link>
-            {list.items.some(item => item.checked) && (
+            {list.checkedItems.length > 0 && (
               <div style={{
                 textAlign: "center",
                 paddingTop: 10,
@@ -108,14 +115,15 @@ class ShowList extends Component {
                 </Button>
               </div>
             )}
-            {!list.hideChecked && sortBy(list.items, "checkedAt").reverse().map(item => (
+            {!list.hideChecked && list.checkedItems.map(item => (
               <ShowListItem
                 key={item.id}
                 height={LIST_HEIGHT}
                 isVisible={item.checked}
                 item={item}
                 listId={list.id}
-                onUpdateListItem={onUpdateListItem}
+                onCheckListItem={onCheckListItem}
+                onUncheckListItem={onUncheckListItem}
               />
             ))}
           </div>
@@ -125,17 +133,17 @@ class ShowList extends Component {
   }
 }
 
-const ShowListItems = SortableContainer(({ items, list, onUpdateListItem }) => (
+const ShowListItems = SortableContainer(({ list, ...other }) => (
   <div>
-    {items.map((item, index) => (
+    {list.uncheckedItems.map((item, index) => (
       <SortableListItem
+        {...other}
         key={item.id}
+        item={item}
+        listId={list.id}
         index={index}
         height={LIST_HEIGHT}
         isVisible={!item.checked}
-        item={item}
-        listId={list.id}
-        onUpdateListItem={onUpdateListItem}
       />
     ))}
   </div>
@@ -146,6 +154,7 @@ const SortableListItem = SortableElement(props => (
 ));
 
 export default connect(null, {
-  onUpdateListItem: actions.requestUpdateListItem,
+  onCheckListItem: actions.requestCheckListItem,
+  onUncheckListItem: actions.requestUncheckListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(ShowList);

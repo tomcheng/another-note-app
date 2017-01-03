@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import sortBy from "lodash/sortBy";
 import omit from "lodash/omit";
+import values from "lodash/values";
 
 export const actions = {};
 export const selectors = {};
@@ -20,6 +21,8 @@ actions.deleteNote               = payload => ({ type: "DELETE_NOTE", payload })
 actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
 actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
 actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
+actions.requestCheckListItem     = payload => ({ type: "REQUEST_CHECK_LIST_ITEM", payload });
+actions.requestUncheckListItem   = payload => ({ type: "REQUEST_UNCHECK_LIST_ITEM", payload });
 actions.requestDeleteListItem    = payload => ({ type: "REQUEST_DELETE_LIST_ITEM", payload });
 
 const initialState = {
@@ -30,6 +33,21 @@ const initialState = {
 };
 
 const notesToIds = notes => sortBy(notes, "updatedAt").reverse().map(note => note.id);
+
+const processNote = note => {
+  if (note.type === "list") {
+    const uncheckedItems = note.order.map(id => note.items[id]);
+    const checkedItems = sortBy(values(note.items).filter(item => item.checked), "checkedAt").reverse();
+
+    return {
+      ...omit(note, ["items", "order"]),
+      uncheckedItems,
+      checkedItems,
+    };
+  }
+
+  return note;
+};
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
@@ -55,7 +73,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         notes: payload.notes.reduce((acc, curr) => ({
           ...acc,
-          [curr.id]: curr,
+          [curr.id]: processNote(curr),
         }), {}),
         noteIds: notesToIds(payload.notes),
         notesLoaded: true,
@@ -63,7 +81,7 @@ const reducer = (state = initialState, action) => {
     case "ADD_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: payload.note,
+        [payload.note.id]: processNote(payload.note),
       };
 
       return {
@@ -79,7 +97,7 @@ const reducer = (state = initialState, action) => {
     case "UPDATE_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: payload.note,
+        [payload.note.id]: processNote(payload.note),
       };
 
       return {
@@ -106,7 +124,7 @@ const matches = (note, search) => {
   const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedBody = note.type === "list"
-    ? note.items.map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
+    ? values(note.items).map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
     : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   return processedTitle.indexOf(processedSearch) !== -1 ||
