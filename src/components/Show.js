@@ -73,7 +73,7 @@ class Show extends Component {
             textAlign: "right",
             display: "flex",
             justifyContent: "space-between",
-            padding: "0 5px 2px",
+            padding: "0 7px 2px",
           }}
         >
           <div
@@ -105,7 +105,7 @@ class Show extends Component {
           overflow: "hidden",
         }}>
           <div style={{
-            padding: "0 5px 6px",
+            padding: "0 10px 12px",
             display: "flex",
             flexDirection: "column",
           }}>

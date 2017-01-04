@@ -4,6 +4,15 @@ const FancyIcon = ({ icon }) => {
   let path = <noscript />;
 
   switch (icon) {
+    case "add":
+      path = (
+        <g>
+          <path fill="#fff" d="M12,2C6.486,2,2,6.486,2,12c0,5.515,4.486,10,10,10s10-4.485,
+          10-10C22,6.486,17.514,2,12,2z M12,20 c-4.411,0-8-3.589-8-8s3.589-8,8-8s8,3.589,8,8S16.411,20,12,20z" />
+          <polygon fill="#fff" points="13,7 11,7 11,11 7,11 7,13 11,13 11,17 13,17 13,13 17,13 17,11 13,11" />
+        </g>
+      );
+      break;
     case "close":
       path = (
         <polygon fill="#ffffff" points="20.707,4.707 19.293,3.293 12,10.586 4.707,3.293 3.293,
@@ -13,6 +22,26 @@ const FancyIcon = ({ icon }) => {
     case "left-arrow":
       path = (
         <path fill="#ffffff" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+      );
+      break;
+    case "list":
+      path = (
+        <g>
+          <polygon fill="#fff" points="11,8.586 9.707,7.293 8.293,8.707 11,11.415 15.707,6.707 14.293,5.293" />
+          <polygon fill="#fff" points="11,15.586 9.707,14.293 8.293,15.707 11,18.415 15.707,13.707 14.293,12.293" />
+          <path fill="#fff" d="M18,2H6C4.897,2,4,2.897,4,4v16c0,1.103,0.897,2,2,2h12c1.103,0,2-0.897,
+          2-2V4C20,2.897,19.103,2,18,2z M6,20V4h12l0.001,16H6z" />
+        </g>
+      );
+      break;
+    case "note":
+      path = (
+        <g>
+          <path fill="#fff" d="M15.414,2H6C4.897,2,4,2.898,4,4v16c0,1.103,0.897,2,2,2h12c1.103,0,
+          2-0.897,2-2V6.586L15.414,2z M18.001,20H6V4h8v4h4L18.001,20z" />
+          <rect x="8" y="11" fill="#fff" width="6" height="2" />
+          <rect x="8" y="15" fill="#fff" width="8" height="2" />
+        </g>
       );
       break;
     case "pencil":
@@ -63,14 +92,7 @@ const FancyIcon = ({ icon }) => {
 };
 
 FancyIcon.propTypes = {
-  icon: PropTypes.oneOf([
-    "close",
-    "left-arrow",
-    "pencil",
-    "pin",
-    "trash",
-    "vertical-ellipsis",
-  ]).isRequired,
+  icon: PropTypes.string.isRequired,
 };
 
 export default FancyIcon;

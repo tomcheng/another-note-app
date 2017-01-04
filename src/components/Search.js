@@ -3,6 +3,7 @@ import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Button from "./Button";
+import IconWithText from "./IconWithText";
 import "./Search.css";
 
 class Search extends Component {
@@ -65,40 +66,38 @@ class Search extends Component {
 
     return (
       <div style={{
-        position: "relative",
-        padding: "7px 6px 6px",
-        borderBottom: "1px solid rgba(0,0,0,0.18)",
+        padding: "0 10px",
+        borderBottom: "1px solid rgba(255,255,255,1)",
+        display: "flex",
+        alignItems: "center",
       }}>
         <input
           className="SearchInput"
-          placeholder="Search or add notes and lists"
+          style={{ flexGrow: 1 }}
+          placeholder="Search or Add"
           ref={el => { this.input = el; }}
           type="text"
           value={search}
           onChange={this.handleChangeSearch}
           onFocus={this.handleFocus}
         />
-        {search.trim() !== "" && (
-          <div style={{
-            position: "absolute",
-            top: 7,
-            right: 10,
-            height: 48,
-            display: "flex",
-            alignItems: "center",
-            color: "#fff",
-          }}>
-            <Button buttonStyle="link" onClick={this.handleClickAddNote}>
-              + note
-            </Button>
-            <Button buttonStyle="link" onClick={this.handleClickAddList}>
-              + list
-            </Button>
-            <Button buttonStyle="link" onClick={this.handleClickClear}>
-              clear
-            </Button>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          color: "#fff",
+        }}>
+          {search.trim() !== "" && (
+            <div onClick={this.handleClickClear}>
+              <IconWithText icon="close" text="Clear" />
+            </div>
+          )}
+          <div onClick={this.handleClickAddList}>
+            <IconWithText icon="list" text="Add List" />
           </div>
-        )}
+          <div onClick={this.handleClickAddNote}>
+            <IconWithText icon="note" text="Add Note" />
+          </div>
+        </div>
       </div>
     );
   }

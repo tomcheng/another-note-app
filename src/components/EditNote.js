@@ -87,7 +87,7 @@ class EditNote extends Component {
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          padding: "6px 5px",
+          padding: "12px 10px",
         }}>
           <Card
             header={(

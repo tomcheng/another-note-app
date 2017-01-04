@@ -31,8 +31,7 @@ class Notes extends Component {
       <div
         style={{
           overflow: "auto",
-          borderTop: "1px solid rgba(255,255,255,0.12)",
-          padding: "6px 5px",
+          padding: "12px 10px",
           flexShrink: 1,
         }}
       >
