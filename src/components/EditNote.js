@@ -12,6 +12,7 @@ class EditNote extends Component {
     location: PropTypes.shape({
       query: PropTypes.shape({
         focus: PropTypes.string,
+        just_added: PropTypes.string,
       }).isRequired,
     }).isRequired,
     note: PropTypes.shape({
@@ -21,6 +22,7 @@ class EditNote extends Component {
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
     }).isRequired,
+    onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
 
@@ -60,18 +62,30 @@ class EditNote extends Component {
     this.bodyField.focus();
   };
 
+  handleClickCancel = () => {
+    const { note, location, onDeleteNote, router } = this.props;
+
+    if (location.query.just_added === "true") {
+      onDeleteNote({
+        id: note.id,
+        callback: () => {
+          router.goBack();
+          router.goBack();
+        },
+      })
+    } else {
+      router.goBack();
+    }
+  };
+
   handleClickDone = () => {
-    const { note, onUpdateNote } = this.props;
+    const { note, onUpdateNote, router } = this.props;
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: this.redirect,
+      callback: () => { router.goBack(); },
     });
-  };
-
-  redirect = () => {
-    this.props.router.goBack();
   };
 
   render () {
@@ -134,7 +148,7 @@ class EditNote extends Component {
                 marginRight: 10,
                 opacity: 0.8,
               }}
-              onClick={this.redirect}
+              onClick={this.handleClickCancel}
             >
               Cancel
             </Button>
@@ -153,4 +167,5 @@ class EditNote extends Component {
 
 export default withRouter(connect(null, {
   onUpdateNote: actions.requestUpdateNote,
+  onDeleteNote: actions.requestDeleteNote,
 })(EditNote));

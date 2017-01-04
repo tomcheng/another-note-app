@@ -17,7 +17,7 @@ class Single extends Component {
   render () {
     const { params, location, notes, notesLoaded } = this.props;
 
-    if (!notesLoaded) { return <noscript />; }
+    if (!notesLoaded || !notes[params.id]) { return <noscript />; }
 
     const selectedNote = notes[params.id];
 

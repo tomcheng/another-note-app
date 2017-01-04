@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import Button from "./Button";
 import IconWithText from "./IconWithText";
 import "./Search.css";
 
@@ -39,24 +38,26 @@ class Search extends Component {
 
   handleClickAddNote = () => {
     const { router, onAddNote, search } = this.props;
+    const focus = search.trim() === "" ? "title" : "body";
 
     onAddNote({
       title: search,
       callback: ({ note }) => {
         router.push("/" + note.id);
-        router.push("/" + note.id + "/edit?focus=body");
+        router.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };
 
   handleClickAddList = () => {
     const { router, onAddList, search } = this.props;
+    const focus = search.trim() === "" ? "title" : "addItem";
 
     onAddList({
       title: search,
       callback: ({ note }) => {
         router.push("/" + note.id);
-        router.push("/" + note.id + "/edit?focus=addItem");
+        router.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };

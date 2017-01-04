@@ -16,6 +16,7 @@ class EditList extends Component {
     location: PropTypes.shape({
       query: PropTypes.shape({
         focus: PropTypes.string,
+        just_added: PropTypes.string,
       }).isRequired,
     }).isRequired,
     list: PropTypes.shape({
@@ -31,6 +32,7 @@ class EditList extends Component {
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
+    onDeleteNote: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -99,7 +101,7 @@ class EditList extends Component {
   };
 
   handleClickDone = () => {
-    const { list, onUpdateNote, onAddListItem } = this.props;
+    const { list, onUpdateNote, onAddListItem, router } = this.props;
     const { title, addItemValue } = this.state;
 
     if (addItemValue.trim() !== "") {
@@ -109,12 +111,24 @@ class EditList extends Component {
     onUpdateNote({
       id: list.id,
       updates: { title },
-      callback: this.redirect,
+      callback: () => { router.goBack(); },
     });
   };
 
-  redirect = () => {
-    this.props.router.goBack();
+  handleClickCancel = () => {
+    const { list, location, onDeleteNote, router } = this.props;
+
+    if (location.query.just_added === "true") {
+      onDeleteNote({
+        id: list.id,
+        callback: () => {
+          router.goBack();
+          router.goBack();
+        },
+      })
+    } else {
+      router.goBack();
+    }
   };
 
   render () {
@@ -194,7 +208,7 @@ class EditList extends Component {
                 marginRight: 10,
                 opacity: 0.8,
               }}
-              onClick={this.redirect}
+              onClick={this.handleClickCancel}
             >
               Cancel
             </Button>
@@ -222,6 +236,7 @@ class EditList extends Component {
 export default withRouter(connect(null, {
   onAddListItem: actions.requestAddListItem,
   onDeleteListItem: actions.requestDeleteListItem,
+  onDeleteNote: actions.requestDeleteNote,
   onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(EditList));
