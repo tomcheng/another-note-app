@@ -31,6 +31,21 @@ it("takes into account special characters when matching", () => {
   expect(selectors.getVisibleNoteIds(state)).toEqual([2]);
 });
 
+it("Searches list items", () => {
+  let state = reducer(undefined, actions.loadNotes({
+    notes: [{
+      id: 1,
+      title: "foo",
+      type: "list",
+      order: [1],
+      items: { 1: { id: 1, value: "foo" } }
+    }],
+  }));
+  state = reducer(state, actions.updateSearch({ search: "foo" }));
+
+  expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
+});
+
 it("initializes with a list of empty notes", () => {
   const state = reducer(undefined, {});
 

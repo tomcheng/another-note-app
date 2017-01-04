@@ -124,7 +124,7 @@ const matches = (note, search) => {
   const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedBody = note.type === "list"
-    ? values(note.items).map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
+    ? note.checkedItems.concat(note.uncheckedItems).map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
     : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   return processedTitle.indexOf(processedSearch) !== -1 ||
