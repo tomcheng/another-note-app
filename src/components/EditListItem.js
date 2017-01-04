@@ -43,30 +43,27 @@ class EditListItem extends Component {
     const { value } = this.state;
 
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Checkbox
-          checked={item.checked}
-          label={(
-            <div style={{ flexGrow: 1, display: "flex" }}>
-              <TextInput
-                style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
-                value={value}
-                onBlur={this.handleBlur}
-                onChange={this.handleChange}
-                singleLine
-              />
-              <Icon
-                onClick={this.handleClickDelete}
-                icon="trash-o"
-                action
-                height={height}
-              />
-            </div>
-          )}
-          disabled
-          alignWithTextInput
-        />
-      </div>
+      <Checkbox
+        checked={item.checked}
+        label={(
+          <div style={{ flexGrow: 1, display: "flex" }}>
+            <TextInput
+              style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
+              value={value}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
+              singleLine
+            />
+            <Icon
+              onClick={this.handleClickDelete}
+              icon="trash-o"
+              action
+              height={height}
+            />
+          </div>
+        )}
+        disabled
+      />
     );
   }
 }

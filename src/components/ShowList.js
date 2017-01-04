@@ -10,8 +10,6 @@ import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
 import "./ShowList.css";
 
-const LIST_HEIGHT = 36;
-
 class ShowList extends Component {
   static propTypes = {
     list: PropTypes.shape({
@@ -72,17 +70,15 @@ class ShowList extends Component {
               helperClass="listItemDragging"
             />
             <Link to={"/" + list.id + "/edit?focus=addItem"}>
-              <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
-                <Checkbox
-                  checked={false}
-                  label={(
-                    <div style={{ opacity: 0.4 }}>
-                      + Add item
-                    </div>
-                  )}
-                  disabled
-                />
-              </div>
+              <Checkbox
+                checked={false}
+                label={(
+                  <div style={{ opacity: 0.4, padding: "7px 0" }}>
+                    + Add item
+                  </div>
+                )}
+                disabled
+              />
             </Link>
             {list.checkedItems.length > 0 && (
               <div style={{
@@ -101,8 +97,6 @@ class ShowList extends Component {
             {!list.hideChecked && list.checkedItems.map(item => (
               <ShowListItem
                 key={item.id}
-                height={LIST_HEIGHT}
-                isVisible={item.checked}
                 item={item}
                 listId={list.id}
                 onCheckListItem={onCheckListItem}
@@ -125,8 +119,6 @@ const ShowListItems = SortableContainer(({ list, ...other }) => (
         item={item}
         listId={list.id}
         index={index}
-        height={LIST_HEIGHT}
-        isVisible={!item.checked}
       />
     ))}
   </div>

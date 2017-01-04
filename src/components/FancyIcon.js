@@ -13,6 +13,14 @@ const FancyIcon = ({ icon }) => {
         </g>
       );
       break;
+    case "checked":
+      path = (
+        <g>
+          <path fill="#222" d="M19,19H5V5H15V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0
+          21,19V11H19M7.91,10.08L6.5,11.5L11,16L21,6L19.59,4.58L11,13.17L7.91,10.08Z" />
+        </g>
+      );
+      break;
     case "close":
       path = (
         <polygon fill="#ffffff" points="20.707,4.707 19.293,3.293 12,10.586 4.707,3.293 3.293,
@@ -70,6 +78,11 @@ const FancyIcon = ({ icon }) => {
           <rect x="9" y="12" fill="#ffffff" width="2" height="6"/>
           <rect x="13" y="12" fill="#ffffff" width="2" height="6"/>
         </g>
+      );
+      break;
+    case "unchecked":
+      path = (
+        <path fill="#222" d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z" />
       );
       break;
     case "vertical-ellipsis":
