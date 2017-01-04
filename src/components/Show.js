@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import { withRouter } from "react-router";
+import { withRouter, Link } from "react-router";
 import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowNote from "./ShowNote";
@@ -83,9 +83,12 @@ class Show extends Component {
             <FancyIcon icon="left-arrow" />
           </div>
           <div style={{ display: "flex" }}>
-            <div style={{ padding: "9px 9px", cursor: "pointer" }}>
+            <Link
+              to={"/" + selectedNote.id + "/edit?focus=title"}
+              style={{ display: "block", padding: "9px 9px" }}
+            >
               <FancyIcon icon="pencil" />
-            </div>
+            </Link>
             <div
               onClick={this.handleClickDelete}
               style={{ padding: "9px 9px", cursor: "pointer" }}
