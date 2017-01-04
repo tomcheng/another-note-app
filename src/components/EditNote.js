@@ -91,36 +91,38 @@ class EditNote extends Component {
         }}>
           <Card
             header={(
-              <TextInput
-                name="body"
-                value={title}
-                placeholder="Add a title"
-                refCallback={el => { this.titleField = el; }}
-                onChange={this.handleChangeTitle}
-                onEnter={this.handleEnterTitle}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: "3px 3px 0 0",
-                  fontWeight: 500,
-                }}
-                singleLine
-              />
+              <div style={{ padding: "7px 7px 0" }}>
+                <TextInput
+                  value={title}
+                  placeholder="Add a title"
+                  refCallback={el => { this.titleField = el; }}
+                  onChange={this.handleChangeTitle}
+                  onEnter={this.handleEnterTitle}
+                  style={{
+                    width: "100%",
+                    padding: "5px 8px",
+                    fontSize: 24,
+                    lineHeight: "30px",
+                  }}
+                  singleLine
+                />
+              </div>
             )}
             body={(
-              <TextInput
-                name="body"
-                value={body}
-                placeholder="Add a note"
-                refCallback={el => { this.bodyField = el; }}
-                onChange={this.handleChangeBody}
-                minRows={2}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px 12px",
-                  borderRadius: "0 0 3px 3px",
-                }}
-              />
+              <div style={{ padding: "2px 7px 7px" }}>
+                <TextInput
+                  name="body"
+                  value={body}
+                  placeholder="Add a note"
+                  refCallback={el => { this.bodyField = el; }}
+                  onChange={this.handleChangeBody}
+                  minRows={2}
+                  style={{
+                    width: "100%",
+                    padding: "5px 8px",
+                  }}
+                />
+              </div>
             )}
           />
         </div>

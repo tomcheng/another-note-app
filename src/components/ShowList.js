@@ -61,7 +61,7 @@ class ShowList extends Component {
       <Card
         header={<ShowHeader note={list} />}
         body={(
-          <div style={{ padding: "8px 12px 10px" }}>
+          <div style={{ padding: "7px 15px 12px" }}>
             <ShowListItems
               list={list}
               onCheckListItem={onCheckListItem}

@@ -10,7 +10,7 @@ const Card = ({ header, body }) => (
     display: "flex",
     flexDirection: "column",
   }}>
-    <div style={{ flexShrink: 0, borderBottom: "1px solid #2e8486" }}>
+    <div style={{ flexShrink: 0 }}>
       {header}
     </div>
     <div style={{ flexShrink: 1, overflow: "auto" }}>

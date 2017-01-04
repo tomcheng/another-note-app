@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import { withRouter } from "react-router";
+import FancyIcon from "./FancyIcon";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
 
@@ -31,24 +32,31 @@ class Show extends Component {
         overflow: "hidden",
         height: "100%",
       }}>
-        <div style={{
-          flexShrink: 0,
-          color: "#fff",
-          textAlign: "right",
-        }}>
-          <span
-            className="showClose"
+        <div
+          className="showClose"
+          style={{
+            flexShrink: 0,
+            color: "#fff",
+            textAlign: "right",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 5px 2px",
+          }}
+        >
+          <div
             onClick={router.goBack}
-            style={{
-              fontSize: 24,
-              lineHeight: "42px",
-              padding: "0 19px",
-              cursor: "pointer",
-              display: "inline-block",
-            }}
+            style={{ padding: "9px 9px", cursor: "pointer" }}
           >
-            &times;
-          </span>
+            <FancyIcon icon="left-arrow" />
+          </div>
+          <div style={{ display: "flex" }}>
+            <div style={{ padding: "9px 9px", cursor: "pointer" }}>
+              <FancyIcon icon="pencil" />
+            </div>
+            <div style={{ padding: "9px 9px", cursor: "pointer" }}>
+              <FancyIcon icon="trash" />
+            </div>
+          </div>
         </div>
         <div style={{
           display: "flex",

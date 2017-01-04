@@ -135,24 +135,25 @@ class EditList extends Component {
         }}>
           <Card
             header={(
-              <TextInput
-                name="body"
-                value={title}
-                placeholder="Add a title"
-                refCallback={el => { this.titleField = el; }}
-                onChange={this.handleChangeTitle}
-                onEnter={this.handleEnterTitle}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: "3px 3px 0 0",
-                  fontWeight: 500,
-                }}
-                singleLine
-              />
+              <div style={{ padding: "7px 7px 0" }}>
+                <TextInput
+                  value={title}
+                  placeholder="Add a title"
+                  refCallback={el => { this.titleField = el; }}
+                  onChange={this.handleChangeTitle}
+                  onEnter={this.handleEnterTitle}
+                  style={{
+                    width: "100%",
+                    padding: "5px 8px",
+                    fontSize: 24,
+                    lineHeight: "30px",
+                  }}
+                  singleLine
+                />
+              </div>
             )}
             body={(
-              <div style={{ padding: "8px 12px 10px" }}>
+              <div style={{ padding: "7px 15px 12px" }}>
                 {list.uncheckedItems.map(item => (
                   <EditListItem
                     key={item.id}

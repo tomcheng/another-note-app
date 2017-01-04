@@ -52,6 +52,7 @@ class TextInput extends Component {
           color: "inherit",
           resize: "none",
           padding: "3px 5px",
+          borderRadius: 3,
           ...style,
         }}
       />
