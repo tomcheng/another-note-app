@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import Card from "./Card";
-import NoteMenu from "./NoteMenu";
+import ShowHeader from "./ShowHeader";
 
 class ShowNote extends Component {
   static propTypes = {
@@ -17,24 +17,7 @@ class ShowNote extends Component {
 
     return (
       <Card
-        header={(
-          <div style={{ display: "flex" }}>
-            <Link
-              to={"/" + note.id + "/edit?focus=title"}
-              style={{
-                flexGrow: 1,
-                display: "block",
-                padding: "10px 12px",
-                fontWeight: 500,
-              }}
-            >
-              {note.title}
-            </Link>
-            <div style={{ flexShrink: 0 }}>
-              <NoteMenu selectedNote={note} />
-            </div>
-          </div>
-        )}
+        header={<ShowHeader note={note} />}
         body={(
           <Link to={"/" + note.id + "/edit?focus=body"}>
             <pre style={{

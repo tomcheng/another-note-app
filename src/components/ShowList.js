@@ -5,7 +5,7 @@ import { SortableContainer, SortableElement, arrayMove } from "react-sortable-ho
 import { Link } from "react-router";
 import Card from "./Card";
 import Button from "./Button";
-import NoteMenu from "./NoteMenu";
+import ShowHeader from "./ShowHeader";
 import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
 import "./ShowList.css";
@@ -59,24 +59,7 @@ class ShowList extends Component {
 
     return (
       <Card
-        header={(
-          <div style={{ display: "flex" }}>
-            <Link
-              to={"/" + list.id + "/edit?focus=title"}
-              style={{
-                flexGrow: 1,
-                display: "block",
-                padding: "10px 12px",
-                fontWeight: 500,
-              }}
-            >
-              {list.title}
-            </Link>
-            <div style={{ flexShrink: 0 }}>
-              <NoteMenu selectedNote={list} />
-            </div>
-          </div>
-        )}
+        header={<ShowHeader note={list} />}
         body={(
           <div style={{ padding: "8px 12px 10px" }}>
             <ShowListItems
