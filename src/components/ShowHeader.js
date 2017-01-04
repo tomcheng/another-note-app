@@ -2,13 +2,12 @@ import React, { PropTypes } from "react";
 import { Link } from "react-router";
 
 const ShowHeader = ({ note }) => (
-  <div style={{ display: "flex" }}>
+  <div style={{ padding: "7px 7px 0" }}>
     <Link
       to={"/" + note.id + "/edit?focus=title"}
       style={{
-        flexGrow: 1,
         display: "block",
-        padding: "12px 15px 5px",
+        padding: "5px 8px",
         fontSize: 24,
         lineHeight: "30px",
       }}
