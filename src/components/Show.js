@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { selectors } from "../reducer";
+import { actions, selectors } from "../reducer";
 import { withRouter } from "react-router";
 import FancyIcon from "./FancyIcon";
+import DeleteModal from "./DeleteModal";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
 
@@ -15,11 +16,37 @@ class Show extends Component {
     }).isRequired,
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
+      push: PropTypes.func.isRequired,
     }).isRequired,
+    onDeleteNote: PropTypes.func.isRequired,
+  };
+
+  state = {
+    deleteModalOpen: false,
+  };
+
+  handleClickDelete = () => {
+    this.setState({ deleteModalOpen: true });
+  };
+
+  handleCloseDeleteModal = () => {
+    this.setState({ deleteModalOpen: false });
+  };
+
+  handleDeleteNote = () => {
+    const { onDeleteNote, params, router } = this.props;
+
+    this.setState({ deleteModalOpen: false });
+
+    onDeleteNote({
+      id: parseInt(params.id, 10),
+      callback: () => { router.push("/"); },
+    });
   };
 
   render () {
     const { params, router, notes, notesLoaded } = this.props;
+    const { deleteModalOpen } = this.state;
 
     if (!notesLoaded || !params.id || !notes[params.id]) { return <noscript />; }
 
@@ -32,6 +59,12 @@ class Show extends Component {
         overflow: "hidden",
         height: "100%",
       }}>
+        <DeleteModal
+          isOpen={deleteModalOpen}
+          onClose={this.handleCloseDeleteModal}
+          onDelete={this.handleDeleteNote}
+          noteType={selectedNote.type}
+        />
         <div
           className="showClose"
           style={{
@@ -53,7 +86,10 @@ class Show extends Component {
             <div style={{ padding: "9px 9px", cursor: "pointer" }}>
               <FancyIcon icon="pencil" />
             </div>
-            <div style={{ padding: "9px 9px", cursor: "pointer" }}>
+            <div
+              onClick={this.handleClickDelete}
+              style={{ padding: "9px 9px", cursor: "pointer" }}
+            >
               <FancyIcon icon="trash" />
             </div>
           </div>
@@ -88,4 +124,6 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
 });
 
-export default withRouter(connect(mapStateToProps)(Show));
+export default withRouter(connect(mapStateToProps, {
+  onDeleteNote: actions.requestDeleteNote,
+})(Show));
