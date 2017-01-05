@@ -46,9 +46,9 @@ class EditListItem extends Component {
       <Checkbox
         checked={item.checked}
         label={(
-          <div style={{ flexGrow: 1, display: "flex" }}>
+          <div style={{ flexGrow: 1, display: "flex", padding: "2px 0" }}>
             <TextInput
-              style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
+              style={{ flexGrow: 1, marginLeft: -5 }}
               value={value}
               onBlur={this.handleBlur}
               onChange={this.handleChange}

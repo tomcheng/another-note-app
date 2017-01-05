@@ -180,15 +180,17 @@ class EditList extends Component {
                 <Checkbox
                   checked={false}
                   label={(
-                    <TextInput
-                      refCallback={el => { this.addItemField = el; }}
-                      value={addItemValue}
-                      placeholder="+ Add item"
-                      style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
-                      onChange={this.handleChangeAddItem}
-                      onEnter={this.handleEnterAddItem}
-                      singleLine
-                    />
+                    <div style={{ padding: "2px 0", display: "flex", flexGrow: 1 }}>
+                      <TextInput
+                        refCallback={el => { this.addItemField = el; }}
+                        value={addItemValue}
+                        placeholder="+ Add item"
+                        style={{ flexGrow: 1, marginLeft: -5 }}
+                        onChange={this.handleChangeAddItem}
+                        onEnter={this.handleEnterAddItem}
+                        singleLine
+                      />
+                    </div>
                   )}
                   disabled
                 />
