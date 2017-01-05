@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { actions } from "../reducer";
 import capitalize from "lodash/capitalize";
-import Icon from "./Icon";
 import Button from "./Button";
 import PopoverItem from "./PopoverItem";
 
@@ -71,11 +70,7 @@ class NoteMenu extends Component {
 
     return (
       <div style={{ position: "relative" }}>
-        <Icon
-          icon="ellipsis-v"
-          action
-          onClick={this.handleClickIcon}
-        />
+        (vertical ellipsis)
         {menuOpen && (
           <div>
             <div
