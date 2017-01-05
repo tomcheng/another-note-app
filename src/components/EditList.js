@@ -143,9 +143,8 @@ class EditList extends Component {
       }}>
         <div style={{
           flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
           padding: "12px 10px",
+          overflow: "auto",
         }}>
           <Card
             header={(

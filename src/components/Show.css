@@ -4,5 +4,5 @@
 
 .showHeader-appear.showHeader-appear-active {
   opacity: 1;
-  transition: opacity 0.2s ease-in-out 0.3s;
+  transition: opacity 0.15s ease-in-out 0.25s;
 }

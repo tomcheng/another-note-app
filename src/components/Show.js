@@ -117,8 +117,8 @@ class Show extends Component {
         }}>
           <div style={{
             padding: "12px 10px",
-            display: "flex",
-            flexDirection: "column",
+            height: "100%",
+            overflow: "auto",
           }}>
             {selectedNote.type === "list" && (
               <ShowList list={selectedNote} />

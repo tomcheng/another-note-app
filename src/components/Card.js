@@ -5,15 +5,12 @@ const Card = ({ header, body }) => (
     backgroundColor: "#fff",
     backgroundClip: "padding-box",
     border: "1px solid rgba(0,0,0,0.1)",
-    overflow: "hidden",
     borderRadius: 3,
-    display: "flex",
-    flexDirection: "column",
   }}>
-    <div style={{ flexShrink: 0 }}>
+    <div>
       {header}
     </div>
-    <div style={{ flexShrink: 1, overflow: "auto" }}>
+    <div>
       {body}
     </div>
   </div>
