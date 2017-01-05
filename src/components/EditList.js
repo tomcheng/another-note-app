@@ -9,8 +9,6 @@ import EditListItem from "./EditListItem";
 import Checkbox from "./Checkbox";
 import PreviewFooter from "./PreviewFooter";
 
-const LIST_HEIGHT = 36;
-
 class EditList extends Component {
   static propTypes = {
     location: PropTypes.shape({
@@ -166,7 +164,6 @@ class EditList extends Component {
                 {list.uncheckedItems.map(item => (
                   <EditListItem
                     key={item.id}
-                    height={LIST_HEIGHT}
                     item={item}
                     listId={list.id}
                     onDeleteListItem={onDeleteListItem}

@@ -1,11 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import TextInput from "./TextInput";
-import Icon from "./Icon";
+import FancyIcon from "./FancyIcon";
 import Checkbox from "./Checkbox";
 
 class EditListItem extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       checked: PropTypes.bool.isRequired,
@@ -20,7 +19,10 @@ class EditListItem extends Component {
   constructor (props) {
     super(props);
 
-    this.state = { value: props.item.value };
+    this.state = {
+      value: props.item.value,
+      isFocused: false,
+    };
   }
 
   handleChange = ({ target }) => {
@@ -31,6 +33,12 @@ class EditListItem extends Component {
     const { onUpdateListItem, listId, item } = this.props;
 
     onUpdateListItem({ listId, itemId: item.id, updates: this.state });
+
+    setTimeout(() => { this.setState({ isFocused: false }); }, 50);
+  };
+
+  handleFocus = () => {
+    this.setState({ isFocused: true });
   };
 
   handleClickDelete = () => {
@@ -40,8 +48,8 @@ class EditListItem extends Component {
   };
 
   render () {
-    const { item, height, refCallback } = this.props;
-    const { value } = this.state;
+    const { item, refCallback } = this.props;
+    const { value, isFocused } = this.state;
 
     return (
       <Checkbox
@@ -52,16 +60,16 @@ class EditListItem extends Component {
               style={{ flexGrow: 1, marginLeft: -5 }}
               value={value}
               onBlur={this.handleBlur}
+              onFocus={this.handleFocus}
               onChange={this.handleChange}
               refCallback={refCallback}
               singleLine
             />
-            <Icon
-              onClick={this.handleClickDelete}
-              icon="trash-o"
-              action
-              height={height}
-            />
+            {isFocused && (
+              <div onClick={this.handleClickDelete} style={{ padding: 4 }}>
+                <FancyIcon icon="trash" color="#222" />
+              </div>
+            )}
           </div>
         )}
         disabled
