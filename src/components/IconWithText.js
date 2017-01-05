@@ -1,8 +1,8 @@
 import React, { PropTypes } from "react";
 import FancyIcon from "./FancyIcon";
 
-const IconWithText = ({ icon, text }) => (
-  <div style={{ textAlign: "center", width: 48 }}>
+const IconWithText = ({ icon, text, width }) => (
+  <div style={{ textAlign: "center", width }}>
     <div style={{ margin: "9px auto 0", width: 24 }}>
       <FancyIcon icon={icon} />
     </div>
@@ -21,6 +21,11 @@ const IconWithText = ({ icon, text }) => (
 IconWithText.propTypes = {
   icon: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  width: PropTypes.number,
+};
+
+IconWithText.defaultProps = {
+  width: 48,
 };
 
 export default IconWithText;

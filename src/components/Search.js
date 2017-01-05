@@ -67,11 +67,12 @@ class Search extends Component {
 
     return (
       <div style={{
-        padding: "0 10px",
-        backgroundColor: "rgba(0,0,0,0.4)",
-        boxShadow: "0 0 3px rgba(0,0,0,0.12) inset",
+        padding: "0 10px 0 6px",
         display: "flex",
         alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        boxShadow: "inset 0 -1px 1px rgba(0,0,0,0.2)",
+        borderBottom: "1px solid rgba(255,255,255,0.2)",
       }}>
         <input
           className="SearchInput"
@@ -94,10 +95,10 @@ class Search extends Component {
             </div>
           )}
           <div onClick={this.handleClickAddList}>
-            <IconWithText icon="list" text="Add List" />
+            <IconWithText icon="list" text="Add List" width={54} />
           </div>
           <div onClick={this.handleClickAddNote}>
-            <IconWithText icon="note" text="Add Note" />
+            <IconWithText icon="note" text="Add Note" width={54} />
           </div>
         </div>
       </div>

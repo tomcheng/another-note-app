@@ -143,7 +143,7 @@ class EditList extends Component {
       }}>
         <div style={{
           flexGrow: 1,
-          padding: "12px 10px",
+          padding: 6,
           overflow: "auto",
         }}>
           <Card
@@ -210,14 +210,15 @@ class EditList extends Component {
             >
               Cancel
             </Button>
-            <Button
-              buttonStyle="ghost"
-              style={{ marginRight: 10 }}
-              disabled={addItemValue.trim() === ""}
-              onClick={this.handleClickAddAnother}
-            >
-              Add Another
-            </Button>
+            {addItemValue.trim() !== "" && (
+              <Button
+                buttonStyle="ghost"
+                style={{ marginRight: 10 }}
+                onClick={this.handleClickAddAnother}
+              >
+                Add Another
+              </Button>
+            )}
             <Button
               buttonStyle="ghost"
               onClick={this.handleClickDone}

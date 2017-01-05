@@ -82,8 +82,9 @@ class Show extends Component {
               display: "flex",
               justifyContent: "space-between",
               padding: "0 7px 2px",
-              backgroundColor: "rgba(0,0,0,0.4)",
-              boxShadow: "0 0 3px rgba(0,0,0,0.12) inset",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              boxShadow: "inset 0 -1px 1px rgba(0,0,0,0.2)",
+              borderBottom: "1px solid rgba(255,255,255,0.2)",
             }}
           >
             <div
@@ -116,7 +117,7 @@ class Show extends Component {
           overflow: "hidden",
         }}>
           <div style={{
-            padding: "12px 10px",
+            padding: 6,
             height: "100%",
             overflow: "auto",
           }}>
