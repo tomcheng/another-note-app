@@ -12,7 +12,9 @@ const ShowHeader = ({ note }) => (
         lineHeight: "30px",
       }}
     >
-      {note.title}
+      {note.title.trim() === "" ? (
+        <span style={{ opacity: 0.4 }}>Add Title</span>
+      ) : note.title}
     </Link>
   </div>
 );

@@ -108,7 +108,7 @@ class EditNote extends Component {
               <div style={{ padding: "7px 7px 0" }}>
                 <TextInput
                   value={title}
-                  placeholder="Add a title"
+                  placeholder="Add Title"
                   refCallback={el => { this.titleField = el; }}
                   onChange={this.handleChangeTitle}
                   onEnter={this.handleEnterTitle}
@@ -127,7 +127,7 @@ class EditNote extends Component {
                 <TextInput
                   name="body"
                   value={body}
-                  placeholder="Add a note"
+                  placeholder="Add Description"
                   refCallback={el => { this.bodyField = el; }}
                   onChange={this.handleChangeBody}
                   minRows={2}

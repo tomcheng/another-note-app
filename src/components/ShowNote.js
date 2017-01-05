@@ -25,8 +25,9 @@ class ShowNote extends Component {
               minHeight: 66,
               whiteSpace: "pre-wrap",
               wordWrap: "break-word",
+              opacity: note.body.trim() === "" ? 0.4 : null,
             }}>
-              {note.body}
+              {note.body.trim() === "" ? "Add Description" : note.body}
             </pre>
           </Link>
         )}
