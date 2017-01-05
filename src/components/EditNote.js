@@ -92,17 +92,8 @@ class EditNote extends Component {
     const { title, body } = this.state;
 
     return (
-      <div style={{
-        flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
-      }}>
-        <div style={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          padding: 6,
-        }}>
+      <div style={{ height: "100%", overflow: "auto" }}>
+        <div style={{ padding: "6px 6px 60px" }}>
           <Card
             header={(
               <div style={{ padding: "7px 7px 0" }}>
@@ -140,7 +131,7 @@ class EditNote extends Component {
             )}
           />
         </div>
-        <div style={{ flexShrink: 0 }}>
+        <div style={{ position: "fixed", left: 0, right: 0, bottom: 0 }}>
           <PreviewFooter>
             <Button
               buttonStyle="link"
