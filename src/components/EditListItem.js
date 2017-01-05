@@ -12,6 +12,7 @@ class EditListItem extends Component {
       value: PropTypes.string.isRequired,
     }).isRequired,
     listId: PropTypes.number.isRequired,
+    refCallback: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
@@ -39,7 +40,7 @@ class EditListItem extends Component {
   };
 
   render () {
-    const { item, height } = this.props;
+    const { item, height, refCallback } = this.props;
     const { value } = this.state;
 
     return (
@@ -52,6 +53,7 @@ class EditListItem extends Component {
               value={value}
               onBlur={this.handleBlur}
               onChange={this.handleChange}
+              refCallback={refCallback}
               singleLine
             />
             <Icon

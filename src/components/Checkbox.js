@@ -12,11 +12,16 @@ class Checkbox extends Component {
     const { checked, label, disabled } = this.props;
 
     return (
-      <label
-        onClick={this.handleClick}
-        style={{ width: "100%", display: "flex" }}
-      >
-        <div style={{ position: "relative", top: 6, marginRight: 6, opacity: disabled ? 0.2 : 0.8 }}>
+      <label style={{ width: "100%", display: "flex" }}>
+        <div
+          onClick={this.handleClick}
+          style={{
+            paddingTop: 6,
+            paddingBottom: 6,
+            paddingRight: 6,
+            opacity: disabled ? 0.2 : 0.8,
+          }}
+        >
           {checked ? (
               <FancyIcon icon="checked" />
             ) : (

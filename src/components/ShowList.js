@@ -73,7 +73,11 @@ class ShowList extends Component {
               <Checkbox
                 checked={false}
                 label={(
-                  <div style={{ opacity: 0.4, padding: "7px 0" }}>
+                  <div style={{
+                    opacity: 0.4,
+                    padding: "7px 0",
+                    userSelect: "none",
+                  }}>
                     + Add item
                   </div>
                 )}

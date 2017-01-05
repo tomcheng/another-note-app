@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
+import { withRouter } from "react-router";
 import Checkbox from "./Checkbox";
-
 
 class ListItem extends Component {
   static propTypes = {
@@ -10,6 +10,9 @@ class ListItem extends Component {
       checked: PropTypes.bool.isRequired,
     }).isRequired,
     listId: PropTypes.number.isRequired,
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     onCheckListItem: PropTypes.func.isRequired,
     onUncheckListItem: PropTypes.func.isRequired,
   };
@@ -24,17 +27,27 @@ class ListItem extends Component {
     }
   };
 
+  onClickLabel = () => {
+    const { router, listId, item } = this.props;
+
+    router.push("/" + listId + "/edit?focus=item&item_id=" + item.id)
+  };
+
   render () {
     const { item } = this.props;
     return (
       <Checkbox
         label={(
-          <span style={{
-            textDecoration: item.checked ? "line-through" : null,
-            opacity: item.checked ? 0.25 : null,
-            userSelect: "none",
-            padding: "7px 0",
-          }}>
+          <span
+            onClick={this.onClickLabel}
+            style={{
+              textDecoration: item.checked ? "line-through" : null,
+              opacity: item.checked ? 0.25 : null,
+              userSelect: "none",
+              padding: "7px 0",
+              flexGrow: 1,
+            }}
+          >
             {item.value}
           </span>
         )}
@@ -45,4 +58,4 @@ class ListItem extends Component {
   }
 }
 
-export default ListItem;
+export default withRouter(ListItem);

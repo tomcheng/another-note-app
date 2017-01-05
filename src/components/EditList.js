@@ -17,6 +17,7 @@ class EditList extends Component {
       query: PropTypes.shape({
         focus: PropTypes.string,
         just_added: PropTypes.string,
+        item_id: PropTypes.string,
       }).isRequired,
     }).isRequired,
     list: PropTypes.shape({
@@ -55,6 +56,9 @@ class EditList extends Component {
         break;
       case "addItem":
         this.addItemField.focus();
+        break;
+      case "item":
+        this["item-" + this.props.location.query.item_id].focus();
         break;
       default:
         break;
@@ -175,6 +179,7 @@ class EditList extends Component {
                     listId={list.id}
                     onDeleteListItem={onDeleteListItem}
                     onUpdateListItem={onUpdateListItem}
+                    refCallback={el => { this["item-" + item.id] = el; }}
                   />
                 ))}
                 <Checkbox
