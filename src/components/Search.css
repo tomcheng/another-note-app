@@ -14,3 +14,6 @@
   color: #fff;
   background-color: transparent;
 }
+.SearchInput:focus {
+  background-color: transparent;
+}

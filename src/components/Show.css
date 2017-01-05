@@ -1,0 +1,8 @@
+.showHeader-appear {
+  opacity: 0;
+}
+
+.showHeader-appear.showHeader-appear-active {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out 0.3s;
+}

@@ -68,7 +68,8 @@ class Search extends Component {
     return (
       <div style={{
         padding: "0 10px",
-        borderBottom: "1px solid rgba(255,255,255,1)",
+        backgroundColor: "rgba(0,0,0,0.4)",
+        boxShadow: "0 0 3px rgba(0,0,0,0.12) inset",
         display: "flex",
         alignItems: "center",
       }}>

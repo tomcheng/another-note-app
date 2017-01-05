@@ -13,29 +13,33 @@ class Home extends Component {
     const { children } = this.props;
 
     return (
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-        height: "100%",
-      }}>
-        <div style={{
-          flexShrink: 0,
-          opacity: children ? 0 : 1,
-          transition: "opacity 0.15s ease",
-        }}>
-          <Search />
-        </div>
-        <div style={{
-          position: "relative",
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          opacity: children ? 0 : 1,
-          transition: "opacity 0.15s ease",
-        }}>
-          <Notes />
-        </div>
+      <div style={{ height: "100%" }}>
+        <CSSTransition
+          transitionName="homeContainer"
+          transitionEnterTimeout={600}
+          transitionLeaveTimeout={600}
+        >
+          {!children && (
+            <div style={{
+              height: "100%",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}>
+              <div style={{ flexShrink: 0 }}>
+                <Search />
+              </div>
+              <div style={{
+                position: "relative",
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+              }}>
+                <Notes />
+              </div>
+            </div>
+          )}
+        </CSSTransition>
         <CSSTransition
           transitionName="showContainer"
           transitionLeave={false}
