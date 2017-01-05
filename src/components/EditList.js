@@ -177,24 +177,21 @@ class EditList extends Component {
                     onUpdateListItem={onUpdateListItem}
                   />
                 ))}
-                <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
-                  <Checkbox
-                    checked={false}
-                    label={(
-                      <TextInput
-                        refCallback={el => { this.addItemField = el; }}
-                        value={addItemValue}
-                        placeholder="+ Add item"
-                        style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
-                        onChange={this.handleChangeAddItem}
-                        onEnter={this.handleEnterAddItem}
-                        singleLine
-                      />
-                    )}
-                    disabled
-                    alignWithTextInput
-                  />
-                </div>
+                <Checkbox
+                  checked={false}
+                  label={(
+                    <TextInput
+                      refCallback={el => { this.addItemField = el; }}
+                      value={addItemValue}
+                      placeholder="+ Add item"
+                      style={{ flexGrow: 1, marginLeft: -5, paddingTop: 7, paddingBottom: 7 }}
+                      onChange={this.handleChangeAddItem}
+                      onEnter={this.handleEnterAddItem}
+                      singleLine
+                    />
+                  )}
+                  disabled
+                />
               </div>
             )}
           />
