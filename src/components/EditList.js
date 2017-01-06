@@ -56,27 +56,32 @@ class EditList extends Component {
         break;
       case "addItem":
         this.addItemField.focus();
-        this.animateToTextField(this.addItemField);
         break;
       case "item":
         this["item-" + this.props.location.query.item_id].focus();
-        this.animateToTextField(this["item-" + this.props.location.query.item_id]);
         break;
       default:
         break;
     }
+
+    window.addEventListener("resize", this.handleWindowResize);
   }
 
-  animateToTextField = ref => {
-    const input = findDOMNode(ref);
-    setTimeout(() => {
-      animate({
-        start: 0,
-        end: input.offsetTop + input.offsetHeight + 60 - this.container.offsetHeight,
-        duration: 300,
-        onUpdate: val => { this.container.scrollTop = val; }
-      });
-    }, 500);
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.handleWindowResize);
+  }
+
+  handleWindowResize = () => {
+    this.animateToTextField(document.activeElement);
+  };
+
+  animateToTextField = input => {
+    animate({
+      start: 0,
+      end: input.offsetTop + input.offsetHeight + 60 - this.container.offsetHeight,
+      duration: 300,
+      onUpdate: val => { this.container.scrollTop = val; }
+    });
   };
 
   handleChangeTitle = ({ target }) => {
