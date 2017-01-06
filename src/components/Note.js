@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import moment from "moment";
+import FancyIcon from "./FancyIcon";
 
 class Note extends Component {
   static propTypes = {
@@ -59,6 +60,11 @@ class Note extends Component {
           height: 50,
         }}
       >
+        {note.pinned && (
+          <div style={{ marginRight: 8, opacity: 0.8 }}>
+            <FancyIcon icon="pin" color="#222" />
+          </div>
+        )}
         <div style={{
           fontWeight: 500,
           flexShrink: 1,

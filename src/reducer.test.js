@@ -73,6 +73,21 @@ it("loads notes and sorts them by updated time", () => {
   expect(selectors.getNotesLoaded(state)).toBe(true);
 });
 
+it("puts pinned items first and sorts them alphabetically", () => {
+  const state = reducer(undefined, actions.loadNotes({ notes: [
+    { id: 1, title: "foo", body: "", updatedAt: "2", pinned: true },
+    { id: 2, title: "bar", body: "", updatedAt: "3" },
+    { id: 3, title: "bar", body: "", updatedAt: "1", pinned: true },
+  ] }));
+
+  expect(selectors.getNotes(state)).toEqual([
+    { id: 3, title: "bar", body: "", updatedAt: "1", pinned: true },
+    { id: 1, title: "foo", body: "", updatedAt: "2", pinned: true },
+    { id: 2, title: "bar", body: "", updatedAt: "3" },
+  ]);
+  expect(selectors.getNotesLoaded(state)).toBe(true);
+});
+
 it("memoizes notes", () => {
   const state1 = reducer(undefined, {});
   const state2 = reducer(state1, {});

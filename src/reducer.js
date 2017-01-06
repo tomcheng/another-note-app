@@ -32,7 +32,16 @@ const initialState = {
   search: "",
 };
 
-const notesToIds = notes => sortBy(notes, "updatedAt").reverse().map(note => note.id);
+const notesToIds = notesById => {
+  const notes = values(notesById);
+  const pinnedItems = notes.filter(note => note.pinned);
+  const unpinnedItems = notes.filter(note => !note.pinned);
+
+  return [].concat(
+    sortBy(pinnedItems, "title"),
+    sortBy(unpinnedItems, "updatedAt").reverse()
+  ).map(note => note.id);
+};
 
 const processNote = note => {
   if (note.type === "list") {

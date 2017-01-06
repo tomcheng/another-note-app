@@ -12,7 +12,6 @@ import "./Show.css";
 class Show extends Component {
   static propTypes = {
     notes: PropTypes.object.isRequired,
-    notesLoaded: PropTypes.bool.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
@@ -21,6 +20,7 @@ class Show extends Component {
       push: PropTypes.func.isRequired,
     }).isRequired,
     onDeleteNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired,
   };
 
   state = {
@@ -46,13 +46,29 @@ class Show extends Component {
     });
   };
 
+  handleClickPin = () => {
+    const { onUpdateNote } = this.props;
+    const selectedNote = this.getSelectedNote();
+
+    onUpdateNote({ id: selectedNote.id, updates: {
+      pinned: !selectedNote.pinned,
+    } });
+  };
+
+  getSelectedNote = () => {
+    const {params, notes} = this.props;
+
+    if (!params.id || !notes[params.id]) { return null; }
+
+    return notes[params.id];
+  };
+
   render () {
-    const { params, router, notes, notesLoaded } = this.props;
+    const { router } = this.props;
     const { deleteModalOpen } = this.state;
+    const selectedNote = this.getSelectedNote();
 
-    if (!notesLoaded || !params.id || !notes[params.id]) { return <noscript />; }
-
-    const selectedNote = notes[params.id];
+    if (!selectedNote) { return <noscript />; }
 
     return (
       <div style={{
@@ -94,6 +110,19 @@ class Show extends Component {
               <FancyIcon icon="left-arrow" />
             </div>
             <div style={{ display: "flex" }}>
+              <div
+                onClick={this.handleClickPin}
+                style={{
+                  padding: "9px 9px",
+                  cursor: "pointer",
+                  opacity: selectedNote.pinned ? 1 : 0.4,
+                }}
+              >
+                <FancyIcon
+                  icon="pin"
+                  color={selectedNote.pinned ? "#ffff72" : "#fff"}
+                />
+              </div>
               <Link
                 to={"/" + selectedNote.id + "/edit?focus=title"}
                 style={{ display: "block", padding: "9px 9px" }}
@@ -136,9 +165,9 @@ class Show extends Component {
 
 const mapStateToProps = state => ({
   notes: selectors.getNotesById(state),
-  notesLoaded: selectors.getNotesLoaded(state),
 });
 
 export default withRouter(connect(mapStateToProps, {
   onDeleteNote: actions.requestDeleteNote,
+  onUpdateNote: actions.requestUpdateNote,
 })(Show));

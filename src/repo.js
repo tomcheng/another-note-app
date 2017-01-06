@@ -64,7 +64,7 @@ export const updateNote = ({ id, updates }) => {
     ...updates,
   };
 
-  if (updates.hideChecked === undefined) {
+  if (updates.hideChecked === undefined && updates.pinned === undefined) {
     updatedNote.updatedAt = moment().format();
   }
 
