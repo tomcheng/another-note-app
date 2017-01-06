@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
-import { findDOMNode } from "react-dom";
 import { connect } from "react-redux";
+import CSSTransition from "react-addons-css-transition-group";
 import { actions } from "../reducer";
 import { withRouter } from "react-router";
 import { animate } from "../utils/animation";
@@ -182,16 +182,22 @@ class EditList extends Component {
             )}
             body={(
               <div style={{ padding: "7px 15px 12px" }}>
-                {list.uncheckedItems.map(item => (
-                  <EditListItem
-                    key={item.id}
-                    item={item}
-                    listId={list.id}
-                    onDeleteListItem={onDeleteListItem}
-                    onUpdateListItem={onUpdateListItem}
-                    refCallback={el => { this["item-" + item.id] = el; }}
-                  />
-                ))}
+                <CSSTransition
+                  transitionName="listItem"
+                  transitionEnterTimeout={600}
+                  transitionLeaveTimeout={600}
+                >
+                  {list.uncheckedItems.map(item => (
+                    <EditListItem
+                      key={item.id}
+                      item={item}
+                      listId={list.id}
+                      onDeleteListItem={onDeleteListItem}
+                      onUpdateListItem={onUpdateListItem}
+                      refCallback={el => { this["item-" + item.id] = el; }}
+                    />
+                  ))}
+                </CSSTransition>
                 <Checkbox
                   checked={false}
                   label={(

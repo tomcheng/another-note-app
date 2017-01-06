@@ -10,8 +10,11 @@ export const easeInOutCubic = x => {
 export const animate = ({ start, end, duration, easing = easeInOutCubic, onUpdate, onComplete }) => {
   const startTime = getCurrentTime();
   let timePassed;
+  let shouldStop = false;
 
   const animationLoop = () => {
+    if (shouldStop) { return; }
+
     timePassed = getCurrentTime() - startTime;
 
     if (timePassed >= duration) {
@@ -26,4 +29,8 @@ export const animate = ({ start, end, duration, easing = easeInOutCubic, onUpdat
   };
 
   animationLoop();
+
+  return {
+    stop: () => { shouldStop = true; }
+  };
 };

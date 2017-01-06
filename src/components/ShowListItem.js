@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { withRouter } from "react-router";
+import AnimateHeight from "./AnimateHeight";
 import Checkbox from "./Checkbox";
 
 class ListItem extends Component {
@@ -26,7 +27,7 @@ class ListItem extends Component {
 
     if (target.checked) {
       this.setState({ isPendingCheck: true });
-      setTimeout(() => { this.actuallyCheckItem(); }, 250);
+      setTimeout(() => { this.actuallyCheckItem(); }, 400);
     } else {
       onUncheckListItem({ listId, itemId: item.id });
     }
@@ -50,24 +51,30 @@ class ListItem extends Component {
     const seemsChecked = item.checked || isPendingCheck;
 
     return (
-      <Checkbox
-        label={(
-          <span
-            onClick={this.onClickLabel}
-            style={{
-              textDecoration: seemsChecked ? "line-through" : null,
-              opacity: seemsChecked ? 0.25 : null,
-              userSelect: "none",
-              padding: "7px 0",
-              flexGrow: 1,
-            }}
-          >
-            {item.value}
-          </span>
-        )}
-        checked={seemsChecked}
-        onChange={this.handleChange}
-      />
+      <AnimateHeight
+        isExpanded={!isPendingCheck}
+        delay={250}
+        duration={150}
+      >
+        <Checkbox
+          label={(
+            <span
+              onClick={this.onClickLabel}
+              style={{
+                textDecoration: seemsChecked ? "line-through" : null,
+                opacity: seemsChecked ? 0.25 : null,
+                userSelect: "none",
+                padding: "7px 0",
+                flexGrow: 1,
+              }}
+            >
+              {item.value}
+            </span>
+          )}
+          checked={seemsChecked}
+          onChange={this.handleChange}
+        />
+      </AnimateHeight>
     );
   }
 }
