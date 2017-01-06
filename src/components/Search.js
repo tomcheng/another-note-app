@@ -77,7 +77,7 @@ class Search extends Component {
         <input
           className="SearchInput"
           style={{ flexGrow: 1 }}
-          placeholder="Search or Add"
+          placeholder="Type to Search or Add"
           ref={el => { this.input = el; }}
           type="text"
           value={search}
@@ -94,11 +94,11 @@ class Search extends Component {
               <IconWithText icon="close" text="Clear" />
             </div>
           )}
-          <div onClick={this.handleClickAddList}>
-            <IconWithText icon="list" text="Add List" width={54} />
-          </div>
           <div onClick={this.handleClickAddNote}>
             <IconWithText icon="note" text="Add Note" width={54} />
+          </div>
+          <div onClick={this.handleClickAddList}>
+            <IconWithText icon="list" text="Add List" width={54} />
           </div>
         </div>
       </div>
