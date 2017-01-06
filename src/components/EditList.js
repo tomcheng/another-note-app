@@ -1,7 +1,9 @@
 import React, { PropTypes, Component } from "react";
+import { findDOMNode } from "react-dom";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { withRouter } from "react-router";
+import { animate } from "../utils/animation";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -54,14 +56,28 @@ class EditList extends Component {
         break;
       case "addItem":
         this.addItemField.focus();
+        this.animateToTextField(this.addItemField);
         break;
       case "item":
         this["item-" + this.props.location.query.item_id].focus();
+        this.animateToTextField(this["item-" + this.props.location.query.item_id]);
         break;
       default:
         break;
     }
   }
+
+  animateToTextField = ref => {
+    const input = findDOMNode(ref);
+    setTimeout(() => {
+      animate({
+        start: 0,
+        end: input.offsetTop + input.offsetHeight + 60 - this.container.offsetHeight,
+        duration: 300,
+        onUpdate: val => { this.container.scrollTop = val; }
+      });
+    }, 500);
+  };
 
   handleChangeTitle = ({ target }) => {
     this.setState({ title: target.value });
@@ -138,7 +154,7 @@ class EditList extends Component {
     const { title, addItemValue } = this.state;
 
     return (
-      <div style={{ height: "100%", overflow: "auto" }}>
+      <div ref={el => { this.container = el; }} style={{ height: "100%", overflow: "auto" }}>
         <div style={{ padding: "6px 6px 60px" }}>
           <Card
             header={(
