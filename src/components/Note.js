@@ -83,12 +83,14 @@ class Note extends Component {
         }}>
           &ndash; {this.getSummary()}
         </div>
-        <div style={{
-          fontSize: 12,
-          opacity: 0.3,
-        }}>
-          {moment(note.updatedAt).fromNow()}
-        </div>
+        {!note.pinned && (
+          <div style={{
+            fontSize: 12,
+            opacity: 0.3,
+          }}>
+            {moment(note.updatedAt).fromNow()}
+          </div>
+        )}
       </div>
     );
   }
