@@ -17,14 +17,25 @@ class ListItem extends Component {
     onUncheckListItem: PropTypes.func.isRequired,
   };
 
+  state = { isPendingCheck: false };
+
   handleChange = ({ target }) => {
-    const { onCheckListItem, onUncheckListItem, listId, item } = this.props;
+    const { onUncheckListItem, listId, item } = this.props;
+
+    if (this.state.isPendingCheck) { return; }
 
     if (target.checked) {
-      onCheckListItem({ listId, itemId: item.id });
+      this.setState({ isPendingCheck: true });
+      setTimeout(() => { this.actuallyCheckItem(); }, 250);
     } else {
       onUncheckListItem({ listId, itemId: item.id });
     }
+  };
+
+  actuallyCheckItem = () => {
+    const { onCheckListItem, listId, item } = this.props;
+
+    onCheckListItem({ listId, itemId: item.id });
   };
 
   onClickLabel = () => {
@@ -35,14 +46,17 @@ class ListItem extends Component {
 
   render () {
     const { item } = this.props;
+    const { isPendingCheck } = this.state;
+    const seemsChecked = item.checked || isPendingCheck;
+
     return (
       <Checkbox
         label={(
           <span
             onClick={this.onClickLabel}
             style={{
-              textDecoration: item.checked ? "line-through" : null,
-              opacity: item.checked ? 0.25 : null,
+              textDecoration: seemsChecked ? "line-through" : null,
+              opacity: seemsChecked ? 0.25 : null,
               userSelect: "none",
               padding: "7px 0",
               flexGrow: 1,
@@ -51,7 +65,7 @@ class ListItem extends Component {
             {item.value}
           </span>
         )}
-        checked={item.checked}
+        checked={seemsChecked}
         onChange={this.handleChange}
       />
     );
