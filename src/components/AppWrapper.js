@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import background from "../background.jpg";
 
 class AppWrapper extends Component {
   static propTypes = {
@@ -24,13 +23,7 @@ class AppWrapper extends Component {
     const { appHeight } = this.state;
 
     return (
-      <div style={{
-        height: appHeight,
-        backgroundImage: "url(" + background + ")",
-        backgroundPosition: "center top",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}>
+      <div style={{ height: appHeight }}>
         {children}
       </div>
     );
