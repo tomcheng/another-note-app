@@ -40,9 +40,13 @@ class ListItem extends Component {
   };
 
   onClickLabel = () => {
-    const { router, listId, item } = this.props;
+    const { onUncheckListItem, router, listId, item } = this.props;
 
-    router.push("/" + listId + "/edit?focus=item&item_id=" + item.id)
+    if (!item.checked) {
+      router.push("/" + listId + "/edit?focus=item&item_id=" + item.id);
+    } else {
+      onUncheckListItem({ listId, itemId: item.id });
+    }
   };
 
   render () {
