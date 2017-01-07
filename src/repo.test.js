@@ -86,7 +86,7 @@ it("converts a note to a list", () => {
   expect(response).toEqual({ note: addListDefaults({
     id: 1,
     title: "foo",
-    items: [{ id: 1, checked: false, value: "bar", checkedAt: null }],
+    items: { 1: { id: 1, checked: false, value: "bar", checkedAt: null } },
     order: [1]
   }) });
 });
@@ -99,7 +99,7 @@ it("converts an empty note to a list with no items", () => {
     id: 1,
     title: "foo",
     updatedAt: moment().format(),
-    items: [],
+    items: {},
   }) });
 });
 

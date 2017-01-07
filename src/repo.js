@@ -93,7 +93,7 @@ export const convertToList = ({ id }) => {
     title: oldNote.title,
     type: "list",
     hideChecked: true,
-    items,
+    items: items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {}),
     order: items.map(item => item.id),
     createdAt: oldNote.createdAt,
     updatedAt: moment().format(),

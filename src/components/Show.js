@@ -7,7 +7,7 @@ import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
-import ListMenu from "./ListMenu";
+import ShowMenu from "./ShowMenu";
 import "./Show.css";
 
 class Show extends Component {
@@ -20,6 +20,7 @@ class Show extends Component {
       goBack: PropTypes.func.isRequired,
       push: PropTypes.func.isRequired,
     }).isRequired,
+    onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -62,6 +63,23 @@ class Show extends Component {
     if (!params.id || !notes[params.id]) { return null; }
 
     return notes[params.id];
+  };
+
+  handleToggleHideChecked = () => {
+    const { onUpdateNote } = this.props;
+    const list = this.getSelectedNote();
+
+    onUpdateNote({
+      id: list.id,
+      updates: { hideChecked: !list.hideChecked },
+    });
+  };
+
+  handleConvertNoteToList = () => {
+    const { onConvertNoteToList } = this.props;
+    const note = this.getSelectedNote();
+
+    onConvertNoteToList({ id: note.id });
   };
 
   render () {
@@ -136,8 +154,25 @@ class Show extends Component {
               >
                 <FancyIcon icon="trash" />
               </div>
+              {selectedNote.type === "note" && (
+                <ShowMenu
+                  menuItems={[
+                    {
+                      label: "Convert to List",
+                      action: this.handleConvertNoteToList,
+                    }
+                  ]}
+                />
+              )}
               {selectedNote.type === "list" && (
-                <ListMenu list={selectedNote} />
+                <ShowMenu
+                  menuItems={[
+                    {
+                      label: selectedNote.hideChecked ? "Show completed items" : "Hide completed items",
+                      action: this.handleToggleHideChecked,
+                    }
+                  ]}
+                />
               )}
             </div>
           </div>
@@ -172,6 +207,7 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps, {
+  onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,
 })(Show));

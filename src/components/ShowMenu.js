@@ -1,21 +1,13 @@
 import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { actions } from "../reducer";
 import FancyIcon from "./FancyIcon";
 import PopoverItem from "./PopoverItem";
 
-class ListMenu extends Component {
+class ShowMenu extends Component {
   static propTypes = {
-    list: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      type: PropTypes.oneOf(["list", "note"]).isRequired,
-      hideChecked: PropTypes.bool,
-    }).isRequired,
-    router: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
-    onUpdateNote: PropTypes.func.isRequired,
+    menuItems: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      action: PropTypes.func.isRequired,
+    })).isRequired,
   };
 
   state = { menuOpen: false };
@@ -28,19 +20,14 @@ class ListMenu extends Component {
     this.setState({ menuOpen: false });
   };
 
-  handleToggleHideChecked = () => {
-    const { onUpdateNote, list } = this.props;
-
-    onUpdateNote({
-      id: list.id,
-      updates: { hideChecked: !list.hideChecked },
-    });
+  performAction = action => {
+    action();
 
     this.setState({ menuOpen: false });
   };
 
   render () {
-    const { list } = this.props;
+    const { menuItems } = this.props;
     const { menuOpen } = this.state;
 
     return (
@@ -71,9 +58,11 @@ class ListMenu extends Component {
               boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
               zIndex: 1,
             }}>
-              <PopoverItem onClick={this.handleToggleHideChecked}>
-                {list.hideChecked ? "Show completed items" : "Hide completed items"}
-              </PopoverItem>
+              {menuItems.map(({ action, label }) => (
+                <PopoverItem key={label} onClick={() => { this.performAction(action); }}>
+                  {label}
+                </PopoverItem>
+              ))}
             </div>
           </div>
         )}
@@ -82,6 +71,4 @@ class ListMenu extends Component {
   }
 }
 
-export default withRouter(connect(null, {
-  onUpdateNote: actions.requestUpdateNote,
-})(ListMenu));
+export default ShowMenu;
