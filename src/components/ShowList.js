@@ -106,6 +106,7 @@ class ShowList extends Component {
   render () {
     const { list, onUncheckListItem } = this.props;
     const { recentlyCheckedItemIds } = this.state;
+    const isShowingChecked = list.checkedItems.length > 0 && !list.hideChecked;
 
     return (
       <div>
@@ -136,28 +137,25 @@ class ShowList extends Component {
                   disabled
                 />
               </Link>
-              {list.checkedItems.length > 0 && (
-                <div style={{
-                  textAlign: "center",
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                }}>
-                  <Button
-                    buttonStyle="outline"
-                    onClick={this.handleClickToggleShowChecked}
-                  >
-                    {list.hideChecked ? "Show completed items" : "Hide completed items"}
-                  </Button>
+              <AnimateHeight isExpanded={isShowingChecked}>
+                <div>
+                  <div
+                    style={{
+                      height: 1,
+                      backgroundColor: "#ddd",
+                      margin: "9px 0",
+                    }}
+                  />
+                  {list.checkedItems.map(item => (
+                    <ShowListItem
+                      key={item.id}
+                      item={item}
+                      listId={list.id}
+                      onUncheckListItem={onUncheckListItem}
+                    />
+                  ))}
                 </div>
-              )}
-              {!list.hideChecked && list.checkedItems.map(item => (
-                <ShowListItem
-                  key={item.id}
-                  item={item}
-                  listId={list.id}
-                  onUncheckListItem={onUncheckListItem}
-                />
-              ))}
+              </AnimateHeight>
               <div style={{
                 position: "fixed",
                 bottom: 0,

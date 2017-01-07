@@ -69,8 +69,14 @@ class NoteMenu extends Component {
     const { menuOpen, deleteModalShowing } = this.state;
 
     return (
-      <div style={{ position: "relative" }}>
-        (vertical ellipsis)
+      <div
+        style={{
+          position: "relative",
+          color: "#222",
+        }}>
+        <div onClick={this.handleClickIcon}>
+          (vertical ellipsis)
+        </div>
         {menuOpen && (
           <div>
             <div

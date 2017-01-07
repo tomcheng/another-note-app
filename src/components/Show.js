@@ -7,6 +7,7 @@ import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
+import ListMenu from "./ListMenu";
 import "./Show.css";
 
 class Show extends Component {
@@ -113,7 +114,7 @@ class Show extends Component {
               <div
                 onClick={this.handleClickPin}
                 style={{
-                  padding: "9px 9px",
+                  padding: 9,
                   cursor: "pointer",
                   opacity: selectedNote.pinned ? 1 : 0.4,
                 }}
@@ -125,16 +126,19 @@ class Show extends Component {
               </div>
               <Link
                 to={"/" + selectedNote.id + "/edit?focus=title"}
-                style={{ display: "block", padding: "9px 9px" }}
+                style={{ display: "block", padding: 9 }}
               >
                 <FancyIcon icon="pencil" />
               </Link>
               <div
                 onClick={this.handleClickDelete}
-                style={{ padding: "9px 9px", cursor: "pointer" }}
+                style={{ padding: 9, cursor: "pointer" }}
               >
                 <FancyIcon icon="trash" />
               </div>
+              {selectedNote.type === "list" && (
+                <ListMenu list={selectedNote} />
+              )}
             </div>
           </div>
         </CSSTransition>
