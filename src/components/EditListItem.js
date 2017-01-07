@@ -13,6 +13,7 @@ class EditListItem extends Component {
     listId: PropTypes.number.isRequired,
     refCallback: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
 
@@ -39,6 +40,8 @@ class EditListItem extends Component {
 
   handleFocus = () => {
     this.setState({ isFocused: true });
+
+    this.props.onFocus();
   };
 
   handleClickDelete = () => {

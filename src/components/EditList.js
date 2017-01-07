@@ -46,6 +46,7 @@ class EditList extends Component {
     this.state = {
       title: list.title,
       addItemValue: "",
+      isAddingItem: false,
     };
   }
 
@@ -96,6 +97,14 @@ class EditList extends Component {
     this.addItemField.focus();
   };
 
+  handleFocusTitle = () => {
+    this.setState({ isAddingItem: false });
+  };
+
+  handleFocusEditItem = () => {
+    this.setState({ isAddingItem: false });
+  };
+
   handleEnterAddItem = () => {
     const { onAddListItem, list } = this.props;
     const { addItemValue } = this.state;
@@ -108,6 +117,14 @@ class EditList extends Component {
     onAddListItem({ listId: list.id, value: addItemValue });
 
     this.setState({ addItemValue: "" });
+  };
+
+  handleFocusAddItem = () => {
+    this.setState({ isAddingItem: true });
+  };
+
+  handleClickAddItem = () => {
+    this.addItemField.focus();
   };
 
   handleClickAddAnother = () => {
@@ -153,7 +170,7 @@ class EditList extends Component {
 
   render () {
     const { list, onUpdateListItem, onDeleteListItem } = this.props;
-    const { title, addItemValue } = this.state;
+    const { title, addItemValue, isAddingItem } = this.state;
 
     return (
       <div ref={el => { this.container = el; }} style={{ height: "100%", overflow: "auto" }}>
@@ -167,6 +184,7 @@ class EditList extends Component {
                   refCallback={el => { this.titleField = el; }}
                   onChange={this.handleChangeTitle}
                   onEnter={this.handleEnterTitle}
+                  onFocus={this.handleFocusTitle}
                   style={{
                     width: "100%",
                     padding: "5px 8px",
@@ -191,6 +209,7 @@ class EditList extends Component {
                       listId={list.id}
                       onDeleteListItem={onDeleteListItem}
                       onUpdateListItem={onUpdateListItem}
+                      onFocus={this.handleFocusEditItem}
                       refCallback={el => { this["item-" + item.id] = el; }}
                     />
                   ))}
@@ -206,6 +225,7 @@ class EditList extends Component {
                         style={{ flexGrow: 1, marginLeft: -5 }}
                         onChange={this.handleChangeAddItem}
                         onEnter={this.handleEnterAddItem}
+                        onFocus={this.handleFocusAddItem}
                         singleLine
                       />
                     </div>
@@ -228,13 +248,22 @@ class EditList extends Component {
             >
               Cancel
             </Button>
-            {addItemValue.trim() !== "" && (
+            {isAddingItem ? (
               <Button
                 buttonStyle="ghost"
                 style={{ marginRight: 10 }}
                 onClick={this.handleClickAddAnother}
+                disabled={addItemValue.trim() === ""}
               >
                 Add Another
+              </Button>
+            ) : (
+              <Button
+                buttonStyle="ghost"
+                style={{ marginRight: 10 }}
+                onClick={this.handleClickAddItem}
+              >
+                Add Item
               </Button>
             )}
             <Button
