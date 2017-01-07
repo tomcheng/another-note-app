@@ -14,8 +14,8 @@ class ListItem extends Component {
     router: PropTypes.shape({
       push: PropTypes.func.isRequired,
     }).isRequired,
-    onCheckListItem: PropTypes.func.isRequired,
-    onUncheckListItem: PropTypes.func.isRequired,
+    onCheckListItem: PropTypes.func,
+    onUncheckListItem: PropTypes.func,
   };
 
   state = { isPendingCheck: false };

@@ -8,6 +8,8 @@ import Button from "./Button";
 import ShowHeader from "./ShowHeader";
 import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
+import AnimateHeight from "./AnimateHeight";
+import PreviewFooter from "./PreviewFooter";
 import "./ShowList.css";
 
 class ShowList extends Component {
@@ -28,6 +30,15 @@ class ShowList extends Component {
     onCheckListItem: PropTypes.func.isRequired,
     onUncheckListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
+  };
+
+  state = {
+    recentlyCheckedItemIds: [],
+    previousOrder: [],
+  };
+
+  componentWillUnmount = () => {
+    clearTimeout(this.footerTimer);
   };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -52,64 +63,129 @@ class ShowList extends Component {
     });
   };
 
+  handleCheckListItem = ({ listId, itemId }) => {
+    const { onCheckListItem, list } = this.props;
+    const { recentlyCheckedItemIds } = this.state;
+
+    onCheckListItem({ listId, itemId });
+
+    this.setState({
+      recentlyCheckedItemIds: recentlyCheckedItemIds.concat(itemId),
+    });
+
+    if (recentlyCheckedItemIds.length === 0) {
+      this.setState({ previousOrder: list.uncheckedItems.map(item => item.id) });
+    }
+
+    clearTimeout(this.footerTimer);
+
+    this.footerTimer = setTimeout(() => {
+      this.setState({
+        recentlyCheckedItemIds: [],
+        previousOrder: [],
+      })
+    }, 3000);
+  };
+
+  handleClickUndo = () => {
+    const { onUncheckListItem, onUpdateNote, list } = this.props;
+    const { recentlyCheckedItemIds, previousOrder } = this.state;
+
+    recentlyCheckedItemIds.forEach(id => {
+      onUncheckListItem({ listId: list.id, itemId: id });
+    });
+
+    onUpdateNote({ id: list.id, updates: { order: previousOrder } })
+
+    this.setState({
+      recentlyCheckedItemIds: [],
+      previousOrder: [],
+    });
+  };
+
   render () {
-    const { list, onCheckListItem, onUncheckListItem } = this.props;
+    const { list, onUncheckListItem } = this.props;
+    const { recentlyCheckedItemIds } = this.state;
 
     return (
-      <Card
-        header={<ShowHeader note={list} />}
-        body={(
-          <div style={{ padding: "7px 15px 12px" }}>
-            <ShowListItems
-              list={list}
-              onCheckListItem={onCheckListItem}
-              onUncheckListItem={onUncheckListItem}
-              onSortEnd={this.onSortEnd}
-              pressDelay={200}
-              transitionDuration={200}
-              helperClass="listItemDragging"
-            />
-            <Link to={"/" + list.id + "/edit?focus=addItem"}>
-              <Checkbox
-                checked={false}
-                label={(
-                  <div style={{
-                    opacity: 0.4,
-                    padding: "7px 0",
-                    userSelect: "none",
-                  }}>
-                    + Add item
-                  </div>
-                )}
-                disabled
+      <div>
+        <Card
+          header={<ShowHeader note={list} />}
+          body={(
+            <div style={{ padding: "7px 15px 12px" }}>
+              <ShowListItems
+                list={list}
+                onCheckListItem={this.handleCheckListItem}
+                onSortEnd={this.onSortEnd}
+                pressDelay={200}
+                transitionDuration={200}
+                helperClass="listItemDragging"
               />
-            </Link>
-            {list.checkedItems.length > 0 && (
+              <Link to={"/" + list.id + "/edit?focus=addItem"}>
+                <Checkbox
+                  checked={false}
+                  label={(
+                    <div style={{
+                      opacity: 0.4,
+                      padding: "7px 0",
+                      userSelect: "none",
+                    }}>
+                      + Add item
+                    </div>
+                  )}
+                  disabled
+                />
+              </Link>
+              {list.checkedItems.length > 0 && (
+                <div style={{
+                  textAlign: "center",
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                }}>
+                  <Button
+                    buttonStyle="outline"
+                    onClick={this.handleClickToggleShowChecked}
+                  >
+                    {list.hideChecked ? "Show completed items" : "Hide completed items"}
+                  </Button>
+                </div>
+              )}
+              {!list.hideChecked && list.checkedItems.map(item => (
+                <ShowListItem
+                  key={item.id}
+                  item={item}
+                  listId={list.id}
+                  onUncheckListItem={onUncheckListItem}
+                />
+              ))}
               <div style={{
-                textAlign: "center",
-                paddingTop: 10,
-                paddingBottom: 10,
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0,
               }}>
-                <Button
-                  buttonStyle="outline"
-                  onClick={this.handleClickToggleShowChecked}
-                >
-                  {list.hideChecked ? "Show completed items" : "Hide completed items"}
-                </Button>
+                <AnimateHeight isExpanded={recentlyCheckedItemIds.length > 0}>
+                  <PreviewFooter>
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingLeft: 9,
+                    }}>
+                      <span>
+                        Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
+                      </span>
+                      <Button onClick={this.handleClickUndo} buttonStyle="ghost">
+                        Undo
+                      </Button>
+                    </div>
+                  </PreviewFooter>
+                </AnimateHeight>
               </div>
-            )}
-            {!list.hideChecked && list.checkedItems.map(item => (
-              <ShowListItem
-                key={item.id}
-                item={item}
-                listId={list.id}
-                onCheckListItem={onCheckListItem}
-                onUncheckListItem={onUncheckListItem}
-              />
-            ))}
-          </div>
-        )}
-      />
+            </div>
+          )}
+        />
+      </div>
     );
   }
 }
