@@ -15,7 +15,7 @@ class AppWrapper extends Component {
 
     window.addEventListener("resize", () => {
       this.setState({ appHeight: window.innerHeight });
-    })
+    });
   };
 
   render () {

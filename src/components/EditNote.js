@@ -68,11 +68,8 @@ class EditNote extends Component {
     if (location.query.just_added === "true") {
       onDeleteNote({
         id: note.id,
-        callback: () => {
-          router.goBack();
-          router.goBack();
-        },
-      })
+        callback: router.goBack,
+      });
     } else {
       router.goBack();
     }

@@ -13,6 +13,7 @@ import "./Show.css";
 class Show extends Component {
   static propTypes = {
     notes: PropTypes.object.isRequired,
+    notesLoaded: PropTypes.bool.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
@@ -28,6 +29,15 @@ class Show extends Component {
   state = {
     deleteModalOpen: false,
   };
+
+  componentDidMount () {
+    const { notesLoaded, router } = this.props;
+    const selectedNote = this.getSelectedNote();
+
+    if (notesLoaded && !selectedNote) {
+      router.goBack();
+    }
+  }
 
   handleClickDelete = () => {
     this.setState({ deleteModalOpen: true });
@@ -57,8 +67,8 @@ class Show extends Component {
     } });
   };
 
-  getSelectedNote = () => {
-    const {params, notes} = this.props;
+  getSelectedNote = (props = this.props) => {
+    const {params, notes} = props;
 
     if (!params.id || !notes[params.id]) { return null; }
 
@@ -204,6 +214,7 @@ class Show extends Component {
 
 const mapStateToProps = state => ({
   notes: selectors.getNotesById(state),
+  notesLoaded: selectors.getNotesLoaded(state),
 });
 
 export default withRouter(connect(mapStateToProps, {
