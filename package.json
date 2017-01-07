@@ -2,7 +2,7 @@
   "name": "another-note-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://tomcheng.github.io/another-note-app",
+  "homepage": "https://notorist.com",
   "devDependencies": {
     "gh-pages": "^0.12.0",
     "mockdate": "2.0.1",
