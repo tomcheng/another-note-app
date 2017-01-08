@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import withRouter from "../utils/withRouter";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
 
@@ -12,18 +11,14 @@ class Show extends Component {
     params: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
-    router: PropTypes.shape({
-      goBack: PropTypes.func.isRequired,
-      transitionTo: PropTypes.func.isRequired,
-    }).isRequired,
   };
 
   componentDidMount () {
-    const { notesLoaded, router } = this.props;
+    const { notesLoaded } = this.props;
     const selectedNote = this.getSelectedNote();
 
     if (notesLoaded && !selectedNote) {
-      router.goBack();
+      window.history.back();
     }
   }
 
@@ -65,8 +60,8 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state),
 });
 
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,
-})(Show));
+})(Show);

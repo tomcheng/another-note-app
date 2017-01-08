@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import withRouter from "../utils/withRouter";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Link from "react-router/Link";
@@ -13,9 +12,6 @@ class ShowHeader extends Component {
     params: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
-    router: PropTypes.shape({
-      goBack: PropTypes.func.isRequired,
-    }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -23,6 +19,10 @@ class ShowHeader extends Component {
 
   state = {
     deleteModalOpen: false,
+  };
+
+  handleClickBack = () => {
+    window.history.back();
   };
 
   handleClickPin = () => {
@@ -43,13 +43,13 @@ class ShowHeader extends Component {
   };
 
   handleDeleteNote = () => {
-    const { onDeleteNote, params, router } = this.props;
+    const { onDeleteNote, params } = this.props;
 
     this.setState({ deleteModalOpen: false });
 
     onDeleteNote({
       id: parseInt(params.id, 10),
-      callback: () => { router.transitionTo("/"); },
+      callback: () => { window.history.back(); },
     });
   };
 
@@ -79,7 +79,6 @@ class ShowHeader extends Component {
   };
 
   render () {
-    const { router } = this.props;
     const { deleteModalOpen } = this.state;
     const selectedNote = this.getSelectedNote();
 
@@ -97,7 +96,7 @@ class ShowHeader extends Component {
         }}
       >
         <div
-          onClick={router.goBack}
+          onClick={this.handleClickBack}
           style={{ padding: "9px 9px", cursor: "pointer" }}
         >
           <FancyIcon icon="left-arrow" />
@@ -164,8 +163,8 @@ const mapStateToProps = state => ({
   notes: selectors.getNotesById(state),
 });
 
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,
-})(ShowHeader));
+})(ShowHeader);

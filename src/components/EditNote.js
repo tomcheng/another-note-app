@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import withRouter from "../utils/withRouter";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -18,9 +17,6 @@ class EditNote extends Component {
     note: PropTypes.shape({
       body: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-    }).isRequired,
-    router: PropTypes.shape({
-      goBack: PropTypes.func.isRequired,
     }).isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -63,25 +59,25 @@ class EditNote extends Component {
   };
 
   handleClickCancel = () => {
-    const { note, location, onDeleteNote, router } = this.props;
+    const { note, location, onDeleteNote } = this.props;
 
     if (location.query.just_added === "true") {
       onDeleteNote({
         id: note.id,
-        callback: router.goBack,
+        callback: () => { window.history.back(); },
       });
     } else {
-      router.goBack();
+      window.history.back();
     }
   };
 
   handleClickDone = () => {
-    const { note, onUpdateNote, router } = this.props;
+    const { note, onUpdateNote } = this.props;
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: router.goBack,
+      callback: () => { window.history.back(); },
     });
   };
 
@@ -153,7 +149,7 @@ class EditNote extends Component {
   }
 }
 
-export default withRouter(connect(null, {
+export default connect(null, {
   onUpdateNote: actions.requestUpdateNote,
   onDeleteNote: actions.requestDeleteNote,
-})(EditNote));
+})(EditNote);

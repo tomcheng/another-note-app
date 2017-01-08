@@ -6,17 +6,7 @@ const withRouter = Target => class extends Component {
   };
 
   render () {
-    const { router } = this.context;
-
-    return (
-      <Target
-        {...this.props}
-        router={{
-          ...router,
-          goBack: window.history.back.bind(window.history),
-        }}
-      />
-    );
+    return <Target {...this.props} router={this.context.router} />;
   }
 };
 

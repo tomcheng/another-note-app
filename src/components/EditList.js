@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
 import { actions, selectors } from "../reducer";
-import withRouter from "../utils/withRouter";
 import { animate } from "../utils/animation";
 import TextInput from "./TextInput";
 import Button from "./Button";
@@ -30,9 +29,6 @@ class EditList extends Component {
     }).isRequired,
     rawList: PropTypes.shape({
       id: PropTypes.number.isRequired,
-    }).isRequired,
-    router: PropTypes.shape({
-      goBack: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
@@ -144,7 +140,7 @@ class EditList extends Component {
   };
 
   handleClickDone = () => {
-    const { list, onUpdateNote, onAddListItem, router } = this.props;
+    const { list, onUpdateNote, onAddListItem } = this.props;
     const { title, addItemValue } = this.state;
 
     if (addItemValue.trim() !== "") {
@@ -154,22 +150,22 @@ class EditList extends Component {
     onUpdateNote({
       id: list.id,
       updates: { title },
-      callback: router.goBack,
+      callback: () => { window.history.back(); },
     });
   };
 
   handleClickCancel = () => {
-    const { list, location, onDeleteNote, router, onReplaceList } = this.props;
+    const { list, location, onDeleteNote, onReplaceList } = this.props;
     const { previousRawList } = this.state;
 
     if (location.query.just_added === "true") {
       onDeleteNote({
         id: list.id,
-        callback: router.goBack,
+        callback: () => { window.history.back(); },
       });
     } else {
       onReplaceList({ id: list.id, list: previousRawList });
-      router.goBack();
+      window.history.back();
     }
   };
 
@@ -280,11 +276,11 @@ const mapStateToProps = (state, { list }) => ({
   rawList: selectors.getRawNotesById(state)[list.id],
 });
 
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
   onDeleteListItem: actions.requestDeleteListItem,
   onDeleteNote: actions.requestDeleteNote,
   onReplaceList: actions.requestReplaceList,
   onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
-})(EditList));
+})(EditList);
