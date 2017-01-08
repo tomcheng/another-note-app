@@ -3,18 +3,45 @@ import max from "lodash/max";
 import values from "lodash/values";
 import moment from "moment"
 
+const DEFAULT_NOTES = [
+  {
+    id: 1,
+    title: "Thanks for using Notorist!",
+    type: "note",
+    body: "Notorist is a simple way to take notes and to-do lists on your phone.\n\n" +
+      "No sign-up is necessary because notes and lists are saved only to the device you are using.\n\n" +
+      "For a better experience, try adding this app to your phone's home screen.\n\n" +
+      "If you have any feedback, I'd love to hear it. Email me at info@thomascheng.com\n\n" +
+      "Cheers,\nThomas",
+    createdAt: moment().format(),
+    updatedAt: moment().format(),
+  }
+];
+
 const save = ({ key, payload }) => { localStorage.setItem(key, JSON.stringify(payload)); };
 
 const getLocalNotes = () => {
   const json = localStorage.getItem("notes");
 
-  if (!json) { return []; }
+  if (!json) { return null; }
 
   return JSON.parse(json);
 };
 
+// For testing purposes only
+export const clearNotes__forTestingOnly = () => {
+  save({ key: "notes", payload: [] });
+};
+
 export const getNotes = () => {
   const notes = getLocalNotes();
+
+  if (!notes) {
+    save({ key: "notes", payload: DEFAULT_NOTES });
+
+    return { notes: DEFAULT_NOTES };
+  }
+
   return { notes };
 };
 

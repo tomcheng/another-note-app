@@ -20,10 +20,12 @@ const addListDefaults = list => defaults(list, {
 
 beforeEach(() => {
   localStorage.clear();
+  api.clearNotes__forTestingOnly();
 });
 
-it("returns an empty list if no notes are saved", () => {
-  expect(api.getNotes()).toEqual({ notes: [] });
+it("creates a default note if no notes are saved", () => {
+  localStorage.clear();
+  expect(api.getNotes().notes.length).toBe(1);
 });
 
 it("adds a note", () => {
