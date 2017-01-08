@@ -26,6 +26,10 @@ class EditListItem extends Component {
     };
   }
 
+  componentWillUnmount () {
+    clearTimeout(this.focusedTimer);
+  };
+
   handleChange = ({ target }) => {
     this.setState({ value: target.value });
   };
@@ -35,7 +39,7 @@ class EditListItem extends Component {
 
     onUpdateListItem({ listId, itemId: item.id, updates: this.state });
 
-    setTimeout(() => { this.setState({ isFocused: false }); }, 50);
+    this.focusedTimer = setTimeout(() => { this.setState({ isFocused: false }); }, 50);
   };
 
   handleFocus = () => {

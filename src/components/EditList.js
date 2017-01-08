@@ -70,6 +70,8 @@ class EditList extends Component {
 
   componentWillUnmount () {
     window.removeEventListener("resize", this.handleWindowResize);
+
+    if (this.animation) { this.animation.stop(); }
   }
 
   handleWindowResize = () => {
@@ -77,7 +79,7 @@ class EditList extends Component {
   };
 
   animateToTextField = input => {
-    animate({
+    this.animation = animate({
       start: 0,
       end: input.offsetTop + input.offsetHeight + 60 - this.container.offsetHeight,
       duration: 300,
