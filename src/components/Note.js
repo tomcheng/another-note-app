@@ -43,6 +43,20 @@ class Note extends Component {
     return note.body;
   };
 
+  getUpdatedAt = () => {
+    const { note } = this.props;
+
+    if (moment().isSame(note.updatedAt, "day")) {
+      return moment(note.updatedAt).fromNow()
+    }
+
+    if (moment().subtract(1, "days").isSame(note.updatedAt, "day")) {
+      return "Yesterday at " + moment(note.updatedAt).format("h:mma");
+    }
+
+    return moment(note.updatedAt).format("MMM D, YYYY");
+  };
+
   render () {
     const { note, isVisible, isSelected } = this.props;
 
@@ -88,7 +102,7 @@ class Note extends Component {
             fontSize: 12,
             opacity: 0.3,
           }}>
-            {moment(note.updatedAt).fromNow()}
+            {this.getUpdatedAt()}
           </div>
         )}
       </div>
