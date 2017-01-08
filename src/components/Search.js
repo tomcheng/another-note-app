@@ -36,7 +36,6 @@ class Search extends Component {
     onAddNote({
       title: search,
       callback: ({ note }) => {
-        router.transitionTo("/" + note.id);
         router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
@@ -49,7 +48,6 @@ class Search extends Component {
     onAddList({
       title: search,
       callback: ({ note }) => {
-        router.transitionTo("/" + note.id);
         router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
