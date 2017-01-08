@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import capitalize from "lodash/capitalize";
 import CSSTransition from "react-addons-css-transition-group";
+import renderOutside from "../utils/renderOutside";
 import Button from "./Button";
 import "./DeleteModal.css";
 
@@ -67,4 +68,4 @@ DeleteModal.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default DeleteModal;
+export default renderOutside(DeleteModal);
