@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
 import { actions, selectors } from "../reducer";
-import { withRouter } from "react-router";
+import withRouter from "../utils/withRouter";
 import { animate } from "../utils/animation";
 import TextInput from "./TextInput";
 import Button from "./Button";
@@ -154,7 +154,7 @@ class EditList extends Component {
     onUpdateNote({
       id: list.id,
       updates: { title },
-      callback: () => { router.goBack(); },
+      callback: router.goBack,
     });
   };
 

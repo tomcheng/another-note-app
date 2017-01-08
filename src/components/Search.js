@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import withRouter from "../utils/withRouter";
 import IconWithText from "./IconWithText";
 import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
     router: PropTypes.shape({
-      push: PropTypes.func.isRequired,
+      transitionTo: PropTypes.func.isRequired,
     }).isRequired,
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
@@ -43,8 +43,8 @@ class Search extends Component {
     onAddNote({
       title: search,
       callback: ({ note }) => {
-        router.push("/" + note.id);
-        router.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
+        router.transitionTo("/" + note.id);
+        router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };
@@ -56,8 +56,8 @@ class Search extends Component {
     onAddList({
       title: search,
       callback: ({ note }) => {
-        router.push("/" + note.id);
-        router.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
+        router.transitionTo("/" + note.id);
+        router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };

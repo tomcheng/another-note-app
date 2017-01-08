@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import { withRouter, Link } from "react-router";
+import withRouter from "../utils/withRouter";
+import Link from "react-router/Link";
 import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowNote from "./ShowNote";
@@ -17,7 +18,7 @@ class Show extends Component {
     }).isRequired,
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
-      push: PropTypes.func.isRequired,
+      transitionTo: PropTypes.func.isRequired,
     }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
@@ -52,7 +53,7 @@ class Show extends Component {
 
     onDeleteNote({
       id: parseInt(params.id, 10),
-      callback: () => { router.push("/"); },
+      callback: () => { router.transitionTo("/"); },
     });
   };
 

@@ -5,7 +5,8 @@ import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import reducer from "./reducer";
 import sagas from "./sagas";
-import Routes from "./Routes";
+import HashRouter from "react-router/HashRouter";
+import AppWrapper from './components/AppWrapper';
 import "./index.css";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,6 +22,8 @@ sagas.forEach(saga => { sagaMiddleware.run(saga); });
 
 ReactDOM.render((
   <Provider store={store}>
-    <Routes />
+    <HashRouter>
+      <AppWrapper />
+    </HashRouter>
   </Provider>
 ), document.getElementById("root"));

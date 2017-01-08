@@ -1,14 +1,13 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
-import { Link, withRouter } from "react-router";
+import withRouter from "../utils/withRouter";
+import Link from "react-router/Link";
 import Note from "./Note";
 
 class Notes extends Component {
   static propTypes = {
-    router: PropTypes.shape({
-      isActive: PropTypes.func.isRequired,
-    }).isRequired,
+    router: PropTypes.shape({}).isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
     })).isRequired,
@@ -21,7 +20,6 @@ class Notes extends Component {
     const {
       notes,
       notesLoaded,
-      router,
       visibleNoteIds,
     } = this.props;
 
@@ -45,7 +43,7 @@ class Notes extends Component {
           >
             <Note
               note={note}
-              isSelected={router.isActive("/" + note.id)}
+              isSelected={false /* TODO: test if route is active */}
               isVisible={visibleNoteIds.includes(note.id)}
             />
           </Link>

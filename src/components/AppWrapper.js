@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions } from "../reducer";
+import Match from "react-router/Match";
+import Home from "./Home";
+import Show from "./Show";
+import Edit from "./Edit";
 
 class AppWrapper extends Component {
   static propTypes = {
-    children: PropTypes.any.isRequired,
     onRequestNotes: PropTypes.func.isRequired,
   };
 
@@ -19,7 +22,6 @@ class AppWrapper extends Component {
   };
 
   render () {
-    const { children } = this.props;
     const { appHeight } = this.state;
 
     return (
@@ -36,7 +38,9 @@ class AppWrapper extends Component {
           flexDirection: "column",
           overflow: "hidden",
         }}>
-          {children}
+          <Match exactly pattern="/" component={Home} />
+          <Match exactly pattern="/:id" component={Show} />
+          <Match exactly pattern="/:id/edit" component={Edit} />
         </div>
       </div>
     );

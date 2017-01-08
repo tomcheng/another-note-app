@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import { withRouter } from "react-router";
+import withRouter from "../utils/withRouter";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -81,7 +81,7 @@ class EditNote extends Component {
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: () => { router.goBack(); },
+      callback: router.goBack,
     });
   };
 

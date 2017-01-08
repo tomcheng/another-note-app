@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { withRouter } from "react-router";
+import withRouter from "../utils/withRouter";
 import AnimateHeight from "./AnimateHeight";
 import Checkbox from "./Checkbox";
 
@@ -12,7 +12,7 @@ class ListItem extends Component {
     }).isRequired,
     listId: PropTypes.number.isRequired,
     router: PropTypes.shape({
-      push: PropTypes.func.isRequired,
+      transitionTo: PropTypes.func.isRequired,
     }).isRequired,
     onCheckListItem: PropTypes.func,
     onUncheckListItem: PropTypes.func,
@@ -43,7 +43,7 @@ class ListItem extends Component {
     const { onUncheckListItem, router, listId, item } = this.props;
 
     if (!item.checked) {
-      router.push("/" + listId + "/edit?focus=item&item_id=" + item.id);
+      router.transitionTo("/" + listId + "/edit?focus=item&item_id=" + item.id);
     } else {
       onUncheckListItem({ listId, itemId: item.id });
     }
