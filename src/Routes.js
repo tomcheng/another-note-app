@@ -8,11 +8,9 @@ import Edit from "./components/Edit";
 const Routes = () => (
   <Router history={hashHistory}>
     <Route path="/" component={AppWrapper}>
-      <Route component={Home}>
-        <IndexRoute component={null} />
-        <Route path=":id" component={Show} />
-        <Route path=":id/edit" component={Edit} />
-      </Route>
+      <IndexRoute component={Home} />
+      <Route path=":id" component={Show} />
+      <Route path=":id/edit" component={Edit} />
     </Route>
   </Router>
 );

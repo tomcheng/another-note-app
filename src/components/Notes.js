@@ -28,28 +28,8 @@ class Notes extends Component {
     if (!notesLoaded) { return <noscript />; }
 
     return (
-      <div
-        style={{
-          overflow: "auto",
-          padding: 6,
-          flexShrink: 1,
-        }}
-      >
-        <div>
-          {notes.map(note => (
-            <Link
-              key={note.id}
-              to={"/" + note.id}
-            >
-              <Note
-                note={note}
-                isSelected={router.isActive("/" + note.id)}
-                isVisible={visibleNoteIds.includes(note.id)}
-              />
-            </Link>
-          ))}
-        </div>
-        {visibleNoteIds.length === 0 && (
+      <div style={{ padding: 6 }}>
+        {visibleNoteIds.length === 0 ? (
           <div style={{
             color: "#fff",
             opacity: 0.5,
@@ -58,7 +38,18 @@ class Notes extends Component {
           }}>
             No notes found
           </div>
-        )}
+        ) : notes.map(note => (
+          <Link
+            key={note.id}
+            to={"/" + note.id}
+          >
+            <Note
+              note={note}
+              isSelected={router.isActive("/" + note.id)}
+              isVisible={visibleNoteIds.includes(note.id)}
+            />
+          </Link>
+        ))}
       </div>
     );
   }
