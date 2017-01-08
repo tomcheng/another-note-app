@@ -123,10 +123,6 @@ class EditList extends Component {
     this.setState({ isAddingItem: true });
   };
 
-  handleClickAddItem = () => {
-    this.addItemField.focus();
-  };
-
   handleClickAddAnother = () => {
     const { list, onAddListItem } = this.props;
     const { addItemValue } = this.state;
@@ -248,7 +244,7 @@ class EditList extends Component {
             >
               Cancel
             </Button>
-            {isAddingItem ? (
+            {isAddingItem && (
               <Button
                 buttonStyle="ghost"
                 style={{ marginRight: 10 }}
@@ -256,14 +252,6 @@ class EditList extends Component {
                 disabled={addItemValue.trim() === ""}
               >
                 Add Another
-              </Button>
-            ) : (
-              <Button
-                buttonStyle="ghost"
-                style={{ marginRight: 10 }}
-                onClick={this.handleClickAddItem}
-              >
-                Add Item
               </Button>
             )}
             <Button
