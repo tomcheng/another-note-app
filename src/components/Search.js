@@ -70,9 +70,6 @@ class Search extends Component {
         padding: "0 10px 0 6px",
         display: "flex",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        boxShadow: "inset 0 -1px 1px rgba(0,0,0,0.2)",
-        borderBottom: "1px solid rgba(255,255,255,0.2)",
       }}>
         <input
           className="SearchInput"
