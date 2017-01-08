@@ -8,7 +8,6 @@ export const actions = {};
 export const selectors = {};
 
 actions.updateSearch             = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.deleteSearch             = payload => ({ type: "DELETE_SEARCH", payload });
 actions.clearSearch              = ()      => ({ type: "CLEAR_SEARCH" });
 actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
 actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
@@ -67,16 +66,9 @@ const reducer = (state = initialState, action) => {
     case "UPDATE_SEARCH": {
       return {
         ...state,
-        isEditing: false,
-        isNavigating: false,
         search: payload.search,
       };
     }
-    case "DELETE_SEARCH":
-      return {
-        ...state,
-        search: payload.search,
-      };
     case "CLEAR_SEARCH":
       return { ...state, search: "" };
     case "LOAD_NOTES":
@@ -100,8 +92,6 @@ const reducer = (state = initialState, action) => {
         notes: newNotes,
         noteIds: notesToIds(newNotes),
         search: "",
-        isEditingNoteBody: payload.note.type === "note",
-        isAddingListItem: payload.note.type === "list",
         selectedNoteId: payload.note.id,
       };
     }

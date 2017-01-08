@@ -14,7 +14,6 @@ class Search extends Component {
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
     onClearSearch: PropTypes.func.isRequired,
-    onDeleteSearch: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired,
   };
 
@@ -23,13 +22,7 @@ class Search extends Component {
   };
 
   handleChangeSearch = ({ target }) => {
-    const { search, onUpdateSearch, onDeleteSearch } = this.props;
-
-    if (target.value.length < search.length) {
-      onDeleteSearch({ search: target.value });
-    } else {
-      onUpdateSearch({ search: target.value });
-    }
+    this.props.onUpdateSearch({ search: target.value });
   };
 
   handleClickClear = () => {
@@ -111,6 +104,5 @@ export default withRouter(connect(mapStateToProps, {
   onAddList: actions.requestAddList,
   onAddNote: actions.requestAddNote,
   onClearSearch: actions.clearSearch,
-  onDeleteSearch: actions.deleteSearch,
   onUpdateSearch: actions.updateSearch,
 })(Search));
