@@ -25,6 +25,7 @@ actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM
 actions.requestCheckListItem     = payload => ({ type: "REQUEST_CHECK_LIST_ITEM", payload });
 actions.requestUncheckListItem   = payload => ({ type: "REQUEST_UNCHECK_LIST_ITEM", payload });
 actions.requestDeleteListItem    = payload => ({ type: "REQUEST_DELETE_LIST_ITEM", payload });
+actions.requestReplaceList       = payload => ({ type: "REQUEST_REPLACE_LIST", payload });
 
 const initialState = {
   notes: {},

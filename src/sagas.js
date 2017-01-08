@@ -93,4 +93,11 @@ sagas.push(function* () {
   });
 });
 
+sagas.push(function* () {
+  yield takeEvery("REQUEST_REPLACE_LIST", function* ({ payload }) {
+    const response = yield call(api.replaceList, payload);
+    yield put(actions.updateNote(response));
+  });
+});
+
 export default sagas;

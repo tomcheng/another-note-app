@@ -195,3 +195,11 @@ it("deletes a list item", () => {
     order: [],
   }) });
 });
+
+it("replaces a list", () => {
+  api.addList({ title: "foo" });
+  api.addListItem({ listId: 1, value: "bar" });
+  const response = api.replaceList({ id: 1, list: addListDefaults({ id: 1, title: "foo" }) });
+
+  expect(response).toEqual({ note: addListDefaults({ id: 1, title: "foo" }) });
+});

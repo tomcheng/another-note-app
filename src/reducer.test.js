@@ -171,5 +171,19 @@ it("handles loading lists", () => {
       ],
     }
   });
+  expect(selectors.getRawNotesById(state)).toEqual({
+    1: {
+      id: 1,
+      title: "foo",
+      type: "list",
+      items: {
+        1: {id: 1, value: "bar", checked: false},
+        2: {id: 2, value: "baz", checked: false},
+        3: {id: 3, value: "baz", checked: true, checkedAt: "3"},
+        4: {id: 4, value: "baz", checked: true, checkedAt: "4"},
+      },
+      order: [2, 1],
+    },
+  });
   expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
 });

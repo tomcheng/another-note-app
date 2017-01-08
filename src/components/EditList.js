@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
-import { actions } from "../reducer";
+import { actions, selectors } from "../reducer";
 import { withRouter } from "react-router";
 import { animate } from "../utils/animation";
 import TextInput from "./TextInput";
@@ -28,12 +28,16 @@ class EditList extends Component {
         value: PropTypes.string.isRequired,
       })).isRequired,
     }).isRequired,
+    rawList: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired,
     router: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
+    onReplaceList: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
   };
@@ -41,12 +45,13 @@ class EditList extends Component {
   constructor (props) {
     super(props);
 
-    const { list } = props;
+    const { list, rawList } = props;
 
     this.state = {
       title: list.title,
       addItemValue: "",
       isAddingItem: false,
+      previousRawList: rawList,
     };
   }
 
@@ -154,7 +159,8 @@ class EditList extends Component {
   };
 
   handleClickCancel = () => {
-    const { list, location, onDeleteNote, router } = this.props;
+    const { list, location, onDeleteNote, router, onReplaceList } = this.props;
+    const { previousRawList } = this.state;
 
     if (location.query.just_added === "true") {
       onDeleteNote({
@@ -162,6 +168,7 @@ class EditList extends Component {
         callback: router.goBack,
       });
     } else {
+      onReplaceList({ id: list.id, list: previousRawList });
       router.goBack();
     }
   };
@@ -269,10 +276,15 @@ class EditList extends Component {
   }
 }
 
-export default withRouter(connect(null, {
+const mapStateToProps = (state, { list }) => ({
+  rawList: selectors.getRawNotesById(state)[list.id],
+});
+
+export default withRouter(connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
   onDeleteListItem: actions.requestDeleteListItem,
   onDeleteNote: actions.requestDeleteNote,
+  onReplaceList: actions.requestReplaceList,
   onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
 })(EditList));

@@ -210,3 +210,14 @@ export const deleteListItem = ({ listId, itemId }) => {
 
   return { note: list };
 };
+
+export const replaceList = ({ id, list }) => {
+  const lists = getLocalNotes();
+  const listIndex = findIndex(lists, { id });
+
+  lists[listIndex] = list;
+
+  save({ key: "notes", payload: lists });
+
+  return { note: list };
+};
