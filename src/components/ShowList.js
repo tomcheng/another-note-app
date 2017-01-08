@@ -98,81 +98,79 @@ class ShowList extends Component {
     const isShowingChecked = list.checkedItems.length > 0 && !list.hideChecked;
 
     return (
-      <div>
-        <Card
-          header={<ShowHeader note={list} />}
-          body={(
-            <div style={{ padding: "7px 15px 12px" }}>
-              <ShowListItems
-                list={list}
-                onCheckListItem={this.handleCheckListItem}
-                onSortEnd={this.onSortEnd}
-                pressDelay={200}
-                transitionDuration={200}
-                helperClass="listItemDragging"
+      <Card
+        header={<ShowHeader note={list} />}
+        body={(
+          <div style={{ padding: "7px 15px 12px" }}>
+            <ShowListItems
+              list={list}
+              onCheckListItem={this.handleCheckListItem}
+              onSortEnd={this.onSortEnd}
+              pressDelay={200}
+              transitionDuration={200}
+              helperClass="listItemDragging"
+            />
+            <Link to={"/" + list.id + "/edit?focus=addItem"}>
+              <Checkbox
+                checked={false}
+                label={(
+                  <div style={{
+                    opacity: 0.4,
+                    padding: "7px 0",
+                    userSelect: "none",
+                  }}>
+                    + Add item
+                  </div>
+                )}
+                disabled
               />
-              <Link to={"/" + list.id + "/edit?focus=addItem"}>
-                <Checkbox
-                  checked={false}
-                  label={(
-                    <div style={{
-                      opacity: 0.4,
-                      padding: "7px 0",
-                      userSelect: "none",
-                    }}>
-                      + Add item
-                    </div>
-                  )}
-                  disabled
+            </Link>
+            <AnimateHeight isExpanded={isShowingChecked}>
+              <div>
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: "#ddd",
+                    margin: "9px 0",
+                  }}
                 />
-              </Link>
-              <AnimateHeight isExpanded={isShowingChecked}>
-                <div>
-                  <div
-                    style={{
-                      height: 1,
-                      backgroundColor: "#ddd",
-                      margin: "9px 0",
-                    }}
+                {list.checkedItems.map(item => (
+                  <ShowListItem
+                    key={item.id}
+                    item={item}
+                    listId={list.id}
+                    onUncheckListItem={onUncheckListItem}
                   />
-                  {list.checkedItems.map(item => (
-                    <ShowListItem
-                      key={item.id}
-                      item={item}
-                      listId={list.id}
-                      onUncheckListItem={onUncheckListItem}
-                    />
-                  ))}
-                </div>
-              </AnimateHeight>
-              <div style={{
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-                right: 0,
-              }}>
-                <AnimateHeight isExpanded={recentlyCheckedItemIds.length > 0}>
-                  <PreviewFooter>
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingLeft: 9,
-                    }}>
-                      <span>
-                        Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
-                      </span>
-                      <Button onClick={this.handleClickUndo} buttonStyle="ghost">
-                        Undo
-                      </Button>
-                    </div>
-                  </PreviewFooter>
-                </AnimateHeight>
+                ))}
               </div>
+            </AnimateHeight>
+            <div style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}>
+              <AnimateHeight isExpanded={recentlyCheckedItemIds.length > 0}>
+                <PreviewFooter>
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingLeft: 9,
+                  }}>
+                    <span>
+                      Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
+                    </span>
+                    <Button onClick={this.handleClickUndo} buttonStyle="ghost">
+                      Undo
+                    </Button>
+                  </div>
+                </PreviewFooter>
+              </AnimateHeight>
             </div>
-          )}
-        />
-      </div>
+          </div>
+        )}
+      />
     );
   }
 }

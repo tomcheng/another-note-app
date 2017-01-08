@@ -23,8 +23,21 @@ class AppWrapper extends Component {
     const { appHeight } = this.state;
 
     return (
-      <div style={{ height: appHeight }}>
-        {children}
+      <div style={{
+        height: appHeight,
+        display: "flex",
+        flexDirection: "column",
+      }}>
+        {/* header goes here */}
+        <div style={{
+          flexShrink: 1,
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+        }}>
+          {children}
+        </div>
       </div>
     );
   }

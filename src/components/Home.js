@@ -4,10 +4,10 @@ import Notes from "./Notes";
 
 const Home = () => (
   <div style={{
-    height: "100%",
-    overflow: "hidden",
+    flexGrow: 1,
     display: "flex",
     flexDirection: "column",
+    overflow: "hidden",
   }}>
     <div style={{ flexShrink: 0 }}>
       <Search />
