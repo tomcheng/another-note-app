@@ -156,5 +156,20 @@ it("handles loading lists", () => {
       { id: 3, value: "baz", checked: true, checkedAt: "3" },
     ],
   }]);
+  expect(selectors.getNotesById(state)).toEqual({
+    1: {
+      id: 1,
+      title: "foo",
+      type: "list",
+      uncheckedItems: [
+        { id: 2, value: "baz", checked: false },
+        { id: 1, value: "bar", checked: false },
+      ],
+      checkedItems: [
+        { id: 4, value: "baz", checked: true, checkedAt: "4" },
+        { id: 3, value: "baz", checked: true, checkedAt: "3" },
+      ],
+    }
+  });
   expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
 });

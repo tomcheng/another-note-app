@@ -52,17 +52,6 @@ class ShowList extends Component {
     })
   };
 
-  handleClickToggleShowChecked = () => {
-    const { onUpdateNote, list } = this.props;
-
-    onUpdateNote({
-      id: list.id,
-      updates: {
-        hideChecked: !list.hideChecked,
-      }
-    });
-  };
-
   handleCheckListItem = ({ listId, itemId }) => {
     const { onCheckListItem, list } = this.props;
     const { recentlyCheckedItemIds } = this.state;

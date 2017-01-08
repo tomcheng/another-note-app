@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import sortBy from "lodash/sortBy";
 import omit from "lodash/omit";
 import values from "lodash/values";
+import mapValues from "lodash/mapValues";
 
 export const actions = {};
 export const selectors = {};
@@ -80,9 +81,9 @@ const reducer = (state = initialState, action) => {
     case "LOAD_NOTES":
       return {
         ...state,
-        notes: payload.notes.reduce((acc, curr) => ({
+        notes: payload.notes.reduce((acc, note) => ({
           ...acc,
-          [curr.id]: processNote(curr),
+          [note.id]: note,
         }), {}),
         noteIds: notesToIds(payload.notes),
         notesLoaded: true,
@@ -90,7 +91,7 @@ const reducer = (state = initialState, action) => {
     case "ADD_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: processNote(payload.note),
+        [payload.note.id]: payload.note,
       };
 
       return {
@@ -106,7 +107,7 @@ const reducer = (state = initialState, action) => {
     case "UPDATE_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: processNote(payload.note),
+        [payload.note.id]: payload.note,
       };
 
       return {
@@ -140,10 +141,14 @@ const matches = (note, search) => {
     processedBody.indexOf(processedSearch) !== -1;
 };
 
-selectors.getNotesById          = state => state.notes;
+selectors.getRawNotesById       = state => state.notes;
 selectors.getNoteIds            = state => state.noteIds;
 selectors.getNotesLoaded        = state => state.notesLoaded;
 selectors.getSearch             = state => state.search;
+selectors.getNotesById = createSelector(
+  selectors.getRawNotesById,
+  rawNotesById => mapValues(rawNotesById, processNote)
+);
 selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
