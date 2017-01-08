@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from "react-router";
 
-const ShowHeader = ({ note }) => (
+const CardHeader = ({ note }) => (
   <div style={{ padding: "7px 7px 0" }}>
     <Link
       to={"/" + note.id + "/edit?focus=title"}
@@ -20,11 +20,11 @@ const ShowHeader = ({ note }) => (
 );
 
 
-ShowHeader.propTypes = {
+CardHeader.propTypes = {
   note: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default ShowHeader;
+export default CardHeader;

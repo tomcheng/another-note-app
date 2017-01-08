@@ -5,7 +5,7 @@ import { SortableContainer, SortableElement, arrayMove } from "react-sortable-ho
 import { Link } from "react-router";
 import Card from "./Card";
 import Button from "./Button";
-import ShowHeader from "./ShowHeader";
+import CardHeader from "./CardHeader";
 import ShowListItem from "./ShowListItem";
 import Checkbox from "./Checkbox";
 import AnimateHeight from "./AnimateHeight";
@@ -99,7 +99,7 @@ class ShowList extends Component {
 
     return (
       <Card
-        header={<ShowHeader note={list} />}
+        header={<CardHeader note={list} />}
         body={(
           <div style={{ padding: "7px 15px 12px" }}>
             <ShowListItems

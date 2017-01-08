@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import Card from "./Card";
-import ShowHeader from "./ShowHeader";
+import CardHeader from "./CardHeader";
 
 class ShowNote extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class ShowNote extends Component {
 
     return (
       <Card
-        header={<ShowHeader note={note} />}
+        header={<CardHeader note={note} />}
         body={(
           <Link to={"/" + note.id + "/edit?focus=body"}>
             <pre style={{
