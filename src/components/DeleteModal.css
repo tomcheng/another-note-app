@@ -1,0 +1,28 @@
+.modal-enter .modalOverlay{
+  opacity: 0;
+}
+
+.modal-enter.modal-enter-active .modalOverlay {
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.modal-enter .modalContent{
+  opacity: 0;
+  transform: translate3d(0, -30%, 0);
+}
+
+.modal-enter.modal-enter-active .modalContent {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.2s ease-in-out 0.2s, transform 0.2s ease-in-out 0.2s;
+}
+
+.modal-leave {
+  opacity: 1;
+}
+
+.modal-leave.modal-leave-active {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
