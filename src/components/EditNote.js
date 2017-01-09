@@ -95,46 +95,56 @@ class EditNote extends Component {
     const { title, body } = this.state;
 
     return (
-      <div style={{ height: "100%", overflow: "auto" }}>
-        <div style={{ padding: "6px 6px 60px" }}>
-          <Card
-            header={(
-              <div style={{ padding: "7px 7px 0" }}>
-                <TextInput
-                  value={title}
-                  placeholder="Add Title"
-                  refCallback={el => { this.titleField = el; }}
-                  onChange={this.handleChangeTitle}
-                  onEnter={this.handleEnterTitle}
-                  style={{
-                    width: "100%",
-                    padding: "5px 8px",
-                    fontSize: 24,
-                    lineHeight: "30px",
-                  }}
-                  singleLine
-                />
-              </div>
-            )}
-            body={(
-              <div style={{ padding: "2px 7px 7px" }}>
-                <TextInput
-                  name="body"
-                  value={body}
-                  placeholder="Add Description"
-                  refCallback={el => { this.bodyField = el; }}
-                  onChange={this.handleChangeBody}
-                  minRows={2}
-                  style={{
-                    width: "100%",
-                    padding: "5px 8px",
-                  }}
-                />
-              </div>
-            )}
-          />
+      <div style={{
+        flexGrow: 1,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}>
+        <div style={{
+          flexGrow: 1,
+          overflow: "auto",
+        }}>
+          <div style={{ padding: 6 }}>
+            <Card
+              header={(
+                <div style={{ padding: "7px 7px 0" }}>
+                  <TextInput
+                    value={title}
+                    placeholder="Add Title"
+                    refCallback={el => { this.titleField = el; }}
+                    onChange={this.handleChangeTitle}
+                    onEnter={this.handleEnterTitle}
+                    style={{
+                      width: "100%",
+                      padding: "5px 8px",
+                      fontSize: 24,
+                      lineHeight: "30px",
+                    }}
+                    singleLine
+                  />
+                </div>
+              )}
+              body={(
+                <div style={{ padding: "2px 7px 7px" }}>
+                  <TextInput
+                    name="body"
+                    value={body}
+                    placeholder="Add Description"
+                    refCallback={el => { this.bodyField = el; }}
+                    onChange={this.handleChangeBody}
+                    minRows={2}
+                    style={{
+                      width: "100%",
+                      padding: "5px 8px",
+                    }}
+                  />
+                </div>
+              )}
+            />
+          </div>
         </div>
-        <div style={{ position: "fixed", left: 0, right: 0, bottom: 0 }}>
+        <div style={{ flexShrink: 0 }}>
           <PreviewFooter>
             <Button
               buttonStyle="link"

@@ -86,7 +86,7 @@ class EditList extends Component {
   animateToTextField = input => {
     this.animation = animate({
       start: 0,
-      end: input.offsetTop + input.offsetHeight + 60 - this.container.offsetHeight,
+      end: input.offsetTop + input.offsetHeight + 5 - this.container.offsetHeight,
       duration: 300,
       onUpdate: val => { this.container.scrollTop = val; }
     });
@@ -184,70 +184,80 @@ class EditList extends Component {
     const { title, addItemValue, isAddingItem } = this.state;
 
     return (
-      <div ref={el => { this.container = el; }} style={{ height: "100%", overflow: "auto" }}>
-        <div style={{ padding: "6px 6px 60px" }}>
-          <Card
-            header={(
-              <div style={{ padding: "7px 7px 0" }}>
-                <TextInput
-                  value={title}
-                  placeholder="Add a title"
-                  refCallback={el => { this.titleField = el; }}
-                  onChange={this.handleChangeTitle}
-                  onEnter={this.handleEnterTitle}
-                  onFocus={this.handleFocusTitle}
-                  style={{
-                    width: "100%",
-                    padding: "5px 8px",
-                    fontSize: 24,
-                    lineHeight: "30px",
-                  }}
-                  singleLine
-                />
-              </div>
-            )}
-            body={(
-              <div style={{ padding: "7px 15px 12px" }}>
-                <CSSTransition
-                  transitionName="listItem"
-                  transitionEnterTimeout={600}
-                  transitionLeaveTimeout={600}
-                >
-                  {list.uncheckedItems.map(item => (
-                    <EditListItem
-                      key={item.id}
-                      item={item}
-                      listId={list.id}
-                      onDeleteListItem={onDeleteListItem}
-                      onUpdateListItem={onUpdateListItem}
-                      onFocus={this.handleFocusEditItem}
-                      refCallback={el => { this["item-" + item.id] = el; }}
-                    />
-                  ))}
-                </CSSTransition>
-                <Checkbox
-                  checked={false}
-                  label={(
-                    <div style={{ padding: "2px 0", display: "flex", flexGrow: 1 }}>
-                      <TextInput
-                        refCallback={el => { this.addItemField = el; }}
-                        value={addItemValue}
-                        placeholder="+ Add item"
-                        style={{ flexGrow: 1, marginLeft: -5 }}
-                        onChange={this.handleChangeAddItem}
-                        onEnter={this.handleEnterAddItem}
-                        onFocus={this.handleFocusAddItem}
-                        singleLine
+      <div style={{
+        flexGrow: 1,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column"
+      }}>
+        <div
+          ref={el => { this.container = el; }}
+          style={{ flexGrow: 1, overflow: "auto"}}
+        >
+          <div style={{ padding: 6 }}>
+            <Card
+              header={(
+                <div style={{ padding: "7px 7px 0" }}>
+                  <TextInput
+                    value={title}
+                    placeholder="Add a title"
+                    refCallback={el => { this.titleField = el; }}
+                    onChange={this.handleChangeTitle}
+                    onEnter={this.handleEnterTitle}
+                    onFocus={this.handleFocusTitle}
+                    style={{
+                      width: "100%",
+                      padding: "5px 8px",
+                      fontSize: 24,
+                      lineHeight: "30px",
+                    }}
+                    singleLine
+                  />
+                </div>
+              )}
+              body={(
+                <div style={{ padding: "7px 15px 12px" }}>
+                  <CSSTransition
+                    transitionName="listItem"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={600}
+                  >
+                    {list.uncheckedItems.map(item => (
+                      <EditListItem
+                        key={item.id}
+                        item={item}
+                        listId={list.id}
+                        onDeleteListItem={onDeleteListItem}
+                        onUpdateListItem={onUpdateListItem}
+                        onFocus={this.handleFocusEditItem}
+                        refCallback={el => { this["item-" + item.id] = el; }}
                       />
-                    </div>
-                  )}
-                  disabled
-                />
-              </div>
-            )}
-          />
+                    ))}
+                  </CSSTransition>
+                  <Checkbox
+                    checked={false}
+                    label={(
+                      <div style={{ padding: "2px 0", display: "flex", flexGrow: 1 }}>
+                        <TextInput
+                          refCallback={el => { this.addItemField = el; }}
+                          value={addItemValue}
+                          placeholder="+ Add item"
+                          style={{ flexGrow: 1, marginLeft: -5 }}
+                          onChange={this.handleChangeAddItem}
+                          onEnter={this.handleEnterAddItem}
+                          onFocus={this.handleFocusAddItem}
+                          singleLine
+                        />
+                      </div>
+                    )}
+                    disabled
+                  />
+                </div>
+              )}
+            />
+          </div>
         </div>
-        <div style={{ position: "fixed", left: 0, right: 0, bottom: 0 }}>
+        <div style={{ flexShrink: 0 }}>
           <PreviewFooter>
             <Button
               buttonStyle="link"

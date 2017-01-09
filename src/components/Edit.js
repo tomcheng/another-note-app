@@ -26,7 +26,7 @@ class Single extends Component {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        height: "100%",
+        flexGrow: 1,
       }}>
         {selectedNote.type === "note" && (
           <EditNote location={location} note={selectedNote} />
