@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { animate } from "../utils/animation";
+import { animate, easings } from "../utils/animation";
 
 class AnimateHeight extends Component {
   static propTypes = {
@@ -7,11 +7,13 @@ class AnimateHeight extends Component {
     isExpanded: PropTypes.bool.isRequired,
     delay: PropTypes.number,
     duration: PropTypes.number,
+    easing: PropTypes.string,
   };
 
   static defaultProps = {
     delay: 0,
     duration: 150,
+    easing: "easeInOutCubic",
   };
 
   state = {
@@ -20,7 +22,7 @@ class AnimateHeight extends Component {
   };
 
   componentWillReceiveProps (nextProps) {
-    const { isExpanded, duration, delay } = this.props;
+    const { isExpanded, duration, delay, easing } = this.props;
 
     if (!isExpanded && nextProps.isExpanded) {
       this.stopAnimation();
@@ -29,6 +31,7 @@ class AnimateHeight extends Component {
           start: 0,
           end: this.contentWrapper.offsetHeight,
           duration: duration,
+          easing: easings[easing],
           onUpdate: ht => this.setState({ containerHeight: ht }),
           onComplete: () => this.setState({ isAnimating: false }),
         });
@@ -46,6 +49,7 @@ class AnimateHeight extends Component {
           start: this.contentWrapper.offsetHeight,
           end: 0,
           duration: duration,
+          easing: easings[easing],
           onUpdate: ht => this.setState({ containerHeight: ht }),
           onComplete: () => this.setState({ isAnimating: false }),
         });
@@ -74,6 +78,8 @@ class AnimateHeight extends Component {
       <div style={{
         height: isAnimating ? containerHeight : (isExpanded ? "auto" : 0),
         overflow: isAnimating ? "hidden" : "visible",
+        opacity: (isExpanded && !isAnimating) ? 1 : 0,
+        transition: "opacity 50ms ease-in-out",
       }}>
         <div
           ref={el => { this.contentWrapper = el; }}

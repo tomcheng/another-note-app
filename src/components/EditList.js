@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
 import { actions, selectors } from "../reducer";
 import { animate } from "../utils/animation";
+import withRouter from "../utils/withRouter";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -29,6 +30,9 @@ class EditList extends Component {
     }).isRequired,
     rawList: PropTypes.shape({
       id: PropTypes.number.isRequired,
+    }).isRequired,
+    router: PropTypes.shape({
+      replaceWith: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
@@ -139,21 +143,6 @@ class EditList extends Component {
     this.addItemField.focus();
   };
 
-  handleClickDone = () => {
-    const { list, onUpdateNote, onAddListItem } = this.props;
-    const { title, addItemValue } = this.state;
-
-    if (addItemValue.trim() !== "") {
-      onAddListItem({ listId: list.id, value: addItemValue });
-    }
-
-    onUpdateNote({
-      id: list.id,
-      updates: { title },
-      callback: () => { window.history.back(); },
-    });
-  };
-
   handleClickCancel = () => {
     const { list, location, onDeleteNote, onReplaceList } = this.props;
     const { previousRawList } = this.state;
@@ -167,6 +156,27 @@ class EditList extends Component {
       onReplaceList({ id: list.id, list: previousRawList });
       window.history.back();
     }
+  };
+
+  handleClickDone = () => {
+    const { list, onUpdateNote, onAddListItem, router, location } = this.props;
+    const { title, addItemValue } = this.state;
+
+    if (addItemValue.trim() !== "") {
+      onAddListItem({ listId: list.id, value: addItemValue });
+    }
+
+    onUpdateNote({
+      id: list.id,
+      updates: { title },
+      callback: () => {
+        if (location.query.just_added === "true") {
+          router.replaceWith("/" + list.id);
+        } else {
+          window.history.back();
+        }
+      },
+    });
   };
 
   render () {
@@ -276,11 +286,11 @@ const mapStateToProps = (state, { list }) => ({
   rawList: selectors.getRawNotesById(state)[list.id],
 });
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   onAddListItem: actions.requestAddListItem,
   onDeleteListItem: actions.requestDeleteListItem,
   onDeleteNote: actions.requestDeleteNote,
   onReplaceList: actions.requestReplaceList,
   onUpdateListItem: actions.requestUpdateListItem,
   onUpdateNote: actions.requestUpdateNote,
-})(EditList);
+})(EditList));

@@ -1,0 +1,17 @@
+.main-appear {
+  opacity: 0;
+}
+
+.main-appear.main-appear-active {
+  opacity: 1;
+  transition: opacity 0.05s ease-in-out 0.3s;
+}
+
+.main-leave {
+  opacity: 1;
+}
+
+.main-leave.main-leave-active {
+  opacity: 0;
+  transition: opacity 0.05s ease-in-out;
+}

@@ -1,13 +1,18 @@
 const getCurrentTime = () => new Date().getTime();
 
 /*eslint-disable */
-export const easeInOutCubic = x => {
-  if ((x /= 1 / 2) < 1) { return 1 / 2 * x * x * x; }
-  return 1 / 2 * ((x -= 2) * x * x + 2);
+export const easings = {
+  easeInOutCubic: x => {
+    if ((x /= 1 / 2) < 1) {
+      return 1 / 2 * x * x * x;
+    }
+    return 1 / 2 * ((x -= 2) * x * x + 2);
+  },
+  linear: x => x,
 };
-/*eslint-enable */
+  /*eslint-enable */
 
-export const animate = ({ start, end, duration, easing = easeInOutCubic, onUpdate, onComplete }) => {
+export const animate = ({ start, end, duration, easing = easings.easeInOutCubic, onUpdate, onComplete }) => {
   const startTime = getCurrentTime();
   let timePassed;
   let shouldStop = false;

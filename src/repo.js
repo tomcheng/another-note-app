@@ -11,7 +11,7 @@ const DEFAULT_NOTES = [
     body: "Notorist is a simple way to take notes and to-do lists on your phone.\n\n" +
       "No sign-up is necessary because notes and lists are saved only to the device you are using.\n\n" +
       "For a better experience, try adding this app to your phone's home screen.\n\n" +
-      "If you have any feedback, I'd love to hear it. Email me at info@thomascheng.com\n\n" +
+      "If you have any feedback, please send it to info@thomascheng.com\n\n" +
       "Cheers,\nThomas",
     createdAt: moment().format(),
     updatedAt: moment().format(),

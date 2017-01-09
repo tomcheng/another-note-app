@@ -76,12 +76,18 @@ class EditNote extends Component {
   };
 
   handleClickDone = () => {
-    const { note, onUpdateNote, router } = this.props;
+    const { note, onUpdateNote, router, location } = this.props;
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: () => { router.replaceWith("/" + note.id); },
+      callback: () => {
+        if (location.query.just_added === "true") {
+          router.replaceWith("/" + note.id);
+        } else {
+          window.history.back();
+        }
+      },
     });
   };
 

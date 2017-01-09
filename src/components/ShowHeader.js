@@ -11,7 +11,7 @@ class ShowHeader extends Component {
     notes: PropTypes.object.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string,
-    }).isRequired,
+    }),
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -73,7 +73,13 @@ class ShowHeader extends Component {
   getSelectedNote = (props = this.props) => {
     const { params, notes } = props;
 
-    if (!params.id || !notes[params.id]) { return null; }
+    if (!params || !params.id || !notes[params.id]) {
+      return {
+        id: null,
+        type: "note",
+        pinned: false,
+      };
+    }
 
     return notes[params.id];
   };
@@ -81,8 +87,6 @@ class ShowHeader extends Component {
   render () {
     const { deleteModalOpen } = this.state;
     const selectedNote = this.getSelectedNote();
-
-    if (!selectedNote) { return <noscript />; }
 
     return (
       <div
