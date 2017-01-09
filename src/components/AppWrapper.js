@@ -2,34 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import Match from "react-router/Match";
-import CSSTransition from "react-addons-css-transition-group";
 import AnimateHeight from "./AnimateHeight";
 import Search from "./Search";
 import ShowHeader from "./ShowHeader";
 import Home from "./Home";
 import Show from "./Show";
 import Edit from "./Edit";
-import "./AppWrapper.css";
-
-const FirstChild = props => {
-  const childrenArray = React.Children.toArray(props.children);
-  return childrenArray[0] || null;
-};
-
-const FadeInMatch = ({ component: Component, ...other }) => (
-  <Match {...other} render={props => (
-    <CSSTransition
-      transitionName="main"
-      transitionAppear
-      transitionAppearTimeout={600}
-      transitionEnter={false}
-      transitionLeaveTimeout={600}
-      component={FirstChild}
-    >
-      <Component {...props} />
-    </CSSTransition>
-  )} />
-);
 
 const AnimateHeightMatch = ({ component: Component, ...other }) => (
   <Match {...other} children={({ matched, ...otherMatchProps }) => (
@@ -79,9 +57,9 @@ class AppWrapper extends Component {
           flexDirection: "column",
           overflow: "hidden",
         }}>
-          <FadeInMatch exactly pattern="/" component={Home} />
-          <FadeInMatch exactly pattern="/:id" component={Show} />
-          <FadeInMatch exactly pattern="/:id/edit" component={Edit} />
+          <Match exactly pattern="/" component={Home} />
+          <Match exactly pattern="/:id" component={Show} />
+          <Match exactly pattern="/:id/edit" component={Edit} />
         </div>
       </div>
     );

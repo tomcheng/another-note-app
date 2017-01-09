@@ -79,7 +79,7 @@ class AnimateHeight extends Component {
         height: isAnimating ? containerHeight : (isExpanded ? "auto" : 0),
         overflow: isAnimating ? "hidden" : "visible",
         opacity: (isExpanded && !isAnimating) ? 1 : 0,
-        transition: "opacity 50ms ease-in-out",
+        transition: "opacity 20ms ease-in-out",
       }}>
         <div
           ref={el => { this.contentWrapper = el; }}
