@@ -158,9 +158,11 @@ class ShowList extends Component {
                     alignItems: "center",
                     paddingLeft: 9,
                   }}>
-                    <span>
-                      Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
-                    </span>
+                    {recentlyCheckedItemIds.length ? (
+                      <span>
+                        Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
+                      </span>
+                    ) : <span />}
                     <Button onClick={this.handleClickUndo} buttonStyle="ghost">
                       Undo
                     </Button>

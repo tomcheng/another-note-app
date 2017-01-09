@@ -8,6 +8,7 @@ class AnimateHeight extends Component {
     delay: PropTypes.number,
     duration: PropTypes.number,
     easing: PropTypes.string,
+    fadeFirst: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -71,14 +72,14 @@ class AnimateHeight extends Component {
   };
 
   render () {
-    const { children, isExpanded } = this.props;
+    const { children, isExpanded, fadeFirst } = this.props;
     const { containerHeight, isAnimating } = this.state;
 
     return (
       <div style={{
         height: isAnimating ? containerHeight : (isExpanded ? "auto" : 0),
         overflow: isAnimating ? "hidden" : "visible",
-        opacity: (isExpanded && !isAnimating) ? 1 : 0,
+        opacity: fadeFirst ? ((isExpanded && !isAnimating) ? 1 : 0) : null,
         transition: "opacity 20ms ease-in-out",
       }}>
         <div

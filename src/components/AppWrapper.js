@@ -11,7 +11,7 @@ import Edit from "./Edit";
 
 const AnimateHeightMatch = ({ component: Component, ...other }) => (
   <Match {...other} children={({ matched, ...otherMatchProps }) => (
-    <AnimateHeight isExpanded={matched} duration={100} easing="linear">
+    <AnimateHeight isExpanded={matched} duration={100} easing="linear" fadeFirst>
       <Component {...otherMatchProps} />
     </AnimateHeight>
   )} />
