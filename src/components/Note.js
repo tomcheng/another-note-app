@@ -24,8 +24,8 @@ class Note extends Component {
     if (note.type === "list") {
       const totalItems = note.checkedItems.length + note.uncheckedItems.length;
       const completedItems = note.checkedItems.length;
-      return note.title +
-        " (" + completedItems + "/" + totalItems + ")";
+      const remaining = totalItems - completedItems;
+      return note.title + " (" + (remaining ? remaining + " left" : "done") + ")";
     }
 
     return note.title;

@@ -57,7 +57,9 @@ class AppWrapper extends Component {
           flexDirection: "column",
           overflow: "hidden",
         }}>
-          <Match exactly pattern="/" component={Home} />
+          <Match exactly pattern="/" children={({ matched }) => (
+            <Home isVisible={matched} />
+          )} />
           <Match exactly pattern="/:id" component={Show} />
           <Match exactly pattern="/:id/edit" component={Edit} />
         </div>
