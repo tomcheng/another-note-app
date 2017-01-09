@@ -40,7 +40,7 @@ class Show extends Component {
         display: "flex",
         flexDirection: "column",
         overflow: "auto",
-        height: "100%",
+        flexGrow: 1,
       }}>
         <div style={{ padding: 6 }}>
           {selectedNote.type === "list" && (
