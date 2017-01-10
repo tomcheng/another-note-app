@@ -100,8 +100,8 @@ class Note extends Component {
           <div style={{ flexGrow: 1 }} />
         )}
         {note.pinned && (
-          <div style={{ marginRight: 5, opacity: 0.8 }}>
-            <FancyIcon icon="pin" color={colors.yellow} />
+          <div style={{ opacity: 0.8 }}>
+            <FancyIcon icon="pin" color={colors.darkYellow} />
           </div>
         )}
         {!note.pinned && (
