@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
+import moment from "moment";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
 
@@ -49,6 +50,15 @@ class Show extends Component {
           {selectedNote.type === "note" && (
             <ShowNote note={selectedNote} />
           )}
+          <div style={{
+            color: "#fff",
+            fontSize: 11,
+            textAlign: "center",
+            marginTop: 2,
+            fontWeight: 300,
+          }}>
+            Created {moment(selectedNote.createdAt).format("MMM D, YYYY")}
+          </div>
         </div>
       </div>
     );
