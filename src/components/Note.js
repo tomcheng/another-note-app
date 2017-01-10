@@ -35,9 +35,7 @@ class Note extends Component {
     const { note } = this.props;
 
     if (note.type === "list") {
-      if (note.checkedItems.length + note.uncheckedItems.length === 0 ) { return "No items"; }
-      if (note.uncheckedItems.length === 0) { return "All done!"; }
-      return note.uncheckedItems[0].value;
+      return note.uncheckedItems.map(item => item.value).join(", ");
     }
 
     return note.body;
@@ -59,6 +57,7 @@ class Note extends Component {
 
   render () {
     const { note, isVisible, isSelected } = this.props;
+    const summary = this.getSummary();
 
     return (
       <div
@@ -87,16 +86,20 @@ class Note extends Component {
         }}>
           {this.getTitle()}&nbsp;
         </div>
-        <div style={{
-          flexGrow: 1,
-          flexShrink: 1000000,
-          opacity: 0.3,
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-          paddingRight: 10,
-        }}>
-          &ndash; {this.getSummary()}
-        </div>
+        {summary.trim() !== "" ? (
+          <div style={{
+            flexGrow: 1,
+            flexShrink: 1000000,
+            opacity: 0.3,
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            paddingRight: 10,
+          }}>
+            &ndash; {this.getSummary()}
+          </div>
+        ) : (
+          <div style={{ flexGrow: 1 }} />
+        )}
         {!note.pinned && (
           <div style={{
             fontSize: 12,
