@@ -118,7 +118,6 @@ class ShowList extends Component {
                     color: "#45a1fe",
                     padding: "7px 0",
                     userSelect: "none",
-                    fontWeight: 500,
                   }}>
                     Add item
                   </div>
