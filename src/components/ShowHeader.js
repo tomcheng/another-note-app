@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import Link from "react-router/Link";
+import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowMenu from "./ShowMenu";
@@ -111,12 +112,12 @@ class ShowHeader extends Component {
             style={{
               padding: 9,
               cursor: "pointer",
-              opacity: selectedNote.pinned ? 1 : 0.4,
+              opacity: selectedNote.pinned ? 1 : 0.2,
             }}
           >
             <FancyIcon
               icon="pin"
-              color={selectedNote.pinned ? "#ffff72" : "#fff"}
+              color={selectedNote.pinned ? colors.yellow : "#fff"}
             />
           </div>
           <Link

@@ -6,7 +6,7 @@
   "devDependencies": {
     "gh-pages": "^0.12.0",
     "mockdate": "2.0.1",
-    "react-scripts": "0.8.4"
+    "react-scripts": "0.8.5"
   },
   "dependencies": {
     "classnames": "2.2.5",
@@ -20,7 +20,7 @@
     "react-sortable-hoc": "0.4.5",
     "react-textarea-autosize": "4.0.5",
     "redux": "3.6.0",
-    "redux-saga": "0.14.1",
+    "redux-saga": "0.14.2",
     "reselect": "2.5.4"
   },
   "scripts": {

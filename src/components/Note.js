@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import moment from "moment";
+import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
 
 class Note extends Component {
@@ -65,7 +66,7 @@ class Note extends Component {
           display: isVisible ? "flex" : "none",
           backgroundColor: isSelected ? "#d5e6e7" : "#fff",
           backgroundClip: "padding-box",
-          padding: "0 12px",
+          padding: "0 8px",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 3,
           alignItems: "center",
@@ -73,11 +74,9 @@ class Note extends Component {
           height: 50,
         }}
       >
-        {note.pinned && (
-          <div style={{ marginRight: 8, opacity: 0.8 }}>
-            <FancyIcon icon="pin" color="#222" />
-          </div>
-        )}
+        <div style={{ marginRight: 5, opacity: 0.8 }}>
+          <FancyIcon icon={note.type} color="#222" />
+        </div>
         <div style={{
           fontWeight: 500,
           flexShrink: 1,
@@ -99,6 +98,11 @@ class Note extends Component {
           </div>
         ) : (
           <div style={{ flexGrow: 1 }} />
+        )}
+        {note.pinned && (
+          <div style={{ marginRight: 5, opacity: 0.8 }}>
+            <FancyIcon icon="pin" color={colors.yellow} />
+          </div>
         )}
         {!note.pinned && (
           <div style={{
