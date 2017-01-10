@@ -115,11 +115,12 @@ class ShowList extends Component {
                 checked={false}
                 label={(
                   <div style={{
-                    opacity: 0.4,
+                    color: "#45a1fe",
                     padding: "7px 0",
                     userSelect: "none",
+                    fontWeight: 500,
                   }}>
-                    + Add item
+                    Add item
                   </div>
                 )}
                 disabled

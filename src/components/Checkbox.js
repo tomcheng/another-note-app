@@ -19,7 +19,7 @@ class Checkbox extends Component {
             paddingTop: 6,
             paddingBottom: 6,
             paddingRight: 6,
-            opacity: disabled ? 0.2 : 0.8,
+            opacity: disabled ? 0.1 : 0.8,
           }}
         >
           {checked ? (

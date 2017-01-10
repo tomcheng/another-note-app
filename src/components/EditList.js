@@ -241,7 +241,7 @@ class EditList extends Component {
                         <TextInput
                           refCallback={el => { this.addItemField = el; }}
                           value={addItemValue}
-                          placeholder="+ Add item"
+                          placeholder="Add item"
                           style={{ flexGrow: 1, marginLeft: -5 }}
                           onChange={this.handleChangeAddItem}
                           onEnter={this.handleEnterAddItem}
