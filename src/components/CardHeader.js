@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { Link } from "react-router";
+import Link from "./Link";
 
 const CardHeader = ({ note }) => (
   <div style={{ padding: "7px 7px 0" }}>

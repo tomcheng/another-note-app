@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
-import { Link } from "react-router";
+import Link from "./Link";
 import Card from "./Card";
 import Button from "./Button";
 import CardHeader from "./CardHeader";

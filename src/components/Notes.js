@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import withRouter from "../utils/withRouter";
-import Link from "react-router/Link";
+import Link from "./Link";
 import Note from "./Note";
 
 class Notes extends Component {

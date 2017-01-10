@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
-import Link from "react-router/Link";
+import Link from "./Link";
 import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";

@@ -27,8 +27,3 @@ ReactDOM.render((
     </HashRouter>
   </Provider>
 ), document.getElementById("root"));
-
-window.oncontextmenu = e => {
-  e.preventDefault();
-  e.stopPropagation();
-};

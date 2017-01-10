@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { Link } from "react-router";
+import Link from "./Link";
 import Card from "./Card";
 import CardHeader from "./CardHeader";
 
