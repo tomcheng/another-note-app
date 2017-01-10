@@ -55,30 +55,32 @@ class ListItem extends Component {
     const seemsChecked = item.checked || isPendingCheck;
 
     return (
-      <AnimateHeight
-        isExpanded={!isPendingCheck}
-        delay={250}
-        duration={150}
-      >
-        <Checkbox
-          label={(
-            <span
-              onClick={this.onClickLabel}
-              style={{
-                textDecoration: seemsChecked ? "line-through" : null,
-                opacity: seemsChecked ? 0.25 : null,
-                userSelect: "none",
-                padding: "7px 0",
-                flexGrow: 1,
-              }}
-            >
-              {item.value}
-            </span>
-          )}
-          checked={seemsChecked}
-          onChange={this.handleChange}
-        />
-      </AnimateHeight>
+      <div>{/* Wrap in div so AnimateHeight doesn't affect reordering animation */}
+        <AnimateHeight
+          isExpanded={!isPendingCheck}
+          delay={250}
+          duration={150}
+        >
+          <Checkbox
+            label={(
+              <span
+                onClick={this.onClickLabel}
+                style={{
+                  textDecoration: seemsChecked ? "line-through" : null,
+                  opacity: seemsChecked ? 0.25 : null,
+                  userSelect: "none",
+                  padding: "7px 0",
+                  flexGrow: 1,
+                }}
+              >
+                {item.value}
+              </span>
+            )}
+            checked={seemsChecked}
+            onChange={this.handleChange}
+          />
+        </AnimateHeight>
+      </div>
     );
   }
 }
