@@ -66,7 +66,7 @@ class Note extends Component {
           display: isVisible ? "flex" : "none",
           backgroundColor: isSelected ? "#d5e6e7" : "#fff",
           backgroundClip: "padding-box",
-          padding: "0 8px",
+          padding: "0 12px 0 9px",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 3,
           alignItems: "center",
@@ -74,7 +74,7 @@ class Note extends Component {
           height: 50,
         }}
       >
-        <div style={{ marginRight: 5, opacity: 0.8 }}>
+        <div style={{ marginRight: 6, opacity: 0.8 }}>
           <FancyIcon icon={note.type} color="#222" />
         </div>
         <div style={{
