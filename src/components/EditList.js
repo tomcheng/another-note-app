@@ -166,6 +166,8 @@ class EditList extends Component {
       onAddListItem({ listId: list.id, value: addItemValue });
     }
 
+    this.setState({ addItemValue: "" });
+
     onUpdateNote({
       id: list.id,
       updates: { title },
