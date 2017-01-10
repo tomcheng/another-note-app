@@ -26,12 +26,14 @@ const FancyIcon = ({ icon, color }) => {
     case "list":
       path = (
         <g>
-          <polygon fill={color} points="21,14 22.5,15.5 15.5,22.5 11,18 12.5,16.5 15.5,19.5 "/>
+          <polygon fill={color} points="21.5,14 23,15.5 16,22.5 11.5,18 13,16.5 16,19.5 "/>
           <path fill={color} d="M10,19H5V5h2v1c0,0.6,0.4,1,1,1s1-0.4,1-1V5h2v1c0,0.6,0.4,1,1,1s1-0.4,1-1V5h2v1c0,0.6,0.4,1,1,1s1-0.4,1-1V5
 	h2l0,7h2V5c0-1.1-0.9-2-2-2h-2V2c0-0.6-0.4-1-1-1s-1,0.4-1,1v1h-2V2c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H9V2c0-0.6-0.4-1-1-1S7,1.4,7,2v1
 	H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h5V19z"/>
-          <polyline fill={color} points="16,13 7,13 7,15 16,15 "/>
-          <polyline fill={color} points="7,9 7,11 16,11 16,9 "/>
+          <polyline fill={color} points="17,13 10,13 10,15 17,15 "/>
+          <polyline fill={color} points="10,9 10,11 17,11 17,9 "/>
+          <polyline fill={color} points="9,13 7,13 7,15 9,15 "/>
+          <polyline fill={color} points="7,9 7,11 9,11 9,9 "/>
         </g>
       );
       break;
