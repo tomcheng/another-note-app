@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import FastClick from "fastclick";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
@@ -8,6 +9,8 @@ import sagas from "./sagas";
 import HashRouter from "react-router/HashRouter";
 import AppWrapper from "./components/AppWrapper";
 import "./index.css";
+
+FastClick.attach(document.body);
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
