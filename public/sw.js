@@ -33,6 +33,6 @@ function fromCache (request) {
 
 function shouldCache (request) {
   if (request.url.match(/sockjs-node/)) { return false; }
-
+  if (request.url.match(/manifest\.json/)) { return false; }
   return true;
 }
