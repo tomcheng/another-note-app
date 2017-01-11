@@ -11,7 +11,7 @@ import AppWrapper from "./components/AppWrapper";
 import "./index.css";
 
 const host = "notorist.com";
-if (window.location.host == host && window.location.protocol !== "https:") {
+if (window.location.host === host && window.location.protocol !== "https:") {
   window.location.protocol = "https:"
 }
 
