@@ -10,6 +10,11 @@ import HashRouter from "react-router/HashRouter";
 import AppWrapper from "./components/AppWrapper";
 import "./index.css";
 
+const host = "notorist.com";
+if (window.location.host == host && window.location.protocol !== "https:") {
+  window.location.protocol = "https:"
+}
+
 FastClick.attach(document.body);
 
 const sagaMiddleware = createSagaMiddleware();
