@@ -34,5 +34,6 @@ function fromCache (request) {
 function shouldCache (request) {
   if (request.url.match(/sockjs-node/)) { return false; }
   if (request.url.match(/manifest\.json/)) { return false; }
+  if (request.url.match(/bundle\.js/)) { return false; }
   return true;
 }
