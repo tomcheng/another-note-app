@@ -13,6 +13,7 @@ class EditListItem extends Component {
     listId: PropTypes.number.isRequired,
     refCallback: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
   };
@@ -34,12 +35,14 @@ class EditListItem extends Component {
     this.setState({ value: target.value });
   };
 
-  handleBlur = () => {
-    const { onUpdateListItem, listId, item } = this.props;
+  handleBlur = event => {
+    const { onUpdateListItem, listId, item, onBlur } = this.props;
 
     onUpdateListItem({ listId, itemId: item.id, updates: this.state });
 
     this.focusedTimer = setTimeout(() => { this.setState({ isFocused: false }); }, 50);
+
+    onBlur(event);
   };
 
   handleFocus = () => {

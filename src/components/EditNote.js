@@ -91,6 +91,12 @@ class EditNote extends Component {
     });
   };
 
+  handleBlur = event => {
+    if (!event.relatedTarget) {
+      this.handleClickDone();
+    }
+  };
+
   render () {
     const { title, body } = this.state;
 
@@ -115,6 +121,7 @@ class EditNote extends Component {
                     refCallback={el => { this.titleField = el; }}
                     onChange={this.handleChangeTitle}
                     onEnter={this.handleEnterTitle}
+                    onBlur={this.handleBlur}
                     style={{
                       width: "100%",
                       padding: "5px 8px",
@@ -133,6 +140,7 @@ class EditNote extends Component {
                     placeholder="Add Description"
                     refCallback={el => { this.bodyField = el; }}
                     onChange={this.handleChangeBody}
+                    onBlur={this.handleBlur}
                     minRows={2}
                     style={{
                       width: "100%",

@@ -181,6 +181,12 @@ class EditList extends Component {
     });
   };
 
+  handleBlur = event => {
+    if (!event.relatedTarget) {
+      this.handleClickDone();
+    }
+  };
+
   render () {
     const { list, onUpdateListItem, onDeleteListItem } = this.props;
     const { title, addItemValue, isAddingItem } = this.state;
@@ -207,6 +213,7 @@ class EditList extends Component {
                     onChange={this.handleChangeTitle}
                     onEnter={this.handleEnterTitle}
                     onFocus={this.handleFocusTitle}
+                    onBlur={this.handleBlur}
                     style={{
                       width: "100%",
                       padding: "5px 8px",
@@ -232,6 +239,7 @@ class EditList extends Component {
                         onDeleteListItem={onDeleteListItem}
                         onUpdateListItem={onUpdateListItem}
                         onFocus={this.handleFocusEditItem}
+                        onBlur={this.handleBlur}
                         refCallback={el => { this["item-" + item.id] = el; }}
                       />
                     ))}
@@ -248,6 +256,7 @@ class EditList extends Component {
                           onChange={this.handleChangeAddItem}
                           onEnter={this.handleEnterAddItem}
                           onFocus={this.handleFocusAddItem}
+                          onBlur={this.handleBlur}
                           singleLine
                         />
                       </div>
