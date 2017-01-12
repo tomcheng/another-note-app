@@ -117,7 +117,7 @@ class EditList extends Component {
     const { addItemValue } = this.state;
 
     if (addItemValue.trim() === "") {
-      this.addItemField.blur();
+      this.handleClickDone();
       return;
     }
 
