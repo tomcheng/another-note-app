@@ -43,7 +43,7 @@ class TextInput extends Component {
       <Textarea
         {...omit(other, ["onEnter", "singleLine"])}
         onChange={this.handleChange}
-        ref={refCallback}
+        inputRef={refCallback}
         style={{
           display: "block",
           fontFamily: "inherit",

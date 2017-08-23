@@ -1,13 +1,12 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
-import withRouter from "../utils/withRouter";
+import { withRouter } from "react-router-dom";
 import Link from "./Link";
 import Note from "./Note";
 
 class Notes extends Component {
   static propTypes = {
-    router: PropTypes.shape({}).isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
     })).isRequired,

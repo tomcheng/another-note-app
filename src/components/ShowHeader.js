@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
+import { withRouter } from "react-router-dom";
 import Link from "./Link";
 import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
@@ -10,9 +11,14 @@ import ShowMenu from "./ShowMenu";
 class ShowHeader extends Component {
   static propTypes = {
     notes: PropTypes.object.isRequired,
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+    history: PropTypes.shape({
+      goBack: PropTypes.func.isRequired
+    }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onUpdateNote: PropTypes.func.isRequired,
@@ -23,7 +29,7 @@ class ShowHeader extends Component {
   };
 
   handleClickBack = () => {
-    window.history.back();
+    this.props.history.goBack();
   };
 
   handleClickPin = () => {
@@ -44,13 +50,13 @@ class ShowHeader extends Component {
   };
 
   handleDeleteNote = () => {
-    const { onDeleteNote, params } = this.props;
+    const { onDeleteNote, match, history } = this.props;
 
     this.setState({ deleteModalOpen: false });
 
     onDeleteNote({
-      id: parseInt(params.id, 10),
-      callback: () => { window.history.back(); },
+      id: parseInt(match.params.id, 10),
+      callback: () => { history.goBack(); },
     });
   };
 
@@ -72,9 +78,10 @@ class ShowHeader extends Component {
   };
 
   getSelectedNote = (props = this.props) => {
-    const { params, notes } = props;
+    const { notes } = props;
+    const { params } = props.match;
 
-    if (!params || !params.id || !notes[params.id]) {
+    if (!params.id || !notes[params.id]) {
       return {
         id: null,
         type: "note",
@@ -168,8 +175,8 @@ const mapStateToProps = state => ({
   notes: selectors.getNotesById(state),
 });
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   onConvertNoteToList: actions.requestConvertNoteToList,
   onDeleteNote: actions.requestDeleteNote,
   onUpdateNote: actions.requestUpdateNote,
-})(ShowHeader);
+})(ShowHeader));

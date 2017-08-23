@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import withRouter from "../utils/withRouter";
+import { withRouter } from "react-router-dom";
+import queryString from "query-string";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -9,36 +10,36 @@ import PreviewFooter from "./PreviewFooter";
 
 class EditNote extends Component {
   static propTypes = {
+    history: PropTypes.shape({
+      goBack: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired
+    }).isRequired,
     location: PropTypes.shape({
-      query: PropTypes.shape({
-        focus: PropTypes.string,
-        just_added: PropTypes.string,
-      }).isRequired,
+      string: PropTypes.string
     }).isRequired,
     note: PropTypes.shape({
       body: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-    }).isRequired,
-    router: PropTypes.shape({
-      replaceWith: PropTypes.func.isRequired,
+      title: PropTypes.string.isRequired
     }).isRequired,
     onDeleteNote: PropTypes.func.isRequired,
-    onUpdateNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     const { note } = props;
 
     this.state = {
       body: note.body,
-      title: note.title,
+      title: note.title
     };
   }
 
-  componentDidMount () {
-    switch (this.props.location.query.focus) {
+  componentDidMount() {
+    const query = queryString.parse(this.props.location.search);
+
+    switch (query.focus) {
       case "body":
         this.bodyField.focus();
         break;
@@ -63,31 +64,35 @@ class EditNote extends Component {
   };
 
   handleClickCancel = () => {
-    const { note, location, onDeleteNote } = this.props;
+    const { note, onDeleteNote, history } = this.props;
+    const query = queryString.parse(this.props.location.search);
 
-    if (location.query.just_added === "true") {
+    if (query.just_added === "true") {
       onDeleteNote({
         id: note.id,
-        callback: () => { window.history.back(); },
+        callback: () => {
+          history.goBack();
+        }
       });
     } else {
-      window.history.back();
+      history.goBack();
     }
   };
 
   handleClickDone = () => {
-    const { note, onUpdateNote, router, location } = this.props;
+    const { note, onUpdateNote, history } = this.props;
+    const query = queryString.parse(this.props.location.search);
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
       callback: () => {
-        if (location.query.just_added === "true") {
-          router.replaceWith("/" + note.id);
+        if (query.just_added === "true") {
+          history.replace("/" + note.id);
         } else {
-          window.history.back();
+          history.goBack();
         }
-      },
+      }
     });
   };
 
@@ -97,28 +102,34 @@ class EditNote extends Component {
     }
   };
 
-  render () {
+  render() {
     const { title, body } = this.state;
 
     return (
-      <div style={{
-        flexGrow: 1,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-      }}>
-        <div style={{
+      <div
+        style={{
           flexGrow: 1,
-          overflow: "auto",
-        }}>
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <div
+          style={{
+            flexGrow: 1,
+            overflow: "auto"
+          }}
+        >
           <div style={{ padding: 6 }}>
             <Card
-              header={(
+              header={
                 <div style={{ padding: "7px 7px 0" }}>
                   <TextInput
                     value={title}
                     placeholder="Add Title"
-                    refCallback={el => { this.titleField = el; }}
+                    refCallback={el => {
+                      this.titleField = el;
+                    }}
                     onChange={this.handleChangeTitle}
                     onEnter={this.handleEnterTitle}
                     onBlur={this.handleBlur}
@@ -126,29 +137,31 @@ class EditNote extends Component {
                       width: "100%",
                       padding: "5px 8px",
                       fontSize: 24,
-                      lineHeight: "30px",
+                      lineHeight: "30px"
                     }}
                     singleLine
                   />
                 </div>
-              )}
-              body={(
+              }
+              body={
                 <div style={{ padding: "2px 7px 7px" }}>
                   <TextInput
                     name="body"
                     value={body}
                     placeholder="Add Description"
-                    refCallback={el => { this.bodyField = el; }}
+                    refCallback={el => {
+                      this.bodyField = el;
+                    }}
                     onChange={this.handleChangeBody}
                     onBlur={this.handleBlur}
                     minRows={2}
                     style={{
                       width: "100%",
-                      padding: "5px 8px",
+                      padding: "5px 8px"
                     }}
                   />
                 </div>
-              )}
+              }
             />
           </div>
         </div>
@@ -158,16 +171,13 @@ class EditNote extends Component {
               buttonStyle="link"
               style={{
                 marginRight: 10,
-                opacity: 0.8,
+                opacity: 0.8
               }}
               onClick={this.handleClickCancel}
             >
               Cancel
             </Button>
-            <Button
-              buttonStyle="ghost"
-              onClick={this.handleClickDone}
-            >
+            <Button buttonStyle="ghost" onClick={this.handleClickDone}>
               Done
             </Button>
           </PreviewFooter>
@@ -177,7 +187,9 @@ class EditNote extends Component {
   }
 }
 
-export default withRouter(connect(null, {
-  onUpdateNote: actions.requestUpdateNote,
-  onDeleteNote: actions.requestDeleteNote,
-})(EditNote));
+export default withRouter(
+  connect(null, {
+    onUpdateNote: actions.requestUpdateNote,
+    onDeleteNote: actions.requestDeleteNote
+  })(EditNote)
+);

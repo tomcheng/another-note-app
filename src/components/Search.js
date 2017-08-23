@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from "react";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
-import withRouter from "../utils/withRouter";
+import { withRouter } from "react-router-dom";
 import IconWithText from "./IconWithText";
 import "./Search.css";
 
 class Search extends Component {
   static propTypes = {
-    router: PropTypes.shape({
-      transitionTo: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
     }).isRequired,
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
@@ -30,25 +30,25 @@ class Search extends Component {
   };
 
   handleClickAddNote = () => {
-    const { router, onAddNote, search } = this.props;
+    const { history, onAddNote, search } = this.props;
     const focus = search.trim() === "" ? "title" : "body";
 
     onAddNote({
       title: search,
       callback: ({ note }) => {
-        router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
+        history.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };
 
   handleClickAddList = () => {
-    const { router, onAddList, search } = this.props;
+    const { history, onAddList, search } = this.props;
     const focus = search.trim() === "" ? "title" : "addItem";
 
     onAddList({
       title: search,
       callback: ({ note }) => {
-        router.transitionTo("/" + note.id + "/edit?just_added=true&focus=" + focus);
+        history.push("/" + note.id + "/edit?just_added=true&focus=" + focus);
       },
     });
   };

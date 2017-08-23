@@ -9,31 +9,35 @@ class Single extends Component {
     location: PropTypes.object.isRequired,
     notes: PropTypes.object.isRequired,
     notesLoaded: PropTypes.bool.isRequired,
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired
+      }).isRequired
+    }).isRequired
   };
 
-  render () {
-    const { params, location, notes, notesLoaded } = this.props;
+  render() {
+    const { match, location, notes, notesLoaded } = this.props;
 
-    if (!notesLoaded || !notes[params.id]) { return <noscript />; }
+    if (!notesLoaded || !notes[match.params.id]) {
+      return <noscript />;
+    }
 
-    const selectedNote = notes[params.id];
+    const selectedNote = notes[match.params.id];
 
     return (
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-        flexGrow: 1,
-      }}>
-        {selectedNote.type === "note" && (
-          <EditNote location={location} note={selectedNote} />
-        )}
-        {selectedNote.type === "list" && (
-          <EditList location={location} list={selectedNote} />
-        )}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          flexGrow: 1
+        }}
+      >
+        {selectedNote.type === "note" &&
+          <EditNote location={location} note={selectedNote} />}
+        {selectedNote.type === "list" &&
+          <EditList location={location} list={selectedNote} />}
       </div>
     );
   }
@@ -41,7 +45,7 @@ class Single extends Component {
 
 const mapStateToProps = state => ({
   notes: selectors.getNotesById(state),
-  notesLoaded: selectors.getNotesLoaded(state),
+  notesLoaded: selectors.getNotesLoaded(state)
 });
 
 export default connect(mapStateToProps)(Single);

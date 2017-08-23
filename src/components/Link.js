@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { Link as RRLink } from "react-router";
+import { Link as RRLink } from "react-router-dom";
 
 const Link = ({ children, ...other }) => (
   <RRLink {...other} onContextMenu={e => { e.preventDefault(); }}>

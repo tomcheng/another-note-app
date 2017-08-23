@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
+import queryString from "query-string";
 import { actions, selectors } from "../reducer";
 import { animate } from "../utils/animation";
-import withRouter from "../utils/withRouter";
+import { withRouter } from "react-router-dom";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -14,11 +15,7 @@ import PreviewFooter from "./PreviewFooter";
 class EditList extends Component {
   static propTypes = {
     location: PropTypes.shape({
-      query: PropTypes.shape({
-        focus: PropTypes.string,
-        just_added: PropTypes.string,
-        item_id: PropTypes.string,
-      }).isRequired,
+      search: PropTypes.string.isRequired
     }).isRequired,
     list: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -31,8 +28,8 @@ class EditList extends Component {
     rawList: PropTypes.shape({
       id: PropTypes.number.isRequired,
     }).isRequired,
-    router: PropTypes.shape({
-      replaceWith: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
@@ -56,7 +53,9 @@ class EditList extends Component {
   }
 
   componentDidMount () {
-    switch (this.props.location.query.focus) {
+    const query = queryString.parse(this.props.location.search);
+
+    switch (query.focus) {
       case "title":
         this.titleField.focus();
         break;
@@ -64,7 +63,7 @@ class EditList extends Component {
         this.addItemField.focus();
         break;
       case "item":
-        this["item-" + this.props.location.query.item_id].focus();
+        this["item-" + query.item_id].focus();
         break;
       default:
         break;
@@ -146,8 +145,9 @@ class EditList extends Component {
   handleClickCancel = () => {
     const { list, location, onDeleteNote, onReplaceList } = this.props;
     const { previousRawList } = this.state;
+    const query = queryString.parse(location.search);
 
-    if (location.query.just_added === "true") {
+    if (query.just_added === "true") {
       onDeleteNote({
         id: list.id,
         callback: () => { window.history.back(); },
@@ -159,8 +159,9 @@ class EditList extends Component {
   };
 
   handleClickDone = () => {
-    const { list, onUpdateNote, onAddListItem, router, location } = this.props;
+    const { list, onUpdateNote, onAddListItem, history, location } = this.props;
     const { title, addItemValue } = this.state;
+    const query = queryString.parse(location.search);
 
     if (addItemValue.trim() !== "") {
       onAddListItem({ listId: list.id, value: addItemValue });
@@ -172,8 +173,8 @@ class EditList extends Component {
       id: list.id,
       updates: { title },
       callback: () => {
-        if (location.query.just_added === "true") {
-          router.replaceWith("/" + list.id);
+        if (query.just_added === "true") {
+          history.replace("/" + list.id);
         } else {
           window.history.back();
         }

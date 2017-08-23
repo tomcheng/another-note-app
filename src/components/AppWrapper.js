@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import Match from "react-router/Match";
+import { Route, withRouter } from "react-router-dom";
 import AnimateHeight from "./AnimateHeight";
 import Search from "./Search";
 import ShowHeader from "./ShowHeader";
@@ -10,8 +10,8 @@ import Show from "./Show";
 import Edit from "./Edit";
 
 const AnimateHeightMatch = ({ component: Component, ...other }) => (
-  <Match {...other} children={({ matched, ...otherMatchProps }) => (
-    <AnimateHeight isExpanded={matched} duration={100} easing="linear" fadeFirst>
+  <Route {...other} children={({ match, ...otherMatchProps }) => (
+    <AnimateHeight isExpanded={!!match} duration={100} easing="linear" fadeFirst>
       <Component {...otherMatchProps} />
     </AnimateHeight>
   )} />
@@ -47,8 +47,8 @@ class AppWrapper extends Component {
           boxShadow: "inset 0 -1px 1px rgba(0,0,0,0.2)",
           borderBottom: "1px solid rgba(255,255,255,0.2)",
         }}>
-          <AnimateHeightMatch exactly pattern="/" component={Search} />
-          <AnimateHeightMatch exactly pattern="/:id" component={ShowHeader} />
+          <AnimateHeightMatch exact path="/" component={Search} />
+          <AnimateHeightMatch exact path="/:id" component={ShowHeader} />
         </div>
         <div style={{
           flexShrink: 1,
@@ -57,17 +57,17 @@ class AppWrapper extends Component {
           flexDirection: "column",
           overflow: "hidden",
         }}>
-          <Match exactly pattern="/" children={({ matched }) => (
-            <Home isVisible={matched} />
+          <Route exact path="/" children={({ match }) => (
+            <Home isVisible={!!match} />
           )} />
-          <Match exactly pattern="/:id" component={Show} />
-          <Match exactly pattern="/:id/edit" component={Edit} />
+          <Route exact path="/:id" component={Show} />
+          <Route exact path="/:id/edit" component={Edit} />
         </div>
       </div>
     );
   }
 }
 
-export default connect(null, {
+export default withRouter(connect(null, {
   onRequestNotes: actions.requestNotes,
-})(AppWrapper);
+})(AppWrapper));
