@@ -1,10 +1,43 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { actions, selectors } from "../reducer";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import IconWithText from "./IconWithText";
-import "./Search.css";
+
+const StyledContainer = styled.div`
+  padding: 0 10px 0 6px;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledInput = styled.input`
+  flex-grow: 1;
+  width: 100%;
+  padding: 0 9px;
+  color: #fff;
+  background-color: transparent;
+
+  &::-webkit-input-placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  &::-moz-placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  &:-ms-input-placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  &:focus {
+    background-color: transparent;
+  }
+`;
+
+const StyledIcons = styled.div`
+  display: flex;
+  align-items: center;
+  color: #fff;
+`;
 
 class Search extends Component {
   static propTypes = {
@@ -58,18 +91,10 @@ class Search extends Component {
     const { search } = this.props;
 
     return (
-      <div
-        style={{
-          padding: "0 10px 0 6px",
-          display: "flex",
-          alignItems: "center"
-        }}
-      >
-        <input
-          className="SearchInput"
-          style={{ flexGrow: 1 }}
+      <StyledContainer>
+        <StyledInput
           placeholder="Type to Search or Add"
-          ref={el => {
+          innerRef={el => {
             this.input = el;
           }}
           type="text"
@@ -77,13 +102,7 @@ class Search extends Component {
           onChange={this.handleChangeSearch}
           onFocus={this.handleFocus}
         />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            color: "#fff"
-          }}
-        >
+        <StyledIcons>
           {search.trim() !== "" &&
             <div onClick={this.handleClickClear}>
               <IconWithText icon="close" text="Clear" />
@@ -94,8 +113,8 @@ class Search extends Component {
           <div onClick={this.handleClickAddList}>
             <IconWithText icon="list" text="Add List" width={54} />
           </div>
-        </div>
-      </div>
+        </StyledIcons>
+      </StyledContainer>
     );
   }
 }
