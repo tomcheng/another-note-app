@@ -9,6 +9,7 @@ import sagas from "./sagas";
 import { HashRouter as Router } from "react-router-dom";
 import AppWrapper from "./components/AppWrapper";
 import "./index.css";
+import registerServiceWorker from "./registerServiceWorker";
 
 FastClick.attach(document.body);
 
@@ -34,16 +35,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/sw.js")
-    .then(function(registration) {
-      console.log(
-        "ServiceWorker registration successful with scope.",
-        registration.scope
-      );
-    })
-    .catch(function(error) {
-      console.log("ServiceWorker registration failed.", error);
-    });
-}
+registerServiceWorker();
