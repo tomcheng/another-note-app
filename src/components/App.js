@@ -13,18 +13,18 @@ import Edit from "./Edit";
 const AnimateHeightMatch = ({ component: Component, ...other }) =>
   <Route
     {...other}
-    children={({ match, ...otherMatchProps }) =>
+    children={({ match }) =>
       <AnimateHeight
         isExpanded={!!match}
         duration={100}
         easing="linear"
         fadeFirst
       >
-        <Component {...otherMatchProps} />
+        <Component />
       </AnimateHeight>}
   />;
 
-class AppWrapper extends Component {
+class App extends Component {
   static propTypes = {
     onRequestNotes: PropTypes.func.isRequired
   };
@@ -86,5 +86,5 @@ class AppWrapper extends Component {
 export default withRouter(
   connect(null, {
     onRequestNotes: actions.requestNotes
-  })(AppWrapper)
+  })(App)
 );

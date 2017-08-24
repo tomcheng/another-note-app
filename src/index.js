@@ -7,7 +7,7 @@ import createSagaMiddleware from "redux-saga";
 import reducer from "./reducer";
 import sagas from "./sagas";
 import { HashRouter as Router } from "react-router-dom";
-import AppWrapper from "./components/AppWrapper";
+import App from "./components/App";
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 
@@ -29,7 +29,7 @@ sagas.forEach(saga => {
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <AppWrapper />
+      <App />
     </Router>
   </Provider>,
   document.getElementById("root")
