@@ -1,11 +1,18 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
-import { withRouter } from "react-router-dom";
 import BodyWrapper from "./BodyWrapper";
 import Link from "./Link";
 import Note from "./Note";
+
+const StyledEmptyState = styled.div`
+  color: #fff;
+  opacity: 0.5;
+  text-align: center;
+  line-height: 48px;
+`;
 
 class Notes extends Component {
   static propTypes = {
@@ -29,21 +36,11 @@ class Notes extends Component {
     return (
       <BodyWrapper>
         {visibleNoteIds.length === 0
-          ? <div
-              style={{
-                color: "#fff",
-                opacity: 0.5,
-                textAlign: "center",
-                lineHeight: "48px"
-              }}
-            >
-              No notes found
-            </div>
+          ? <StyledEmptyState>No notes found</StyledEmptyState>
           : notes.map(note =>
               <Link key={note.id} to={"/" + note.id}>
                 <Note
                   note={note}
-                  isSelected={false /* TODO: test if route is active */}
                   isVisible={visibleNoteIds.includes(note.id)}
                 />
               </Link>
@@ -60,4 +57,4 @@ const mapStateToProps = state => ({
   visibleNoteIds: selectors.getVisibleNoteIds(state)
 });
 
-export default withRouter(connect(mapStateToProps)(Notes));
+export default connect(mapStateToProps)(Notes);

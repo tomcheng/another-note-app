@@ -6,7 +6,6 @@ import FancyIcon from "./FancyIcon";
 
 class Note extends Component {
   static propTypes = {
-    isSelected: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     note: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -60,16 +59,16 @@ class Note extends Component {
   };
 
   render() {
-    const { note, isVisible, isSelected } = this.props;
+    const { note, isVisible } = this.props;
     const summary = this.getSummary();
 
     return (
       <div
         style={{
           display: isVisible ? "flex" : "none",
-          backgroundColor: isSelected ? "#d5e6e7" : "#fff",
           backgroundClip: "padding-box",
           padding: "0 12px 0 9px",
+          backgroundColor: "#fff",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 3,
           alignItems: "center",
