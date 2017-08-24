@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import { withRouter } from "react-router-dom";
@@ -8,6 +9,29 @@ import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
 import DeleteModal from "./DeleteModal";
 import ShowMenu from "./ShowMenu";
+
+const StyledContainer = styled.div`
+  flex-shrink: 0;
+  color: #fff;
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 7px 2px;
+`;
+
+const StyledIconWrapper = styled.div`
+  padding: 9px;
+  cursor: pointer;
+`;
+
+const StyledIconLink = styled(Link)`
+  display: block; 
+  padding: 9px;
+`;
+
+const StyledActions = styled.div`
+  display: flex;
+`;
 
 class ShowHeader extends Component {
   static propTypes = {
@@ -103,48 +127,28 @@ class ShowHeader extends Component {
     const selectedNote = this.getSelectedNote();
 
     return (
-      <div
-        style={{
-          flexShrink: 0,
-          color: "#fff",
-          textAlign: "right",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 7px 2px"
-        }}
-      >
-        <div
-          onClick={this.handleClickBack}
-          style={{ padding: "9px 9px", cursor: "pointer" }}
-        >
+      <StyledContainer>
+        <StyledIconWrapper onClick={this.handleClickBack}>
           <FancyIcon icon="left-arrow" />
-        </div>
-        <div style={{ display: "flex" }}>
-          <div
+        </StyledIconWrapper>
+        <StyledActions>
+          <StyledIconWrapper
             onClick={this.handleClickPin}
-            style={{
-              padding: 9,
-              cursor: "pointer",
-              opacity: selectedNote.pinned ? 1 : 0.2
-            }}
+            style={{ opacity: selectedNote.pinned ? 1 : 0.2 }}
           >
             <FancyIcon
               icon="pin"
               color={selectedNote.pinned ? colors.yellow : "#fff"}
             />
-          </div>
-          <Link
+          </StyledIconWrapper>
+          <StyledIconLink
             to={"/" + selectedNote.id + "/edit?focus=title"}
-            style={{ display: "block", padding: 9 }}
           >
             <FancyIcon icon="pencil" />
-          </Link>
-          <div
-            onClick={this.handleClickDelete}
-            style={{ padding: 9, cursor: "pointer" }}
-          >
+          </StyledIconLink>
+          <StyledIconWrapper onClick={this.handleClickDelete}>
             <FancyIcon icon="trash" />
-          </div>
+          </StyledIconWrapper>
           {selectedNote.type === "note" &&
             <ShowMenu
               menuItems={[
@@ -171,8 +175,8 @@ class ShowHeader extends Component {
             onDelete={this.handleDeleteNote}
             noteType={selectedNote.type}
           />
-        </div>
-      </div>
+        </StyledActions>
+      </StyledContainer>
     );
   }
 }
