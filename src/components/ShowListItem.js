@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AnimateHeight from "./AnimateHeight";
@@ -9,14 +9,14 @@ class ListItem extends Component {
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,
-      checked: PropTypes.bool.isRequired,
+      checked: PropTypes.bool.isRequired
     }).isRequired,
     listId: PropTypes.number.isRequired,
     history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
+      push: PropTypes.func.isRequired
     }).isRequired,
     onCheckListItem: PropTypes.func,
-    onUncheckListItem: PropTypes.func,
+    onUncheckListItem: PropTypes.func
   };
 
   state = { isPendingCheck: false };
@@ -24,11 +24,15 @@ class ListItem extends Component {
   handleChange = ({ target }) => {
     const { onUncheckListItem, listId, item } = this.props;
 
-    if (this.state.isPendingCheck) { return; }
+    if (this.state.isPendingCheck) {
+      return;
+    }
 
     if (target.checked) {
       this.setState({ isPendingCheck: true });
-      setTimeout(() => { this.actuallyCheckItem(); }, 400);
+      setTimeout(() => {
+        this.actuallyCheckItem();
+      }, 400);
     } else {
       onUncheckListItem({ listId, itemId: item.id });
     }
@@ -50,20 +54,17 @@ class ListItem extends Component {
     }
   };
 
-  render () {
+  render() {
     const { item } = this.props;
     const { isPendingCheck } = this.state;
     const seemsChecked = item.checked || isPendingCheck;
 
     return (
-      <div>{/* Wrap in div so AnimateHeight doesn't affect reordering animation */}
-        <AnimateHeight
-          isExpanded={!isPendingCheck}
-          delay={250}
-          duration={150}
-        >
+      <div>
+        {/* Wrap in div so AnimateHeight doesn't affect reordering animation */}
+        <AnimateHeight isExpanded={!isPendingCheck} delay={250} duration={150}>
           <Checkbox
-            label={(
+            label={
               <span
                 onClick={this.onClickLabel}
                 style={{
@@ -71,12 +72,12 @@ class ListItem extends Component {
                   opacity: seemsChecked ? 0.25 : null,
                   userSelect: "none",
                   padding: "7px 0",
-                  flexGrow: 1,
+                  flexGrow: 1
                 }}
               >
                 {item.value}
               </span>
-            )}
+            }
             checked={seemsChecked}
             onChange={this.handleChange}
           />

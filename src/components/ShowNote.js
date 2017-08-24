@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Link from "./Link";
 import Card from "./Card";
@@ -9,29 +9,31 @@ class ShowNote extends Component {
     note: PropTypes.shape({
       body: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    }).isRequired,
+      title: PropTypes.string.isRequired
+    }).isRequired
   };
 
-  render () {
+  render() {
     const { note } = this.props;
 
     return (
       <Card
         header={<CardHeader note={note} />}
-        body={(
+        body={
           <Link to={"/" + note.id + "/edit?focus=body"}>
-            <pre style={{
-              padding: "7px 15px 12px",
-              minHeight: 66,
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
-              opacity: note.body.trim() === "" ? 0.4 : null,
-            }}>
+            <pre
+              style={{
+                padding: "7px 15px 12px",
+                minHeight: 66,
+                whiteSpace: "pre-wrap",
+                wordWrap: "break-word",
+                opacity: note.body.trim() === "" ? 0.4 : null
+              }}
+            >
               {note.body.trim() === "" ? "Add Description" : note.body}
             </pre>
           </Link>
-        )}
+        }
       />
     );
   }

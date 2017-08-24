@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { animate, easings } from "../utils/animation";
 
@@ -9,21 +9,21 @@ class AnimateHeight extends Component {
     delay: PropTypes.number,
     duration: PropTypes.number,
     easing: PropTypes.string,
-    fadeFirst: PropTypes.bool,
+    fadeFirst: PropTypes.bool
   };
 
   static defaultProps = {
     delay: 0,
     duration: 150,
-    easing: "easeInOutCubic",
+    easing: "easeInOutCubic"
   };
 
   state = {
     isAnimating: false,
-    containerHeight: 0,
+    containerHeight: 0
   };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { isExpanded, duration, delay, easing } = this.props;
 
     if (!isExpanded && nextProps.isExpanded) {
@@ -35,12 +35,12 @@ class AnimateHeight extends Component {
           duration: duration,
           easing: easings[easing],
           onUpdate: ht => this.setState({ containerHeight: ht }),
-          onComplete: () => this.setState({ isAnimating: false }),
+          onComplete: () => this.setState({ isAnimating: false })
         });
       }, delay);
       this.setState({
         isAnimating: true,
-        containerHeight: 0,
+        containerHeight: 0
       });
     }
 
@@ -53,40 +53,46 @@ class AnimateHeight extends Component {
           duration: duration,
           easing: easings[easing],
           onUpdate: ht => this.setState({ containerHeight: ht }),
-          onComplete: () => this.setState({ isAnimating: false }),
+          onComplete: () => this.setState({ isAnimating: false })
         });
       }, delay);
       this.setState({
         isAnimating: true,
-        containerHeight: this.contentWrapper.offsetHeight,
+        containerHeight: this.contentWrapper.offsetHeight
       });
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearTimeout(this.timer);
     this.stopAnimation();
   }
 
   stopAnimation = () => {
-    if (this.animation) { this.animation.stop(); }
+    if (this.animation) {
+      this.animation.stop();
+    }
   };
 
-  render () {
+  render() {
     const { children, isExpanded, fadeFirst } = this.props;
     const { containerHeight, isAnimating } = this.state;
 
     return (
-      <div style={{
-        height: isAnimating ? containerHeight : (isExpanded ? "auto" : 0),
-        overflow: isAnimating ? "hidden" : "visible",
-        opacity: fadeFirst ? ((isExpanded && !isAnimating) ? 1 : 0) : null,
-        transition: "opacity 20ms ease-in-out",
-      }}>
+      <div
+        style={{
+          height: isAnimating ? containerHeight : isExpanded ? "auto" : 0,
+          overflow: isAnimating ? "hidden" : "visible",
+          opacity: fadeFirst ? (isExpanded && !isAnimating ? 1 : 0) : null,
+          transition: "opacity 20ms ease-in-out"
+        }}
+      >
         <div
-          ref={el => { this.contentWrapper = el; }}
+          ref={el => {
+            this.contentWrapper = el;
+          }}
           style={{
-            display: !isAnimating && !isExpanded ? "none" : "block",
+            display: !isAnimating && !isExpanded ? "none" : "block"
           }}
         >
           {children}

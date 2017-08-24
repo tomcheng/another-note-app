@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import TextInput from "./TextInput";
 import FancyIcon from "./FancyIcon";
@@ -9,28 +9,28 @@ class EditListItem extends Component {
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       checked: PropTypes.bool.isRequired,
-      value: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     }).isRequired,
     listId: PropTypes.number.isRequired,
     refCallback: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
-    onUpdateListItem: PropTypes.func.isRequired,
+    onUpdateListItem: PropTypes.func.isRequired
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
       value: props.item.value,
-      isFocused: false,
+      isFocused: false
     };
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearTimeout(this.focusedTimer);
-  };
+  }
 
   handleChange = ({ target }) => {
     this.setState({ value: target.value });
@@ -41,7 +41,9 @@ class EditListItem extends Component {
 
     onUpdateListItem({ listId, itemId: item.id, updates: this.state });
 
-    this.focusedTimer = setTimeout(() => { this.setState({ isFocused: false }); }, 50);
+    this.focusedTimer = setTimeout(() => {
+      this.setState({ isFocused: false });
+    }, 50);
 
     onBlur(event);
   };
@@ -58,14 +60,14 @@ class EditListItem extends Component {
     onDeleteListItem({ listId, itemId: item.id });
   };
 
-  render () {
+  render() {
     const { item, refCallback } = this.props;
     const { value, isFocused } = this.state;
 
     return (
       <Checkbox
         checked={item.checked}
-        label={(
+        label={
           <div style={{ flexGrow: 1, display: "flex", padding: "2px 0" }}>
             <TextInput
               style={{ flexGrow: 1, marginLeft: -5 }}
@@ -76,13 +78,12 @@ class EditListItem extends Component {
               refCallback={refCallback}
               singleLine
             />
-            {isFocused && (
+            {isFocused &&
               <div onClick={this.handleClickDelete} style={{ padding: 4 }}>
                 <FancyIcon icon="trash" color="#222" />
-              </div>
-            )}
+              </div>}
           </div>
-        )}
+        }
         disabled
       />
     );

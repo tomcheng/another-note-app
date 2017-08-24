@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
@@ -12,11 +12,13 @@ class ListManager extends Component {
   static propTypes = {
     list: PropTypes.shape({
       hideChecked: PropTypes.bool.isRequired,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        checked: PropTypes.bool.isRequired,
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired,
-      })).isRequired,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          checked: PropTypes.bool.isRequired,
+          id: PropTypes.number.isRequired,
+          value: PropTypes.string.isRequired
+        })
+      ).isRequired
     }).isRequired,
     addItemValue: PropTypes.string.isRequired,
     onAddListItem: PropTypes.func.isRequired,
@@ -25,11 +27,17 @@ class ListManager extends Component {
     onChangeAddItem: PropTypes.func.isRequired,
     onClearAddItem: PropTypes.func.isRequired,
     onSetAddListItem: PropTypes.func.isRequired,
-    onUpdateListItem: PropTypes.func.isRequired,
+    onUpdateListItem: PropTypes.func.isRequired
   };
 
   handleEnterAddItem = () => {
-    const { onAddListItem, list, onCancelEditing, addItemValue, onClearAddItem } = this.props;
+    const {
+      onAddListItem,
+      list,
+      onCancelEditing,
+      addItemValue,
+      onClearAddItem
+    } = this.props;
 
     if (addItemValue.trim() === "") {
       this.addItemField.blur();
@@ -45,18 +53,18 @@ class ListManager extends Component {
     this.props.onCancelAddListItem();
   };
 
-  render () {
+  render() {
     const {
       list,
       addItemValue,
       onChangeAddItem,
       onSetAddListItem,
-      onUpdateListItem,
+      onUpdateListItem
     } = this.props;
 
     return (
       <div>
-        {list.items.map(item => (
+        {list.items.map(item =>
           <ListItem
             height={LIST_HEIGHT}
             key={item.id}
@@ -65,13 +73,17 @@ class ListManager extends Component {
             listId={list.id}
             onUpdateListItem={onUpdateListItem}
           />
-        ))}
-        <div style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}>
+        )}
+        <div
+          style={{ height: LIST_HEIGHT, display: "flex", alignItems: "center" }}
+        >
           <Checkbox
             checked={false}
-            label={(
+            label={
               <TextInput
-                refCallback={el => { this.addItemField = el; }}
+                refCallback={el => {
+                  this.addItemField = el;
+                }}
                 value={addItemValue}
                 placeholder="+ Add item"
                 onChange={onChangeAddItem}
@@ -81,7 +93,7 @@ class ListManager extends Component {
                 onFocus={onSetAddListItem}
                 singleLine
               />
-            )}
+            }
             disabled
           />
         </div>
@@ -95,5 +107,5 @@ export default connect(null, {
   onCancelAddListItem: actions.cancelAddListItem,
   onCancelEditing: actions.cancelEditing,
   onSetAddListItem: actions.setAddListItem,
-  onUpdateListItem: actions.requestUpdateListItem,
+  onUpdateListItem: actions.requestUpdateListItem
 })(ListManager);

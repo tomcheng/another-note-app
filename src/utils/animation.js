@@ -8,23 +8,34 @@ export const easings = {
     }
     return 1 / 2 * ((x -= 2) * x * x + 2);
   },
-  linear: x => x,
+  linear: x => x
 };
-  /*eslint-enable */
+/*eslint-enable */
 
-export const animate = ({ start, end, duration, easing = easings.easeInOutCubic, onUpdate, onComplete }) => {
+export const animate = ({
+  start,
+  end,
+  duration,
+  easing = easings.easeInOutCubic,
+  onUpdate,
+  onComplete
+}) => {
   const startTime = getCurrentTime();
   let timePassed;
   let shouldStop = false;
 
   const animationLoop = () => {
-    if (shouldStop) { return; }
+    if (shouldStop) {
+      return;
+    }
 
     timePassed = getCurrentTime() - startTime;
 
     if (timePassed >= duration) {
       onUpdate(end);
-      if (onComplete) { onComplete(); }
+      if (onComplete) {
+        onComplete();
+      }
       return;
     }
 
@@ -36,6 +47,8 @@ export const animate = ({ start, end, duration, easing = easings.easeInOutCubic,
   animationLoop();
 
   return {
-    stop: () => { shouldStop = true; }
+    stop: () => {
+      shouldStop = true;
+    }
   };
 };

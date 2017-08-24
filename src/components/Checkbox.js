@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import FancyIcon from "./FancyIcon";
 
@@ -9,7 +9,7 @@ class Checkbox extends Component {
     onChange({ target: { checked: !checked } });
   };
 
-  render () {
+  render() {
     const { checked, label, disabled } = this.props;
 
     return (
@@ -20,14 +20,12 @@ class Checkbox extends Component {
             paddingTop: 6,
             paddingBottom: 6,
             paddingRight: 6,
-            opacity: disabled ? 0.1 : 0.8,
+            opacity: disabled ? 0.1 : 0.8
           }}
         >
-          {checked ? (
-              <FancyIcon icon="checked" />
-            ) : (
-              <FancyIcon icon="unchecked" />
-            )}
+          {checked
+            ? <FancyIcon icon="checked" />
+            : <FancyIcon icon="unchecked" />}
         </div>
         {label}
       </label>
@@ -39,7 +37,7 @@ Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   label: PropTypes.any.isRequired,
   disabled: PropTypes.bool,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 export default Checkbox;

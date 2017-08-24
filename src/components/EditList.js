@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import queryString from "query-string";
 import { actions, selectors } from "../reducer";
 import { animate } from "../utils/animation";
@@ -21,26 +21,28 @@ class EditList extends Component {
     list: PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      uncheckedItems: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired,
-      })).isRequired,
+      uncheckedItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          value: PropTypes.string.isRequired
+        })
+      ).isRequired
     }).isRequired,
     rawList: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number.isRequired
     }).isRequired,
     history: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onReplaceList: PropTypes.func.isRequired,
     onUpdateListItem: PropTypes.func.isRequired,
-    onUpdateNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     const { list, rawList } = props;
@@ -49,11 +51,11 @@ class EditList extends Component {
       title: list.title,
       addItemValue: "",
       isAddingItem: false,
-      previousRawList: rawList,
+      previousRawList: rawList
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const query = queryString.parse(this.props.location.search);
 
     switch (query.focus) {
@@ -73,10 +75,12 @@ class EditList extends Component {
     window.addEventListener("resize", this.handleWindowResize);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener("resize", this.handleWindowResize);
 
-    if (this.animation) { this.animation.stop(); }
+    if (this.animation) {
+      this.animation.stop();
+    }
   }
 
   handleWindowResize = () => {
@@ -86,9 +90,12 @@ class EditList extends Component {
   animateToTextField = input => {
     this.animation = animate({
       start: 0,
-      end: input.offsetTop + input.offsetHeight + 5 - this.container.offsetHeight,
+      end:
+        input.offsetTop + input.offsetHeight + 5 - this.container.offsetHeight,
       duration: 300,
-      onUpdate: val => { this.container.scrollTop = val; }
+      onUpdate: val => {
+        this.container.scrollTop = val;
+      }
     });
   };
 
@@ -151,7 +158,9 @@ class EditList extends Component {
     if (query.just_added === "true") {
       onDeleteNote({
         id: list.id,
-        callback: () => { window.history.back(); },
+        callback: () => {
+          window.history.back();
+        }
       });
     } else {
       onReplaceList({ id: list.id, list: previousRawList });
@@ -179,7 +188,7 @@ class EditList extends Component {
         } else {
           window.history.back();
         }
-      },
+      }
     });
   };
 
@@ -189,29 +198,35 @@ class EditList extends Component {
     }
   };
 
-  render () {
+  render() {
     const { list, onUpdateListItem, onDeleteListItem } = this.props;
     const { title, addItemValue, isAddingItem } = this.state;
 
     return (
-      <div style={{
-        flexGrow: 1,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column"
-      }}>
+      <div
+        style={{
+          flexGrow: 1,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
         <div
-          ref={el => { this.container = el; }}
-          style={{ flexGrow: 1, overflow: "auto"}}
+          ref={el => {
+            this.container = el;
+          }}
+          style={{ flexGrow: 1, overflow: "auto" }}
         >
           <div style={{ padding: 6 }}>
             <Card
-              header={(
+              header={
                 <div style={{ padding: "7px 7px 0" }}>
                   <TextInput
                     value={title}
                     placeholder="Add a title"
-                    refCallback={el => { this.titleField = el; }}
+                    refCallback={el => {
+                      this.titleField = el;
+                    }}
                     onChange={this.handleChangeTitle}
                     onEnter={this.handleEnterTitle}
                     onFocus={this.handleFocusTitle}
@@ -220,20 +235,20 @@ class EditList extends Component {
                       width: "100%",
                       padding: "5px 8px",
                       fontSize: 24,
-                      lineHeight: "30px",
+                      lineHeight: "30px"
                     }}
                     singleLine
                   />
                 </div>
-              )}
-              body={(
+              }
+              body={
                 <div style={{ padding: "7px 15px 12px" }}>
                   <CSSTransition
                     transitionName="listItem"
                     transitionEnterTimeout={600}
                     transitionLeaveTimeout={600}
                   >
-                    {list.uncheckedItems.map(item => (
+                    {list.uncheckedItems.map(item =>
                       <EditListItem
                         key={item.id}
                         item={item}
@@ -242,16 +257,26 @@ class EditList extends Component {
                         onUpdateListItem={onUpdateListItem}
                         onFocus={this.handleFocusEditItem}
                         onBlur={this.handleBlur}
-                        refCallback={el => { this["item-" + item.id] = el; }}
+                        refCallback={el => {
+                          this["item-" + item.id] = el;
+                        }}
                       />
-                    ))}
+                    )}
                   </CSSTransition>
                   <Checkbox
                     checked={false}
-                    label={(
-                      <div style={{ padding: "2px 0", display: "flex", flexGrow: 1 }}>
+                    label={
+                      <div
+                        style={{
+                          padding: "2px 0",
+                          display: "flex",
+                          flexGrow: 1
+                        }}
+                      >
                         <TextInput
-                          refCallback={el => { this.addItemField = el; }}
+                          refCallback={el => {
+                            this.addItemField = el;
+                          }}
                           value={addItemValue}
                           placeholder="Add item"
                           style={{ flexGrow: 1, marginLeft: -5 }}
@@ -262,11 +287,11 @@ class EditList extends Component {
                           singleLine
                         />
                       </div>
-                    )}
+                    }
                     disabled
                   />
                 </div>
-              )}
+              }
             />
           </div>
         </div>
@@ -276,13 +301,13 @@ class EditList extends Component {
               buttonStyle="link"
               style={{
                 marginRight: 10,
-                opacity: 0.8,
+                opacity: 0.8
               }}
               onClick={this.handleClickCancel}
             >
               Cancel
             </Button>
-            {isAddingItem && (
+            {isAddingItem &&
               <Button
                 buttonStyle="ghost"
                 style={{ marginRight: 10 }}
@@ -290,12 +315,8 @@ class EditList extends Component {
                 disabled={addItemValue.trim() === ""}
               >
                 Add Another
-              </Button>
-            )}
-            <Button
-              buttonStyle="ghost"
-              onClick={this.handleClickDone}
-            >
+              </Button>}
+            <Button buttonStyle="ghost" onClick={this.handleClickDone}>
               Done
             </Button>
           </PreviewFooter>
@@ -306,14 +327,16 @@ class EditList extends Component {
 }
 
 const mapStateToProps = (state, { list }) => ({
-  rawList: selectors.getRawNotesById(state)[list.id],
+  rawList: selectors.getRawNotesById(state)[list.id]
 });
 
-export default withRouter(connect(mapStateToProps, {
-  onAddListItem: actions.requestAddListItem,
-  onDeleteListItem: actions.requestDeleteListItem,
-  onDeleteNote: actions.requestDeleteNote,
-  onReplaceList: actions.requestReplaceList,
-  onUpdateListItem: actions.requestUpdateListItem,
-  onUpdateNote: actions.requestUpdateNote,
-})(EditList));
+export default withRouter(
+  connect(mapStateToProps, {
+    onAddListItem: actions.requestAddListItem,
+    onDeleteListItem: actions.requestDeleteListItem,
+    onDeleteNote: actions.requestDeleteNote,
+    onReplaceList: actions.requestReplaceList,
+    onUpdateListItem: actions.requestUpdateListItem,
+    onUpdateNote: actions.requestUpdateNote
+  })(EditList)
+);

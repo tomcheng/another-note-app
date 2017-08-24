@@ -1,22 +1,23 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 import Notes from "./Notes";
 
-const Home = ({ isVisible }) => (
-  <div style={{
-    flexGrow: 1,
-    display: isVisible ? "flex" : "none",
-    flexDirection: "column",
-    overflow: "hidden",
-  }}>
+const Home = ({ isVisible }) =>
+  <div
+    style={{
+      flexGrow: 1,
+      display: isVisible ? "flex" : "none",
+      flexDirection: "column",
+      overflow: "hidden"
+    }}
+  >
     <div style={{ flexGrow: 1, overflow: "auto" }}>
       <Notes />
     </div>
-  </div>
-);
+  </div>;
 
 Home.PropTypes = {
-  isVisible: PropTypes.bool.isRequired, // Optimize for less re-rendering
+  isVisible: PropTypes.bool.isRequired // Optimize for less re-rendering
 };
 
 export default Home;

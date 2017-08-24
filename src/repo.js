@@ -1,29 +1,34 @@
 import findIndex from "lodash/findIndex";
 import max from "lodash/max";
 import values from "lodash/values";
-import moment from "moment"
+import moment from "moment";
 
 const DEFAULT_NOTES = [
   {
     id: 1,
     title: "Thanks for using Notorist!",
     type: "note",
-    body: "Notorist is a simple way to take notes and to-do lists on your phone.\n\n" +
+    body:
+      "Notorist is a simple way to take notes and to-do lists on your phone.\n\n" +
       "No sign-up is necessary because notes and lists are saved only to the device you are using.\n\n" +
       "For a better experience, try adding this app to your phone's home screen.\n\n" +
       "If you have any feedback, please send it to info@thomascheng.com\n\n" +
       "Cheers,\nThomas",
     createdAt: moment().format(),
-    updatedAt: moment().format(),
+    updatedAt: moment().format()
   }
 ];
 
-const save = ({ key, payload }) => { localStorage.setItem(key, JSON.stringify(payload)); };
+const save = ({ key, payload }) => {
+  localStorage.setItem(key, JSON.stringify(payload));
+};
 
 const getLocalNotes = () => {
   const json = localStorage.getItem("notes");
 
-  if (!json) { return null; }
+  if (!json) {
+    return null;
+  }
 
   return JSON.parse(json);
 };
@@ -54,7 +59,7 @@ export const addNote = ({ title }) => {
     type: "note",
     body: "",
     createdAt: moment().format(),
-    updatedAt: moment().format(),
+    updatedAt: moment().format()
   };
   notes.push(note);
 
@@ -74,7 +79,7 @@ export const addList = ({ title }) => {
     order: [],
     hideChecked: true,
     createdAt: moment().format(),
-    updatedAt: moment().format(),
+    updatedAt: moment().format()
   };
   notes.push(list);
 
@@ -88,7 +93,7 @@ export const updateNote = ({ id, updates }) => {
   const noteIndex = findIndex(notes, { id });
   const updatedNote = {
     ...notes[noteIndex],
-    ...updates,
+    ...updates
   };
 
   if (updates.hideChecked === undefined && updates.pinned === undefined) {
@@ -112,9 +117,15 @@ export const convertToList = ({ id }) => {
   const notes = getLocalNotes();
   const noteIndex = findIndex(notes, { id });
   const oldNote = notes[noteIndex];
-  const items = oldNote.body.split("\n")
+  const items = oldNote.body
+    .split("\n")
     .filter(value => value.trim() !== "")
-    .map((value, index) => ({ id: index + 1, value, checked: false, checkedAt: null }));
+    .map((value, index) => ({
+      id: index + 1,
+      value,
+      checked: false,
+      checkedAt: null
+    }));
   const list = {
     id,
     title: oldNote.title,
@@ -123,7 +134,7 @@ export const convertToList = ({ id }) => {
     items: items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {}),
     order: items.map(item => item.id),
     createdAt: oldNote.createdAt,
-    updatedAt: moment().format(),
+    updatedAt: moment().format()
   };
 
   notes[noteIndex] = list;
@@ -139,7 +150,7 @@ export const addListItem = ({ listId, value }) => {
   const list = notes[listIndex];
   const id = (max(values(list.items).map(item => item.id)) || 0) + 1;
 
-  list.items[id] = ({ id, value, checked: false, checkedAt: null });
+  list.items[id] = { id, value, checked: false, checkedAt: null };
   list.order.push(id);
   list.updatedAt = moment().format();
 
@@ -169,7 +180,7 @@ export const checkListItem = ({ listId, itemId }) => {
   list.items[itemId] = {
     ...list.items[itemId],
     checked: true,
-    checkedAt: moment().format(),
+    checkedAt: moment().format()
   };
   list.updatedAt = moment().format();
   list.order = list.order.filter(id => id !== itemId);
@@ -187,7 +198,7 @@ export const uncheckListItem = ({ listId, itemId }) => {
   list.items[itemId] = {
     ...list.items[itemId],
     checked: false,
-    checkedAt: null,
+    checkedAt: null
   };
   list.updatedAt = moment().format();
   list.order.push(itemId);

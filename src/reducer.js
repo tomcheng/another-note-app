@@ -7,30 +7,57 @@ import mapValues from "lodash/mapValues";
 export const actions = {};
 export const selectors = {};
 
-actions.updateSearch             = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.clearSearch              = ()      => ({ type: "CLEAR_SEARCH" });
-actions.requestNotes             = ()      => ({ type: "REQUEST_NOTES" });
-actions.loadNotes                = payload => ({ type: "LOAD_NOTES", payload });
-actions.requestAddList           = payload => ({ type: "REQUEST_ADD_LIST", payload });
-actions.requestAddNote           = payload => ({ type: "REQUEST_ADD_NOTE", payload });
-actions.addNote                  = payload => ({ type: "ADD_NOTE", payload });
-actions.requestUpdateNote        = payload => ({ type: "REQUEST_UPDATE_NOTE", payload });
-actions.updateNote               = payload => ({ type: "UPDATE_NOTE", payload });
-actions.requestDeleteNote        = payload => ({ type: "REQUEST_DELETE_NOTE", payload });
-actions.deleteNote               = payload => ({ type: "DELETE_NOTE", payload });
-actions.requestConvertNoteToList = payload => ({ type: "REQUEST_CONVERT_NOTE_TO_LIST", payload });
-actions.requestAddListItem       = payload => ({ type: "REQUEST_ADD_LIST_ITEM", payload });
-actions.requestUpdateListItem    = payload => ({ type: "REQUEST_UPDATE_LIST_ITEM", payload });
-actions.requestCheckListItem     = payload => ({ type: "REQUEST_CHECK_LIST_ITEM", payload });
-actions.requestUncheckListItem   = payload => ({ type: "REQUEST_UNCHECK_LIST_ITEM", payload });
-actions.requestDeleteListItem    = payload => ({ type: "REQUEST_DELETE_LIST_ITEM", payload });
-actions.requestReplaceList       = payload => ({ type: "REQUEST_REPLACE_LIST", payload });
+actions.updateSearch = payload => ({ type: "UPDATE_SEARCH", payload });
+actions.clearSearch = () => ({ type: "CLEAR_SEARCH" });
+actions.requestNotes = () => ({ type: "REQUEST_NOTES" });
+actions.loadNotes = payload => ({ type: "LOAD_NOTES", payload });
+actions.requestAddList = payload => ({ type: "REQUEST_ADD_LIST", payload });
+actions.requestAddNote = payload => ({ type: "REQUEST_ADD_NOTE", payload });
+actions.addNote = payload => ({ type: "ADD_NOTE", payload });
+actions.requestUpdateNote = payload => ({
+  type: "REQUEST_UPDATE_NOTE",
+  payload
+});
+actions.updateNote = payload => ({ type: "UPDATE_NOTE", payload });
+actions.requestDeleteNote = payload => ({
+  type: "REQUEST_DELETE_NOTE",
+  payload
+});
+actions.deleteNote = payload => ({ type: "DELETE_NOTE", payload });
+actions.requestConvertNoteToList = payload => ({
+  type: "REQUEST_CONVERT_NOTE_TO_LIST",
+  payload
+});
+actions.requestAddListItem = payload => ({
+  type: "REQUEST_ADD_LIST_ITEM",
+  payload
+});
+actions.requestUpdateListItem = payload => ({
+  type: "REQUEST_UPDATE_LIST_ITEM",
+  payload
+});
+actions.requestCheckListItem = payload => ({
+  type: "REQUEST_CHECK_LIST_ITEM",
+  payload
+});
+actions.requestUncheckListItem = payload => ({
+  type: "REQUEST_UNCHECK_LIST_ITEM",
+  payload
+});
+actions.requestDeleteListItem = payload => ({
+  type: "REQUEST_DELETE_LIST_ITEM",
+  payload
+});
+actions.requestReplaceList = payload => ({
+  type: "REQUEST_REPLACE_LIST",
+  payload
+});
 
 const initialState = {
   notes: {},
   noteIds: [],
   notesLoaded: false,
-  search: "",
+  search: ""
 };
 
 const notesToIds = notesById => {
@@ -38,21 +65,26 @@ const notesToIds = notesById => {
   const pinnedItems = notes.filter(note => note.pinned);
   const unpinnedItems = notes.filter(note => !note.pinned);
 
-  return [].concat(
-    sortBy(pinnedItems, "title"),
-    sortBy(unpinnedItems, "updatedAt").reverse()
-  ).map(note => note.id);
+  return []
+    .concat(
+      sortBy(pinnedItems, "title"),
+      sortBy(unpinnedItems, "updatedAt").reverse()
+    )
+    .map(note => note.id);
 };
 
 const processNote = note => {
   if (note.type === "list") {
     const uncheckedItems = note.order.map(id => note.items[id]);
-    const checkedItems = sortBy(values(note.items).filter(item => item.checked), "checkedAt").reverse();
+    const checkedItems = sortBy(
+      values(note.items).filter(item => item.checked),
+      "checkedAt"
+    ).reverse();
 
     return {
       ...omit(note, ["items", "order"]),
       uncheckedItems,
-      checkedItems,
+      checkedItems
     };
   }
 
@@ -66,7 +98,7 @@ const reducer = (state = initialState, action) => {
     case "UPDATE_SEARCH": {
       return {
         ...state,
-        search: payload.search,
+        search: payload.search
       };
     }
     case "CLEAR_SEARCH":
@@ -74,17 +106,20 @@ const reducer = (state = initialState, action) => {
     case "LOAD_NOTES":
       return {
         ...state,
-        notes: payload.notes.reduce((acc, note) => ({
-          ...acc,
-          [note.id]: note,
-        }), {}),
+        notes: payload.notes.reduce(
+          (acc, note) => ({
+            ...acc,
+            [note.id]: note
+          }),
+          {}
+        ),
         noteIds: notesToIds(payload.notes),
-        notesLoaded: true,
+        notesLoaded: true
       };
     case "ADD_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: payload.note,
+        [payload.note.id]: payload.note
       };
 
       return {
@@ -92,19 +127,19 @@ const reducer = (state = initialState, action) => {
         notes: newNotes,
         noteIds: notesToIds(newNotes),
         search: "",
-        selectedNoteId: payload.note.id,
+        selectedNoteId: payload.note.id
       };
     }
     case "UPDATE_NOTE": {
       const newNotes = {
         ...state.notes,
-        [payload.note.id]: payload.note,
+        [payload.note.id]: payload.note
       };
 
       return {
         ...state,
         notes: newNotes,
-        noteIds: notesToIds(newNotes),
+        noteIds: notesToIds(newNotes)
       };
     }
     case "DELETE_NOTE": {
@@ -113,7 +148,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         notes: newNotes,
-        noteIds: notesToIds(newNotes),
+        noteIds: notesToIds(newNotes)
       };
     }
     default:
@@ -124,18 +159,26 @@ const reducer = (state = initialState, action) => {
 const matches = (note, search) => {
   const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
   const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedBody = note.type === "list"
-    ? note.checkedItems.concat(note.uncheckedItems).map(item => item.value).join("").toLowerCase().replace(/[^a-z0-9]/g, "")
-    : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody =
+    note.type === "list"
+      ? note.checkedItems
+          .concat(note.uncheckedItems)
+          .map(item => item.value)
+          .join("")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+      : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-  return processedTitle.indexOf(processedSearch) !== -1 ||
-    processedBody.indexOf(processedSearch) !== -1;
+  return (
+    processedTitle.indexOf(processedSearch) !== -1 ||
+    processedBody.indexOf(processedSearch) !== -1
+  );
 };
 
-selectors.getRawNotesById       = state => state.notes;
-selectors.getNoteIds            = state => state.noteIds;
-selectors.getNotesLoaded        = state => state.notesLoaded;
-selectors.getSearch             = state => state.search;
+selectors.getRawNotesById = state => state.notes;
+selectors.getNoteIds = state => state.noteIds;
+selectors.getNotesLoaded = state => state.notesLoaded;
+selectors.getSearch = state => state.search;
 selectors.getNotesById = createSelector(
   selectors.getRawNotesById,
   rawNotesById => mapValues(rawNotesById, processNote)
@@ -148,7 +191,8 @@ selectors.getNotes = createSelector(
 selectors.getVisibleNoteIds = createSelector(
   selectors.getNotes,
   selectors.getSearch,
-  (notes, search) => notes.filter(note => matches(note, search)).map(note => note.id)
+  (notes, search) =>
+    notes.filter(note => matches(note, search)).map(note => note.id)
 );
 
 export default reducer;

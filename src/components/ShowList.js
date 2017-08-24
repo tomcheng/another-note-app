@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
-import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove
+} from "react-sortable-hoc";
 import Link from "./Link";
 import Card from "./Card";
 import Button from "./Button";
@@ -19,23 +23,27 @@ class ShowList extends Component {
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       hideChecked: PropTypes.bool.isRequired,
-      uncheckedItems: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired,
-      })).isRequired,
-      checkedItems: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired,
-      })).isRequired,
+      uncheckedItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          value: PropTypes.string.isRequired
+        })
+      ).isRequired,
+      checkedItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          value: PropTypes.string.isRequired
+        })
+      ).isRequired
     }).isRequired,
     onCheckListItem: PropTypes.func.isRequired,
     onUncheckListItem: PropTypes.func.isRequired,
-    onUpdateNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired
   };
 
   state = {
     recentlyCheckedItemIds: [],
-    previousOrder: [],
+    previousOrder: []
   };
 
   componentWillUnmount = () => {
@@ -48,9 +56,13 @@ class ShowList extends Component {
     onUpdateNote({
       id: list.id,
       updates: {
-        order: arrayMove(list.uncheckedItems.map(item => item.id), oldIndex, newIndex),
-      },
-    })
+        order: arrayMove(
+          list.uncheckedItems.map(item => item.id),
+          oldIndex,
+          newIndex
+        )
+      }
+    });
   };
 
   handleCheckListItem = ({ listId, itemId }) => {
@@ -60,11 +72,13 @@ class ShowList extends Component {
     onCheckListItem({ listId, itemId });
 
     this.setState({
-      recentlyCheckedItemIds: recentlyCheckedItemIds.concat(itemId),
+      recentlyCheckedItemIds: recentlyCheckedItemIds.concat(itemId)
     });
 
     if (recentlyCheckedItemIds.length === 0) {
-      this.setState({ previousOrder: list.uncheckedItems.map(item => item.id) });
+      this.setState({
+        previousOrder: list.uncheckedItems.map(item => item.id)
+      });
     }
 
     clearTimeout(this.footerTimer);
@@ -72,8 +86,8 @@ class ShowList extends Component {
     this.footerTimer = setTimeout(() => {
       this.setState({
         recentlyCheckedItemIds: [],
-        previousOrder: [],
-      })
+        previousOrder: []
+      });
     }, 3000);
   };
 
@@ -85,15 +99,15 @@ class ShowList extends Component {
       onUncheckListItem({ listId: list.id, itemId: id });
     });
 
-    onUpdateNote({ id: list.id, updates: { order: previousOrder } })
+    onUpdateNote({ id: list.id, updates: { order: previousOrder } });
 
     this.setState({
       recentlyCheckedItemIds: [],
-      previousOrder: [],
+      previousOrder: []
     });
   };
 
-  render () {
+  render() {
     const { list, onUncheckListItem } = this.props;
     const { recentlyCheckedItemIds } = this.state;
     const isShowingChecked = list.checkedItems.length > 0 && !list.hideChecked;
@@ -101,7 +115,7 @@ class ShowList extends Component {
     return (
       <Card
         header={<CardHeader note={list} />}
-        body={(
+        body={
           <div style={{ padding: "7px 15px 12px" }}>
             <ShowListItems
               list={list}
@@ -114,15 +128,17 @@ class ShowList extends Component {
             <Link to={"/" + list.id + "/edit?focus=addItem"}>
               <Checkbox
                 checked={false}
-                label={(
-                  <div style={{
-                    color: "#45a1fe",
-                    padding: "7px 0",
-                    userSelect: "none",
-                  }}>
+                label={
+                  <div
+                    style={{
+                      color: "#45a1fe",
+                      padding: "7px 0",
+                      userSelect: "none"
+                    }}
+                  >
                     Add item
                   </div>
-                )}
+                }
                 disabled
               />
             </Link>
@@ -132,38 +148,42 @@ class ShowList extends Component {
                   style={{
                     height: 1,
                     backgroundColor: "#ddd",
-                    margin: "9px 0",
+                    margin: "9px 0"
                   }}
                 />
-                {list.checkedItems.map(item => (
+                {list.checkedItems.map(item =>
                   <ShowListItem
                     key={item.id}
                     item={item}
                     listId={list.id}
                     onUncheckListItem={onUncheckListItem}
                   />
-                ))}
+                )}
               </div>
             </AnimateHeight>
-            <div style={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}>
+            <div
+              style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0
+              }}
+            >
               <AnimateHeight isExpanded={recentlyCheckedItemIds.length > 0}>
                 <PreviewFooter>
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingLeft: 9,
-                  }}>
-                    {recentlyCheckedItemIds.length ? (
-                      <span>
-                        Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
-                      </span>
-                    ) : <span />}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingLeft: 9
+                    }}
+                  >
+                    {recentlyCheckedItemIds.length
+                      ? <span>
+                          Checked off {recentlyCheckedItemIds.length} item{recentlyCheckedItemIds.length === 1 ? "" : "s"}
+                        </span>
+                      : <span />}
                     <Button onClick={this.handleClickUndo} buttonStyle="ghost">
                       Undo
                     </Button>
@@ -172,15 +192,15 @@ class ShowList extends Component {
               </AnimateHeight>
             </div>
           </div>
-        )}
+        }
       />
     );
   }
 }
 
-const ShowListItems = SortableContainer(({ list, ...other }) => (
+const ShowListItems = SortableContainer(({ list, ...other }) =>
   <div>
-    {list.uncheckedItems.map((item, index) => (
+    {list.uncheckedItems.map((item, index) =>
       <SortableListItem
         {...other}
         key={item.id}
@@ -188,16 +208,14 @@ const ShowListItems = SortableContainer(({ list, ...other }) => (
         listId={list.id}
         index={index}
       />
-    ))}
+    )}
   </div>
-));
+);
 
-const SortableListItem = SortableElement(props => (
-  <ShowListItem {...props} />
-));
+const SortableListItem = SortableElement(props => <ShowListItem {...props} />);
 
 export default connect(null, {
   onCheckListItem: actions.requestCheckListItem,
   onUncheckListItem: actions.requestUncheckListItem,
-  onUpdateNote: actions.requestUpdateNote,
+  onUpdateNote: actions.requestUpdateNote
 })(ShowList);

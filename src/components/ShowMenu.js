@@ -1,14 +1,16 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import FancyIcon from "./FancyIcon";
 import PopoverItem from "./PopoverItem";
 
 class ShowMenu extends Component {
   static propTypes = {
-    menuItems: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      action: PropTypes.func.isRequired,
-    })).isRequired,
+    menuItems: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        action: PropTypes.func.isRequired
+      })
+    ).isRequired
   };
 
   state = { menuOpen: false };
@@ -27,7 +29,7 @@ class ShowMenu extends Component {
     this.setState({ menuOpen: false });
   };
 
-  render () {
+  render() {
     const { menuItems } = this.props;
     const { menuOpen } = this.state;
 
@@ -39,7 +41,7 @@ class ShowMenu extends Component {
         >
           <FancyIcon icon="vertical-ellipsis" />
         </div>
-        {menuOpen && (
+        {menuOpen &&
           <div style={{ color: "#222" }}>
             <div
               style={{
@@ -47,26 +49,33 @@ class ShowMenu extends Component {
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0,
+                bottom: 0
               }}
               onClick={this.handleClickOverlay}
             />
-            <div style={{
-              position: "absolute",
-              top: 48,
-              right: -2,
-              backgroundColor: "#fff",
-              boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-              zIndex: 1,
-            }}>
-              {menuItems.map(({ action, label }) => (
-                <PopoverItem key={label} onClick={() => { this.performAction(action); }}>
+            <div
+              style={{
+                position: "absolute",
+                top: 48,
+                right: -2,
+                backgroundColor: "#fff",
+                boxShadow:
+                  "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+                zIndex: 1
+              }}
+            >
+              {menuItems.map(({ action, label }) =>
+                <PopoverItem
+                  key={label}
+                  onClick={() => {
+                    this.performAction(action);
+                  }}
+                >
                   {label}
                 </PopoverItem>
-              ))}
+              )}
             </div>
-          </div>
-        )}
+          </div>}
       </div>
     );
   }

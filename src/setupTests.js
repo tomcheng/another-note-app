@@ -14,6 +14,6 @@ global.localStorage = (function() {
     },
     clear: function() {
       store = {};
-    },
+    }
   };
 })();

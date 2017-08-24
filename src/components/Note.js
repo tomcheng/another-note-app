@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import moment from "moment";
 import colors from "../styles/colors";
@@ -14,10 +14,12 @@ class Note extends Component {
       updatedAt: PropTypes.string.isRequired,
       body: PropTypes.string,
       checkedItems: PropTypes.array,
-      unCheckedItems: PropTypes.arrayOf(PropTypes.shape({
-        value: PropTypes.string,
-      })),
-    }).isRequired,
+      unCheckedItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string
+        })
+      )
+    }).isRequired
   };
 
   getTitle = () => {
@@ -47,7 +49,7 @@ class Note extends Component {
     const { note } = this.props;
 
     if (moment().isSame(note.updatedAt, "day")) {
-      return moment(note.updatedAt).fromNow()
+      return moment(note.updatedAt).fromNow();
     }
 
     if (moment().subtract(1, "days").isSame(note.updatedAt, "day")) {
@@ -57,7 +59,7 @@ class Note extends Component {
     return moment(note.updatedAt).format("MMM D, YYYY");
   };
 
-  render () {
+  render() {
     const { note, isVisible, isSelected } = this.props;
     const summary = this.getSummary();
 
@@ -72,47 +74,49 @@ class Note extends Component {
           borderRadius: 3,
           alignItems: "center",
           whiteSpace: "nowrap",
-          height: 50,
+          height: 50
         }}
       >
         <div style={{ marginRight: 6, opacity: 0.8 }}>
           <FancyIcon icon={note.type} color="#222" />
         </div>
-        <div style={{
-          fontWeight: 500,
-          flexShrink: 1,
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-        }}>
+        <div
+          style={{
+            fontWeight: 500,
+            flexShrink: 1,
+            textOverflow: "ellipsis",
+            overflow: "hidden"
+          }}
+        >
           {this.getTitle()}&nbsp;
         </div>
-        {summary.trim() !== "" ? (
-          <div style={{
-            flexGrow: 1,
-            flexShrink: 1000000,
-            opacity: 0.3,
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            paddingRight: 10,
-          }}>
-            &ndash; {this.getSummary()}
-          </div>
-        ) : (
-          <div style={{ flexGrow: 1 }} />
-        )}
-        {note.pinned && (
+        {summary.trim() !== ""
+          ? <div
+              style={{
+                flexGrow: 1,
+                flexShrink: 1000000,
+                opacity: 0.3,
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                paddingRight: 10
+              }}
+            >
+              &ndash; {this.getSummary()}
+            </div>
+          : <div style={{ flexGrow: 1 }} />}
+        {note.pinned &&
           <div style={{ opacity: 0.8 }}>
             <FancyIcon icon="pin" color={colors.darkYellow} />
-          </div>
-        )}
-        {!note.pinned && (
-          <div style={{
-            fontSize: 12,
-            opacity: 0.3,
-          }}>
+          </div>}
+        {!note.pinned &&
+          <div
+            style={{
+              fontSize: 12,
+              opacity: 0.3
+            }}
+          >
             {this.getUpdatedAt()}
-          </div>
-        )}
+          </div>}
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
@@ -14,19 +14,19 @@ class ShowHeader extends Component {
     notes: PropTypes.object.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
-        id: PropTypes.string,
-      }).isRequired,
+        id: PropTypes.string
+      }).isRequired
     }).isRequired,
     history: PropTypes.shape({
       goBack: PropTypes.func.isRequired
     }).isRequired,
     onConvertNoteToList: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
-    onUpdateNote: PropTypes.func.isRequired,
+    onUpdateNote: PropTypes.func.isRequired
   };
 
   state = {
-    deleteModalOpen: false,
+    deleteModalOpen: false
   };
 
   handleClickBack = () => {
@@ -37,9 +37,12 @@ class ShowHeader extends Component {
     const { onUpdateNote } = this.props;
     const selectedNote = this.getSelectedNote();
 
-    onUpdateNote({ id: selectedNote.id, updates: {
-      pinned: !selectedNote.pinned,
-    } });
+    onUpdateNote({
+      id: selectedNote.id,
+      updates: {
+        pinned: !selectedNote.pinned
+      }
+    });
   };
 
   handleClickDelete = () => {
@@ -57,7 +60,9 @@ class ShowHeader extends Component {
 
     onDeleteNote({
       id: parseInt(match.params.id, 10),
-      callback: () => { history.goBack(); },
+      callback: () => {
+        history.goBack();
+      }
     });
   };
 
@@ -74,7 +79,7 @@ class ShowHeader extends Component {
 
     onUpdateNote({
       id: list.id,
-      updates: { hideChecked: !list.hideChecked },
+      updates: { hideChecked: !list.hideChecked }
     });
   };
 
@@ -86,14 +91,14 @@ class ShowHeader extends Component {
       return {
         id: null,
         type: "note",
-        pinned: false,
+        pinned: false
       };
     }
 
     return notes[params.id];
   };
 
-  render () {
+  render() {
     const { deleteModalOpen } = this.state;
     const selectedNote = this.getSelectedNote();
 
@@ -105,7 +110,7 @@ class ShowHeader extends Component {
           textAlign: "right",
           display: "flex",
           justifyContent: "space-between",
-          padding: "0 7px 2px",
+          padding: "0 7px 2px"
         }}
       >
         <div
@@ -120,7 +125,7 @@ class ShowHeader extends Component {
             style={{
               padding: 9,
               cursor: "pointer",
-              opacity: selectedNote.pinned ? 1 : 0.2,
+              opacity: selectedNote.pinned ? 1 : 0.2
             }}
           >
             <FancyIcon
@@ -140,26 +145,26 @@ class ShowHeader extends Component {
           >
             <FancyIcon icon="trash" />
           </div>
-          {selectedNote.type === "note" && (
+          {selectedNote.type === "note" &&
             <ShowMenu
               menuItems={[
                 {
                   label: "Convert to List",
-                  action: this.handleConvertNoteToList,
+                  action: this.handleConvertNoteToList
                 }
               ]}
-            />
-          )}
-          {selectedNote.type === "list" && (
+            />}
+          {selectedNote.type === "list" &&
             <ShowMenu
               menuItems={[
                 {
-                  label: selectedNote.hideChecked ? "Show completed items" : "Hide completed items",
-                  action: this.handleToggleHideChecked,
+                  label: selectedNote.hideChecked
+                    ? "Show completed items"
+                    : "Hide completed items",
+                  action: this.handleToggleHideChecked
                 }
               ]}
-            />
-          )}
+            />}
           <DeleteModal
             isOpen={deleteModalOpen}
             onClose={this.handleCloseDeleteModal}
@@ -173,11 +178,13 @@ class ShowHeader extends Component {
 }
 
 const mapStateToProps = state => ({
-  notes: selectors.getNotesById(state),
+  notes: selectors.getNotesById(state)
 });
 
-export default withRouter(connect(mapStateToProps, {
-  onConvertNoteToList: actions.requestConvertNoteToList,
-  onDeleteNote: actions.requestDeleteNote,
-  onUpdateNote: actions.requestUpdateNote,
-})(ShowHeader));
+export default withRouter(
+  connect(mapStateToProps, {
+    onConvertNoteToList: actions.requestConvertNoteToList,
+    onDeleteNote: actions.requestDeleteNote,
+    onUpdateNote: actions.requestUpdateNote
+  })(ShowHeader)
+);
