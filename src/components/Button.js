@@ -43,6 +43,7 @@ const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
         padding: "0 12px",
         border: 0,
         borderRadius: 3,
+        cursor: "pointer",
         opacity: disabled ? 0.4 : null,
         ...styles,
         ...style
