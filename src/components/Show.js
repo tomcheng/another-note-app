@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import moment from "moment";
@@ -18,8 +19,10 @@ const StyledFooter = styled.div`
 
 class Show extends Component {
   static propTypes = {
+    history: PropTypes.shape({
+      replace: PropTypes.func.isRequired
+    }).isRequired,
     notes: PropTypes.object.isRequired,
-    notesLoaded: PropTypes.bool.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
         id: PropTypes.string.isRequired
@@ -27,48 +30,30 @@ class Show extends Component {
     }).isRequired
   };
 
-  componentDidMount() {
-    const { notesLoaded } = this.props;
-    const selectedNote = this.getSelectedNote();
-
-    if (notesLoaded && !selectedNote) {
-      window.history.back();
-    }
-  }
-
-  getSelectedNote = (props = this.props) => {
-    const { notes } = props;
-    const { params } = props.match;
-
-    return notes[params.id];
-  };
-
   render() {
-    const selectedNote = this.getSelectedNote();
+    const { notes, match } = this.props;
+    const selectedNote = notes[match.params.id];
 
-    if (!selectedNote) {
-      return <noscript />;
-    }
-
-    return (
-      <BodyWrapper>
-        {selectedNote.type === "list" && <ShowList list={selectedNote} />}
-        {selectedNote.type === "note" && <ShowNote note={selectedNote} />}
-        <StyledFooter>
-          Created {moment(selectedNote.createdAt).format("MMM D, YYYY")}
-        </StyledFooter>
-      </BodyWrapper>
-    );
+    return selectedNote
+      ? <BodyWrapper>
+          {selectedNote.type === "list" && <ShowList list={selectedNote} />}
+          {selectedNote.type === "note" && <ShowNote note={selectedNote} />}
+          <StyledFooter>
+            Created {moment(selectedNote.createdAt).format("MMM D, YYYY")}
+          </StyledFooter>
+        </BodyWrapper>
+      : <Redirect to="/" />;
   }
 }
 
 const mapStateToProps = state => ({
-  notes: selectors.getNotesById(state),
-  notesLoaded: selectors.getNotesLoaded(state)
+  notes: selectors.getNotesById(state)
 });
 
-export default connect(mapStateToProps, {
-  onConvertNoteToList: actions.requestConvertNoteToList,
-  onDeleteNote: actions.requestDeleteNote,
-  onUpdateNote: actions.requestUpdateNote
-})(Show);
+export default withRouter(
+  connect(mapStateToProps, {
+    onConvertNoteToList: actions.requestConvertNoteToList,
+    onDeleteNote: actions.requestDeleteNote,
+    onUpdateNote: actions.requestUpdateNote
+  })(Show)
+);

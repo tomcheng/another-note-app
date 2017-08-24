@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import EditNote from "./EditNote";
@@ -9,7 +10,6 @@ class Edit extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     notes: PropTypes.object.isRequired,
-    notesLoaded: PropTypes.bool.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
         id: PropTypes.string.isRequired
@@ -18,13 +18,12 @@ class Edit extends Component {
   };
 
   render() {
-    const { match, location, notes, notesLoaded } = this.props;
-
-    if (!notesLoaded || !notes[match.params.id]) {
-      return <noscript />;
-    }
-
+    const { match, location, notes } = this.props;
     const selectedNote = notes[match.params.id];
+
+    if (!selectedNote) {
+      return <Redirect to="/" />;
+    }
 
     return selectedNote.type === "note"
       ? <EditNote location={location} note={selectedNote} />
@@ -33,8 +32,7 @@ class Edit extends Component {
 }
 
 const mapStateToProps = state => ({
-  notes: selectors.getNotesById(state),
-  notesLoaded: selectors.getNotesLoaded(state)
+  notes: selectors.getNotesById(state)
 });
 
 export default connect(mapStateToProps)(Edit);

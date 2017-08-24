@@ -21,17 +21,12 @@ class Notes extends Component {
         id: PropTypes.number.isRequired
       })
     ).isRequired,
-    notesLoaded: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired,
     visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired
   };
 
   render() {
-    const { notes, notesLoaded, visibleNoteIds } = this.props;
-
-    if (!notesLoaded) {
-      return <noscript />;
-    }
+    const { notes, visibleNoteIds } = this.props;
 
     return (
       <BodyWrapper>
@@ -52,7 +47,6 @@ class Notes extends Component {
 
 const mapStateToProps = state => ({
   notes: selectors.getNotes(state),
-  notesLoaded: selectors.getNotesLoaded(state),
   search: selectors.getSearch(state),
   visibleNoteIds: selectors.getVisibleNoteIds(state)
 });

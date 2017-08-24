@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { actions } from "../reducer";
+import { actions, selectors } from "../reducer";
 import { Route, withRouter } from "react-router-dom";
 import AnimateHeight from "./AnimateHeight";
 import Search from "./Search";
@@ -54,14 +54,24 @@ class App extends Component {
 
   componentDidMount() {
     this.props.onRequestNotes();
-
-    window.addEventListener("resize", () => {
-      this.setState({ appHeight: window.innerHeight });
-    });
+    window.addEventListener("resize", this.handleResize);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  handleResize = () => {
+    this.setState({ appHeight: window.innerHeight });
+  };
+
   render() {
+    const { notesLoaded } = this.props;
     const { appHeight } = this.state;
+
+    if (!notesLoaded) {
+      return <noscript />;
+    }
 
     return (
       <StyledContainer style={{ height: appHeight }}>
@@ -79,8 +89,12 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  notesLoaded: selectors.getNotesLoaded(state)
+});
+
 export default withRouter(
-  connect(null, {
+  connect(mapStateToProps, {
     onRequestNotes: actions.requestNotes
   })(App)
 );
