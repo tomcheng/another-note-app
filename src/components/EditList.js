@@ -1,6 +1,7 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
+import PropTypes from 'prop-types';
 import queryString from "query-string";
 import { actions, selectors } from "../reducer";
 import { animate } from "../utils/animation";

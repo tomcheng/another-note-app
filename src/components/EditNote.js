@@ -1,7 +1,8 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
 import queryString from "query-string";
 import TextInput from "./TextInput";
 import Button from "./Button";

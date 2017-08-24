@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AnimateHeight from "./AnimateHeight";
 import Checkbox from "./Checkbox";

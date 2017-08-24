@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import moment from "moment";
 import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";

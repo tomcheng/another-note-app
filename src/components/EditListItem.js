@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import TextInput from "./TextInput";
 import FancyIcon from "./FancyIcon";
 import Checkbox from "./Checkbox";

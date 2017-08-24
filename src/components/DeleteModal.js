@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import capitalize from "lodash/capitalize";
 import CSSTransition from "react-addons-css-transition-group";
 import renderOutside from "../utils/renderOutside";
