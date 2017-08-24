@@ -46,9 +46,9 @@ class ShowList extends Component {
     previousOrder: []
   };
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     clearTimeout(this.footerTimer);
-  };
+  }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     const { onUpdateNote, list } = this.props;

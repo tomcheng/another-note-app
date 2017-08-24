@@ -1,14 +1,31 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
 import queryString from "query-string";
 import BodyWrapper from "./BodyWrapper";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
 import PreviewFooter from "./PreviewFooter";
+
+const StyledContainer = styled.div`
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledMain = styled.div`
+  flex-grow: 1;
+  overflow: auto;
+`;
+
+const StyledFooter = styled.div`
+  flex-shrink: 0;
+`;
 
 class EditNote extends Component {
   static propTypes = {
@@ -28,7 +45,7 @@ class EditNote extends Component {
   };
 
   constructor(props) {
-    super(props);
+    super();
 
     const { note } = props;
 
@@ -108,20 +125,8 @@ class EditNote extends Component {
     const { title, body } = this.state;
 
     return (
-      <div
-        style={{
-          flexGrow: 1,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
-        <div
-          style={{
-            flexGrow: 1,
-            overflow: "auto"
-          }}
-        >
+      <StyledContainer>
+        <StyledMain>
           <BodyWrapper>
             <Card
               header={
@@ -166,8 +171,8 @@ class EditNote extends Component {
               }
             />
           </BodyWrapper>
-        </div>
-        <div style={{ flexShrink: 0 }}>
+        </StyledMain>
+        <StyledFooter>
           <PreviewFooter>
             <Button
               buttonStyle="link"
@@ -183,8 +188,8 @@ class EditNote extends Component {
               Done
             </Button>
           </PreviewFooter>
-        </div>
-      </div>
+        </StyledFooter>
+      </StyledContainer>
     );
   }
 }
