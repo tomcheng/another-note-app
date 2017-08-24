@@ -45,10 +45,11 @@ class AnimateHeight extends Component {
     }
 
     if (isExpanded && !nextProps.isExpanded) {
+      const initialHeight = this.contentWrapper.offsetHeight;
       this.stopAnimation();
       this.timer = setTimeout(() => {
         this.animation = animate({
-          start: this.contentWrapper.offsetHeight,
+          start: initialHeight,
           end: 0,
           duration: duration,
           easing: easings[easing],
@@ -58,7 +59,7 @@ class AnimateHeight extends Component {
       }, delay);
       this.setState({
         isAnimating: true,
-        containerHeight: this.contentWrapper.offsetHeight
+        containerHeight: initialHeight
       });
     }
   }
