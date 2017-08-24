@@ -5,7 +5,7 @@ import { selectors } from "../reducer";
 import EditNote from "./EditNote";
 import EditList from "./EditList";
 
-class Single extends Component {
+class Edit extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     notes: PropTypes.object.isRequired,
@@ -37,4 +37,4 @@ const mapStateToProps = state => ({
   notesLoaded: selectors.getNotesLoaded(state)
 });
 
-export default connect(mapStateToProps)(Single);
+export default connect(mapStateToProps)(Edit);
