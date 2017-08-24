@@ -1,8 +1,47 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import moment from "moment";
 import colors from "../styles/colors";
 import FancyIcon from "./FancyIcon";
+
+const StyledContainer = styled.div`
+  background-clip: padding-box;
+  padding: 0 12px 0 9px;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 3px;
+  align-items: center;
+  white-space: nowrap;
+  height: 50px;
+  display: ${props => props.isVisible ? "flex" : "none"};
+`;
+
+const StyledIconWrapper = styled.div`
+  margin-right: 6px;
+  opacity: 0.8;
+`;
+
+const StyledTitle = styled.div`
+  font-weight: 500;
+  flex-shrink: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const StyledSummary = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1000000;
+  opacity: 0.3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 10px;
+`;
+
+const StyledUpdatedAt = styled.div`
+  font-size: 12px;
+  opacity: 0.3;
+`;
 
 class Note extends Component {
   static propTypes = {
@@ -63,60 +102,27 @@ class Note extends Component {
     const summary = this.getSummary();
 
     return (
-      <div
-        style={{
-          display: isVisible ? "flex" : "none",
-          backgroundClip: "padding-box",
-          padding: "0 12px 0 9px",
-          backgroundColor: "#fff",
-          border: "1px solid rgba(0,0,0,0.1)",
-          borderRadius: 3,
-          alignItems: "center",
-          whiteSpace: "nowrap",
-          height: 50
-        }}
-      >
-        <div style={{ marginRight: 6, opacity: 0.8 }}>
+      <StyledContainer isVisible={isVisible}>
+        <StyledIconWrapper>
           <FancyIcon icon={note.type} color="#222" />
-        </div>
-        <div
-          style={{
-            fontWeight: 500,
-            flexShrink: 1,
-            textOverflow: "ellipsis",
-            overflow: "hidden"
-          }}
-        >
+        </StyledIconWrapper>
+        <StyledTitle>
           {this.getTitle()}&nbsp;
-        </div>
+        </StyledTitle>
         {summary.trim() !== ""
-          ? <div
-              style={{
-                flexGrow: 1,
-                flexShrink: 1000000,
-                opacity: 0.3,
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                paddingRight: 10
-              }}
-            >
+          ? <StyledSummary>
               &ndash; {this.getSummary()}
-            </div>
+            </StyledSummary>
           : <div style={{ flexGrow: 1 }} />}
         {note.pinned &&
           <div style={{ opacity: 0.8 }}>
             <FancyIcon icon="pin" color={colors.darkYellow} />
           </div>}
         {!note.pinned &&
-          <div
-            style={{
-              fontSize: 12,
-              opacity: 0.3
-            }}
-          >
+          <StyledUpdatedAt>
             {this.getUpdatedAt()}
-          </div>}
-      </div>
+          </StyledUpdatedAt>}
+      </StyledContainer>
     );
   }
 }
