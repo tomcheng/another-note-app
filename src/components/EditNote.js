@@ -4,6 +4,7 @@ import { actions } from "../reducer";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import BodyWrapper from "./BodyWrapper";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -121,7 +122,7 @@ class EditNote extends Component {
             overflow: "auto"
           }}
         >
-          <div style={{ padding: 6 }}>
+          <BodyWrapper>
             <Card
               header={
                 <div style={{ padding: "7px 7px 0" }}>
@@ -164,7 +165,7 @@ class EditNote extends Component {
                 </div>
               }
             />
-          </div>
+          </BodyWrapper>
         </div>
         <div style={{ flexShrink: 0 }}>
           <PreviewFooter>

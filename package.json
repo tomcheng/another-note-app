@@ -26,7 +26,8 @@
     "react-textarea-autosize": "5.1.0",
     "redux": "3.7.2",
     "redux-saga": "0.15.6",
-    "reselect": "3.0.1"
+    "reselect": "3.0.1",
+    "styled-components": "2.1.2"
   },
   "devDependencies": {
     "gh-pages": "1.0.0",

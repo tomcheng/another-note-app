@@ -6,6 +6,7 @@ import queryString from "query-string";
 import { actions, selectors } from "../reducer";
 import { animate } from "../utils/animation";
 import { withRouter } from "react-router-dom";
+import BodyWrapper from "./BodyWrapper";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Card from "./Card";
@@ -217,7 +218,7 @@ class EditList extends Component {
           }}
           style={{ flexGrow: 1, overflow: "auto" }}
         >
-          <div style={{ padding: 6 }}>
+          <BodyWrapper>
             <Card
               header={
                 <div style={{ padding: "7px 7px 0" }}>
@@ -293,7 +294,7 @@ class EditList extends Component {
                 </div>
               }
             />
-          </div>
+          </BodyWrapper>
         </div>
         <div style={{ flexShrink: 0 }}>
           <PreviewFooter>

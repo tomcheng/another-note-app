@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import { withRouter } from "react-router-dom";
+import BodyWrapper from "./BodyWrapper";
 import Link from "./Link";
 import Note from "./Note";
 
@@ -26,7 +27,7 @@ class Notes extends Component {
     }
 
     return (
-      <div style={{ padding: 6 }}>
+      <BodyWrapper>
         {visibleNoteIds.length === 0
           ? <div
               style={{
@@ -47,7 +48,7 @@ class Notes extends Component {
                 />
               </Link>
             )}
-      </div>
+      </BodyWrapper>
     );
   }
 }

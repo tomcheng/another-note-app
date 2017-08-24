@@ -26,21 +26,9 @@ class Single extends Component {
 
     const selectedNote = notes[match.params.id];
 
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          flexGrow: 1
-        }}
-      >
-        {selectedNote.type === "note" &&
-          <EditNote location={location} note={selectedNote} />}
-        {selectedNote.type === "list" &&
-          <EditList location={location} list={selectedNote} />}
-      </div>
-    );
+    return selectedNote.type === "note"
+      ? <EditNote location={location} note={selectedNote} />
+      : <EditList location={location} list={selectedNote} />;
   }
 }
 

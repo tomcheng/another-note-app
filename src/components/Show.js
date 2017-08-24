@@ -1,10 +1,20 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import moment from "moment";
+import BodyWrapper from "./BodyWrapper";
 import ShowNote from "./ShowNote";
 import ShowList from "./ShowList";
+
+const StyledFooter = styled.div`
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 2px;
+  font-weight: 300;
+`;
 
 class Show extends Component {
   static propTypes = {
@@ -12,7 +22,7 @@ class Show extends Component {
     notesLoaded: PropTypes.bool.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
-        id: PropTypes.string
+        id: PropTypes.string.isRequired
       }).isRequired
     }).isRequired
   };
@@ -30,10 +40,6 @@ class Show extends Component {
     const { notes } = props;
     const { params } = props.match;
 
-    if (!params.id || !notes[params.id]) {
-      return null;
-    }
-
     return notes[params.id];
   };
 
@@ -45,30 +51,13 @@ class Show extends Component {
     }
 
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          overflow: "auto",
-          flexGrow: 1
-        }}
-      >
-        <div style={{ padding: 6 }}>
-          {selectedNote.type === "list" && <ShowList list={selectedNote} />}
-          {selectedNote.type === "note" && <ShowNote note={selectedNote} />}
-          <div
-            style={{
-              color: "#fff",
-              fontSize: 11,
-              textAlign: "center",
-              marginTop: 2,
-              fontWeight: 300
-            }}
-          >
-            Created {moment(selectedNote.createdAt).format("MMM D, YYYY")}
-          </div>
-        </div>
-      </div>
+      <BodyWrapper>
+        {selectedNote.type === "list" && <ShowList list={selectedNote} />}
+        {selectedNote.type === "note" && <ShowNote note={selectedNote} />}
+        <StyledFooter>
+          Created {moment(selectedNote.createdAt).format("MMM D, YYYY")}
+        </StyledFooter>
+      </BodyWrapper>
     );
   }
 }

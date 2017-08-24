@@ -1,14 +1,35 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { actions } from "../reducer";
 import { Route, withRouter } from "react-router-dom";
 import AnimateHeight from "./AnimateHeight";
 import Search from "./Search";
 import ShowHeader from "./ShowHeader";
-import Home from "./Home";
+import Notes from "./Notes";
 import Show from "./Show";
 import Edit from "./Edit";
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledHeader = styled.div`
+  flex-shrink: 0;
+  flex-grow: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const StyledBody = styled.div`
+  overflow: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
 
 const AnimateHeightMatch = ({ component: Component, ...other }) =>
   <Route
@@ -43,42 +64,17 @@ class App extends Component {
     const { appHeight } = this.state;
 
     return (
-      <div
-        style={{
-          height: appHeight,
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
-        <div
-          style={{
-            flexShrink: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            boxShadow: "inset 0 -1px 1px rgba(0,0,0,0.2)",
-            borderBottom: "1px solid rgba(255,255,255,0.2)"
-          }}
-        >
+      <StyledContainer style={{ height: appHeight }}>
+        <StyledHeader>
           <AnimateHeightMatch exact path="/" component={Search} />
           <AnimateHeightMatch exact path="/:id" component={ShowHeader} />
-        </div>
-        <div
-          style={{
-            flexShrink: 1,
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden"
-          }}
-        >
-          <Route
-            exact
-            path="/"
-            children={({ match }) => <Home isVisible={!!match} />}
-          />
+        </StyledHeader>
+        <StyledBody>
+          <Route exact path="/" component={Notes} />
           <Route exact path="/:id" component={Show} />
           <Route exact path="/:id/edit" component={Edit} />
-        </div>
-      </div>
+        </StyledBody>
+      </StyledContainer>
     );
   }
 }
