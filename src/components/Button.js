@@ -1,7 +1,21 @@
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
 
-const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
+const StyledButton = styled.button`
+  &:focus {
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+`;
+
+const Button = ({
+  buttonStyle,
+  onClick,
+  children,
+  style,
+  disabled,
+  innerRef
+}) => {
   let styles = {};
 
   switch (buttonStyle) {
@@ -36,7 +50,7 @@ const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
   }
 
   return (
-    <button
+    <StyledButton
       onClick={onClick}
       style={{
         height: 40,
@@ -49,9 +63,10 @@ const Button = ({ buttonStyle, onClick, children, style, disabled }) => {
         ...style
       }}
       disabled={disabled}
+      innerRef={innerRef}
     >
       {children}
-    </button>
+    </StyledButton>
   );
 };
 
@@ -61,6 +76,7 @@ Button.propTypes = {
   children: PropTypes.any.isRequired,
   disabled: PropTypes.bool,
   style: PropTypes.object,
+  innerRef: PropTypes.func,
   onClick: PropTypes.func
 };
 
