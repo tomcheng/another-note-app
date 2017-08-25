@@ -60,8 +60,6 @@ const FancyIcon = ({ icon, color }) => {
             fill={color}
             d="M16.4,2H5C3.9,2,3,2.9,3,4v15c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V6.6L16.4,2z M19,19H5V4h10v4h4L19,19z"
           />
-          <polyline fill={color} points="15,10 7,10 7,12 15,12 15,10 " />
-          <polyline fill={color} points="17,14 7,14 7,16 17,16 17,14 " />
         </g>
       );
       break;
