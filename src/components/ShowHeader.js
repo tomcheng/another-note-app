@@ -60,7 +60,7 @@ class ShowHeader extends Component {
   }
 
   handleKeyDown = evt => {
-    if (evt.code === "Escape") {
+    if (evt.code === "Escape" || evt.code === "ArrowLeft") {
       if (this.state.deleteModalOpen) {
         this.setState({ deleteModalOpen: false });
       } else {
