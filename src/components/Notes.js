@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { memoize } from "../utils/helpers";
 import { selectors } from "../reducer";
 import BodyWrapper from "./BodyWrapper";
 import Note from "./Note";
@@ -12,11 +13,11 @@ const matches = (note, search) => {
   const processedBody =
     note.type === "list"
       ? note.checkedItems
-        .concat(note.uncheckedItems)
-        .map(item => item.value)
-        .join("")
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "")
+          .concat(note.uncheckedItems)
+          .map(item => item.value)
+          .join("")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
       : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   return (
@@ -43,9 +44,13 @@ class Notes extends Component {
     activeIndex: PropTypes.number
   };
 
+  getVisibleIds = memoize((notes, search) =>
+    notes.filter(note => matches(note, search)).map(note => note.id)
+  );
+
   render() {
     const { notes, activeIndex, search } = this.props;
-    const visibleNoteIds = notes.filter(note => matches(note, search)).map(note => note.id);
+    const visibleNoteIds = this.getVisibleIds(notes, search);
 
     return (
       <BodyWrapper>
