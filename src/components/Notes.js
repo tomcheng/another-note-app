@@ -22,8 +22,18 @@ class Notes extends Component {
       })
     ).isRequired,
     search: PropTypes.string.isRequired,
-    visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired
+    visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+    activeIndex: PropTypes.number,
   };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.activeIndex !== prevProps.activeIndex && this.props.activeIndex !== null) {
+      console.log(this.props.activeIndex);
+      this.linkRefs[this.props.activeIndex].focus();
+    }
+  }
+
+  linkRefs = {};
 
   render() {
     const { notes, visibleNoteIds } = this.props;
@@ -32,8 +42,8 @@ class Notes extends Component {
       <BodyWrapper>
         {visibleNoteIds.length === 0
           ? <StyledEmptyState>No notes found</StyledEmptyState>
-          : notes.map(note =>
-              <Link key={note.id} to={"/" + note.id}>
+          : notes.map((note, index) =>
+              <Link key={note.id} to={"/" + note.id} innerRef={el => { this.linkRefs[index] = el; }}>
                 <Note
                   note={note}
                   isVisible={visibleNoteIds.includes(note.id)}

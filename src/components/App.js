@@ -31,7 +31,11 @@ const StyledBody = styled.div`
   flex-direction: column;
 `;
 
-const AnimateHeightMatch = ({ component: Component, ...other }) =>
+const AnimateHeightMatch = ({
+  component: Component,
+  componentProps,
+  ...other
+}) =>
   <Route
     {...other}
     children={({ match }) =>
@@ -41,33 +45,66 @@ const AnimateHeightMatch = ({ component: Component, ...other }) =>
         easing="linear"
         fadeFirst
       >
-        <Component />
+        <Component {...componentProps} />
       </AnimateHeight>}
   />;
 
 class App extends Component {
   static propTypes = {
+    notes: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired
+      })
+    ).isRequired,
+    notesLoaded: PropTypes.bool.isRequired,
     onRequestNotes: PropTypes.func.isRequired
   };
 
-  state = { appHeight: window.innerHeight };
+  state = {
+    appHeight: window.innerHeight,
+    activeIndex: null
+  };
 
   componentDidMount() {
     this.props.onRequestNotes();
     window.addEventListener("resize", this.handleResize);
+    window.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+    window.addEventListener("keydown", this.handleKeyDown);
   }
 
   handleResize = () => {
     this.setState({ appHeight: window.innerHeight });
   };
 
+  handleKeyDown = evt => {
+    const { notes } = this.props;
+
+    if (evt.code === "ArrowDown") {
+      this.setState(state => {
+        const activeIndex =
+          state.activeIndex === null && notes.length > 0
+            ? 0
+            : Math.min(state.activeIndex + 1, notes.length - 1);
+        return { ...state, activeIndex };
+      });
+    } else if (evt.code === "ArrowUp") {
+      this.setState(state => {
+        const activeIndex =
+          state.activeIndex === null || state.activeIndex === 0
+            ? null
+            : state.activeIndex - 1;
+        return { ...state, activeIndex };
+      });
+    }
+  };
+
   render() {
     const { notesLoaded } = this.props;
-    const { appHeight } = this.state;
+    const { appHeight, activeIndex } = this.state;
 
     if (!notesLoaded) {
       return <noscript />;
@@ -76,11 +113,21 @@ class App extends Component {
     return (
       <StyledContainer style={{ height: appHeight }}>
         <StyledHeader>
-          <AnimateHeightMatch exact path="/" component={Search} />
+          <AnimateHeightMatch
+            exact
+            path="/"
+            component={Search}
+            componentProps={{ isActive: activeIndex === null }}
+          />
           <AnimateHeightMatch exact path="/:id" component={ShowHeader} />
         </StyledHeader>
         <StyledBody>
-          <Route exact path="/" component={Notes} />
+          <Route
+            exact
+            path="/"
+            render={() =>
+              <Notes activeIndex={activeIndex} />}
+          />
           <Route exact path="/:id" component={Show} />
           <Route exact path="/:id/edit" component={Edit} />
         </StyledBody>
@@ -90,7 +137,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  notesLoaded: selectors.getNotesLoaded(state)
+  notesLoaded: selectors.getNotesLoaded(state),
+  notes: selectors.getNotes(state)
 });
 
 export default withRouter(

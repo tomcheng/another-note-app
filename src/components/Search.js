@@ -41,6 +41,7 @@ const StyledIcons = styled.div`
 
 class Search extends Component {
   static propTypes = {
+    isActive: PropTypes.bool.isRequired,
     history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }).isRequired,
@@ -50,6 +51,20 @@ class Search extends Component {
     onClearSearch: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired
   };
+
+  componentDidMount() {
+    if (this.props.isActive) {
+      this.input.focus();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isActive && this.props.isActive) {
+      this.input.focus();
+    }
+  }
+
+  input = null;
 
   handleFocus = () => {
     this.input.select();
