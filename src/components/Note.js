@@ -3,18 +3,19 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import colors from "../styles/colors";
+import Link from "./Link";
 import FancyIcon from "./FancyIcon";
 
 const StyledContainer = styled.div`
   background-clip: padding-box;
   padding: 0 12px 0 9px;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   align-items: center;
   white-space: nowrap;
   height: 50px;
-  display: ${props => props.isVisible ? "flex" : "none"};
+  display: ${props => (props.isVisible ? "flex" : "none")};
 `;
 
 const StyledIconWrapper = styled.div`
@@ -60,6 +61,18 @@ class Note extends Component {
     }).isRequired
   };
 
+  componentDidMount() {
+    if (this.props.isActive) {
+      this.link.focus();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isActive && this.props.isActive) {
+      this.link.focus();
+    }
+  }
+
   getTitle = () => {
     const { note } = this.props;
 
@@ -102,27 +115,34 @@ class Note extends Component {
     const summary = this.getSummary();
 
     return (
-      <StyledContainer isVisible={isVisible}>
-        <StyledIconWrapper>
-          <FancyIcon icon={note.type} color="#222" />
-        </StyledIconWrapper>
-        <StyledTitle>
-          {this.getTitle()}&nbsp;
-        </StyledTitle>
-        {summary.trim() !== ""
-          ? <StyledSummary>
-              &ndash; {this.getSummary()}
-            </StyledSummary>
-          : <div style={{ flexGrow: 1 }} />}
-        {note.pinned &&
-          <div style={{ opacity: 0.8 }}>
-            <FancyIcon icon="pin" color={colors.darkYellow} />
-          </div>}
-        {!note.pinned &&
-          <StyledUpdatedAt>
-            {this.getUpdatedAt()}
-          </StyledUpdatedAt>}
-      </StyledContainer>
+      <Link
+        to={"/" + note.id}
+        innerRef={el => {
+          this.link = el;
+        }}
+      >
+        <StyledContainer isVisible={isVisible}>
+          <StyledIconWrapper>
+            <FancyIcon icon={note.type} color="#222" />
+          </StyledIconWrapper>
+          <StyledTitle>
+            {this.getTitle()}&nbsp;
+          </StyledTitle>
+          {summary.trim() !== ""
+            ? <StyledSummary>
+                &ndash; {this.getSummary()}
+              </StyledSummary>
+            : <div style={{ flexGrow: 1 }} />}
+          {note.pinned &&
+            <div style={{ opacity: 0.8 }}>
+              <FancyIcon icon="pin" color={colors.darkYellow} />
+            </div>}
+          {!note.pinned &&
+            <StyledUpdatedAt>
+              {this.getUpdatedAt()}
+            </StyledUpdatedAt>}
+        </StyledContainer>
+      </Link>
     );
   }
 }

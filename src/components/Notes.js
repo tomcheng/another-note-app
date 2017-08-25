@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { selectors } from "../reducer";
 import BodyWrapper from "./BodyWrapper";
-import Link from "./Link";
 import Note from "./Note";
 
 const StyledEmptyState = styled.div`
@@ -23,41 +22,23 @@ class Notes extends Component {
     ).isRequired,
     search: PropTypes.string.isRequired,
     visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-    activeIndex: PropTypes.number,
+    activeIndex: PropTypes.number
   };
 
-  componentDidMount() {
-    const { activeIndex } = this.props;
-
-    if (activeIndex !== null) {
-      this.linkRefs[activeIndex].focus();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { activeIndex } = this.props;
-
-    if (activeIndex !== prevProps.activeIndex && activeIndex !== null) {
-      this.linkRefs[activeIndex].focus();
-    }
-  }
-
-  linkRefs = {};
-
   render() {
-    const { notes, visibleNoteIds } = this.props;
+    const { notes, visibleNoteIds, activeIndex } = this.props;
 
     return (
       <BodyWrapper>
         {visibleNoteIds.length === 0
           ? <StyledEmptyState>No notes found</StyledEmptyState>
           : notes.map((note, index) =>
-              <Link key={note.id} to={"/" + note.id} innerRef={el => { this.linkRefs[index] = el; }}>
-                <Note
-                  note={note}
-                  isVisible={visibleNoteIds.includes(note.id)}
-                />
-              </Link>
+              <Note
+                key={note.id}
+                note={note}
+                isVisible={visibleNoteIds.includes(note.id)}
+                isActive={activeIndex === index}
+              />
             )}
       </BodyWrapper>
     );
