@@ -74,10 +74,12 @@ class EditList extends Component {
     }
 
     window.addEventListener("resize", this.handleWindowResize);
+    window.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleWindowResize);
+    window.removeEventListener("keydown", this.handleKeyDown);
 
     if (this.animation) {
       this.animation.stop();
@@ -86,6 +88,12 @@ class EditList extends Component {
 
   handleWindowResize = () => {
     this.animateToTextField(document.activeElement);
+  };
+
+  handleKeyDown = evt => {
+    if (evt.code === "Escape") {
+      this.handleClickDone();
+    }
   };
 
   animateToTextField = input => {

@@ -67,7 +67,18 @@ class EditNote extends Component {
       default:
         break;
     }
+    window.addEventListener("keydown", this.handleKeyDown);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown)
+  }
+
+  handleKeyDown = evt => {
+    if (evt.code === "Escape") {
+      this.handleClickDone();
+    }
+  };
 
   handleChangeTitle = ({ target }) => {
     this.setState({ title: target.value });
