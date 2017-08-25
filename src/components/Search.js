@@ -56,6 +56,9 @@ class Search extends Component {
     if (this.props.isActive) {
       this.input.focus();
     }
+
+    // Needs to be keyup to not trigger change on edit screen
+    this.input.addEventListener("keyup", this.handleKeyUp);
   }
 
   componentDidUpdate(prevProps) {
@@ -64,10 +67,22 @@ class Search extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.input.removeEventListener("keyup", this.handleKeyUp);
+  }
+
   input = null;
 
   handleFocus = () => {
     this.input.select();
+  };
+
+  handleKeyUp = evt => {
+    if (evt.code === "Escape") {
+      this.handleClickClear();
+    } else if (evt.code === "Enter" && this.props.search.trim() !== "") {
+      this.handleClickAddList();
+    }
   };
 
   handleChangeSearch = ({ target }) => {
@@ -122,11 +137,11 @@ class Search extends Component {
             <div onClick={this.handleClickClear}>
               <IconWithText icon="close" text="Clear" />
             </div>}
-          <div onClick={this.handleClickAddNote}>
-            <IconWithText icon="note" text="Add Note" width={54} />
-          </div>
           <div onClick={this.handleClickAddList}>
             <IconWithText icon="list" text="Add List" width={54} />
+          </div>
+          <div onClick={this.handleClickAddNote}>
+            <IconWithText icon="note" text="Add Note" width={54} />
           </div>
         </StyledIcons>
       </StyledContainer>

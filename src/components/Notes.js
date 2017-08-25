@@ -28,7 +28,6 @@ class Notes extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.activeIndex !== prevProps.activeIndex && this.props.activeIndex !== null) {
-      console.log(this.props.activeIndex);
       this.linkRefs[this.props.activeIndex].focus();
     }
   }
