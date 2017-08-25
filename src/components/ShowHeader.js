@@ -29,9 +29,7 @@ const StyledIconLink = styled(Link)`
   padding: 9px;
 `;
 
-const StyledActions = styled.div`
-  display: flex;
-`;
+const StyledActions = styled.div`display: flex;`;
 
 class ShowHeader extends Component {
   static propTypes = {
@@ -51,6 +49,20 @@ class ShowHeader extends Component {
 
   state = {
     deleteModalOpen: false
+  };
+
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = evt => {
+    if (evt.code === "Escape" && !this.state.deleteModalOpen) {
+      this.props.history.goBack();
+    }
   };
 
   handleClickBack = () => {
@@ -141,9 +153,7 @@ class ShowHeader extends Component {
               color={selectedNote.pinned ? colors.yellow : "#fff"}
             />
           </StyledIconWrapper>
-          <StyledIconLink
-            to={"/" + selectedNote.id + "/edit?focus=title"}
-          >
+          <StyledIconLink to={"/" + selectedNote.id + "/edit?focus=title"}>
             <FancyIcon icon="pencil" />
           </StyledIconLink>
           <StyledIconWrapper onClick={this.handleClickDelete}>
