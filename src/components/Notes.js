@@ -26,9 +26,19 @@ class Notes extends Component {
     activeIndex: PropTypes.number,
   };
 
+  componentDidMount() {
+    const { activeIndex } = this.props;
+
+    if (activeIndex !== null) {
+      this.linkRefs[activeIndex].focus();
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    if (this.props.activeIndex !== prevProps.activeIndex && this.props.activeIndex !== null) {
-      this.linkRefs[this.props.activeIndex].focus();
+    const { activeIndex } = this.props;
+
+    if (activeIndex !== prevProps.activeIndex && activeIndex !== null) {
+      this.linkRefs[activeIndex].focus();
     }
   }
 
