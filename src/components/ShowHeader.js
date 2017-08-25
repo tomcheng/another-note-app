@@ -60,8 +60,12 @@ class ShowHeader extends Component {
   }
 
   handleKeyDown = evt => {
-    if (evt.code === "Escape" && !this.state.deleteModalOpen) {
-      this.props.history.goBack();
+    if (evt.code === "Escape") {
+      if (this.state.deleteModalOpen) {
+        this.setState({ deleteModalOpen: false });
+      } else {
+        this.props.history.goBack();
+      }
     }
   };
 
