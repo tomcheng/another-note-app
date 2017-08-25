@@ -7,8 +7,6 @@ import mapValues from "lodash/mapValues";
 export const actions = {};
 export const selectors = {};
 
-actions.updateSearch = payload => ({ type: "UPDATE_SEARCH", payload });
-actions.clearSearch = () => ({ type: "CLEAR_SEARCH" });
 actions.requestNotes = () => ({ type: "REQUEST_NOTES" });
 actions.loadNotes = payload => ({ type: "LOAD_NOTES", payload });
 actions.requestAddList = payload => ({ type: "REQUEST_ADD_LIST", payload });
@@ -95,14 +93,6 @@ const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "UPDATE_SEARCH": {
-      return {
-        ...state,
-        search: payload.search
-      };
-    }
-    case "CLEAR_SEARCH":
-      return { ...state, search: "" };
     case "LOAD_NOTES":
       return {
         ...state,
@@ -156,29 +146,9 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const matches = (note, search) => {
-  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const processedBody =
-    note.type === "list"
-      ? note.checkedItems
-          .concat(note.uncheckedItems)
-          .map(item => item.value)
-          .join("")
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "")
-      : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
-
-  return (
-    processedTitle.indexOf(processedSearch) !== -1 ||
-    processedBody.indexOf(processedSearch) !== -1
-  );
-};
-
 selectors.getRawNotesById = state => state.notes;
 selectors.getNoteIds = state => state.noteIds;
 selectors.getNotesLoaded = state => state.notesLoaded;
-selectors.getSearch = state => state.search;
 selectors.getNotesById = createSelector(
   selectors.getRawNotesById,
   rawNotesById => mapValues(rawNotesById, processNote)
@@ -187,12 +157,6 @@ selectors.getNotes = createSelector(
   selectors.getNotesById,
   selectors.getNoteIds,
   (notesById, noteIds) => noteIds.map(id => notesById[id])
-);
-selectors.getVisibleNoteIds = createSelector(
-  selectors.getNotes,
-  selectors.getSearch,
-  (notes, search) =>
-    notes.filter(note => matches(note, search)).map(note => note.id)
 );
 
 export default reducer;

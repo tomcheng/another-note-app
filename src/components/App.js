@@ -62,7 +62,8 @@ class App extends Component {
 
   state = {
     appHeight: window.innerHeight,
-    activeIndex: null
+    activeIndex: null,
+    search: ""
   };
 
   componentDidMount() {
@@ -75,6 +76,14 @@ class App extends Component {
     window.removeEventListener("resize", this.handleResize);
     window.addEventListener("keydown", this.handleKeyDown);
   }
+
+  handleClearSearch = () => {
+    this.setState({ search: "" });
+  };
+
+  handleUpdateSearch = search => {
+    this.setState({ search });
+  };
 
   handleResize = () => {
     this.setState({ appHeight: window.innerHeight });
@@ -104,7 +113,7 @@ class App extends Component {
 
   render() {
     const { notesLoaded } = this.props;
-    const { appHeight, activeIndex } = this.state;
+    const { appHeight, activeIndex, search } = this.state;
 
     if (!notesLoaded) {
       return <noscript />;
@@ -117,7 +126,12 @@ class App extends Component {
             exact
             path="/"
             component={Search}
-            componentProps={{ isActive: activeIndex === null }}
+            componentProps={{
+              isActive: activeIndex === null,
+              onClearSearch: this.handleClearSearch,
+              onUpdateSearch: this.handleUpdateSearch,
+              search
+            }}
           />
           <AnimateHeightMatch exact path="/:id" component={ShowHeader} />
         </StyledHeader>
@@ -125,8 +139,7 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() =>
-              <Notes activeIndex={activeIndex} />}
+            render={() => <Notes activeIndex={activeIndex} search={search} />}
           />
           <Route exact path="/:id" component={Show} />
           <Route exact path="/:id/edit" component={Edit} />

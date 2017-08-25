@@ -86,7 +86,7 @@ class Search extends Component {
   };
 
   handleChangeSearch = ({ target }) => {
-    this.props.onUpdateSearch({ search: target.value });
+    this.props.onUpdateSearch(target.value);
   };
 
   handleClickClear = () => {
@@ -149,15 +149,9 @@ class Search extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  search: selectors.getSearch(state)
-});
-
 export default withRouter(
-  connect(mapStateToProps, {
+  connect(null, {
     onAddList: actions.requestAddList,
     onAddNote: actions.requestAddNote,
-    onClearSearch: actions.clearSearch,
-    onUpdateSearch: actions.updateSearch
   })(Search)
 );

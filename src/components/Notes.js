@@ -6,6 +6,25 @@ import { selectors } from "../reducer";
 import BodyWrapper from "./BodyWrapper";
 import Note from "./Note";
 
+const matches = (note, search) => {
+  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody =
+    note.type === "list"
+      ? note.checkedItems
+        .concat(note.uncheckedItems)
+        .map(item => item.value)
+        .join("")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+      : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  return (
+    processedTitle.indexOf(processedSearch) !== -1 ||
+    processedBody.indexOf(processedSearch) !== -1
+  );
+};
+
 const StyledEmptyState = styled.div`
   color: #fff;
   opacity: 0.5;
@@ -21,12 +40,12 @@ class Notes extends Component {
       })
     ).isRequired,
     search: PropTypes.string.isRequired,
-    visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
     activeIndex: PropTypes.number
   };
 
   render() {
-    const { notes, visibleNoteIds, activeIndex } = this.props;
+    const { notes, activeIndex, search } = this.props;
+    const visibleNoteIds = notes.filter(note => matches(note, search)).map(note => note.id);
 
     return (
       <BodyWrapper>
@@ -46,9 +65,7 @@ class Notes extends Component {
 }
 
 const mapStateToProps = state => ({
-  notes: selectors.getNotes(state),
-  search: selectors.getSearch(state),
-  visibleNoteIds: selectors.getVisibleNoteIds(state)
+  notes: selectors.getNotes(state)
 });
 
 export default connect(mapStateToProps)(Notes);
