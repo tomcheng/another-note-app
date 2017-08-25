@@ -170,9 +170,8 @@ class EditList extends Component {
   };
 
   handleClickDone = () => {
-    const { list, onUpdateNote, onAddListItem, history, location } = this.props;
+    const { list, onUpdateNote, onAddListItem } = this.props;
     const { title, addItemValue } = this.state;
-    const query = queryString.parse(location.search);
 
     if (addItemValue.trim() !== "") {
       onAddListItem({ listId: list.id, value: addItemValue });
@@ -183,13 +182,6 @@ class EditList extends Component {
     onUpdateNote({
       id: list.id,
       updates: { title },
-      callback: () => {
-        if (query.just_added === "true") {
-          history.replace("/" + list.id);
-        } else {
-          window.history.back();
-        }
-      }
     });
   };
 
@@ -337,7 +329,6 @@ export default withRouter(
     onDeleteListItem: actions.requestDeleteListItem,
     onDeleteNote: actions.requestDeleteNote,
     onReplaceList: actions.requestReplaceList,
-    onUpdateListItem: actions.requestUpdateListItem,
-    onUpdateNote: actions.requestUpdateNote
+    onUpdateListItem: actions.requestUpdateListItem
   })(EditList)
 );

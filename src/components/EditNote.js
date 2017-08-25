@@ -99,19 +99,11 @@ class EditNote extends Component {
   };
 
   handleClickDone = () => {
-    const { note, onUpdateNote, history } = this.props;
-    const query = queryString.parse(this.props.location.search);
+    const { note, onUpdateNote } = this.props;
 
     onUpdateNote({
       id: note.id,
       updates: this.state,
-      callback: () => {
-        if (query.just_added === "true") {
-          history.replace("/" + note.id);
-        } else {
-          history.goBack();
-        }
-      }
     });
   };
 
@@ -196,7 +188,6 @@ class EditNote extends Component {
 
 export default withRouter(
   connect(null, {
-    onUpdateNote: actions.requestUpdateNote,
     onDeleteNote: actions.requestDeleteNote
   })(EditNote)
 );
