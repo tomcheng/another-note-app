@@ -31,7 +31,6 @@ class EditNote extends Component {
   static propTypes = {
     history: PropTypes.shape({
       goBack: PropTypes.func.isRequired,
-      replace: PropTypes.func.isRequired
     }).isRequired,
     location: PropTypes.shape({
       string: PropTypes.string

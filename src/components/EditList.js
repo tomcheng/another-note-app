@@ -16,6 +16,9 @@ import PreviewFooter from "./PreviewFooter";
 
 class EditList extends Component {
   static propTypes = {
+    history: PropTypes.shape({
+      goBack: PropTypes.func.isRequired
+    }).isRequired,
     location: PropTypes.shape({
       search: PropTypes.string.isRequired
     }).isRequired,
@@ -31,9 +34,6 @@ class EditList extends Component {
     }).isRequired,
     rawList: PropTypes.shape({
       id: PropTypes.number.isRequired
-    }).isRequired,
-    history: PropTypes.shape({
-      replace: PropTypes.func.isRequired
     }).isRequired,
     onAddListItem: PropTypes.func.isRequired,
     onDeleteListItem: PropTypes.func.isRequired,
@@ -152,7 +152,7 @@ class EditList extends Component {
   };
 
   handleClickCancel = () => {
-    const { list, location, onDeleteNote, onReplaceList } = this.props;
+    const { list, location, onDeleteNote, onReplaceList, history } = this.props;
     const { previousRawList } = this.state;
     const query = queryString.parse(location.search);
 
@@ -160,12 +160,12 @@ class EditList extends Component {
       onDeleteNote({
         id: list.id,
         callback: () => {
-          window.history.back();
+          history.goBack();
         }
       });
     } else {
       onReplaceList({ id: list.id, list: previousRawList });
-      window.history.back();
+      history.goBack();
     }
   };
 
