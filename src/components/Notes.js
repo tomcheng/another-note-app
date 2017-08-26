@@ -19,11 +19,11 @@ class Notes extends Component {
       })
     ).isRequired,
     visibleNoteIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-    activeIndex: PropTypes.number
+    activeId: PropTypes.number
   };
 
   render() {
-    const { notes, activeIndex, visibleNoteIds } = this.props;
+    const { notes, activeId, visibleNoteIds } = this.props;
 
     return (
       <BodyWrapper>
@@ -34,7 +34,7 @@ class Notes extends Component {
                 key={note.id}
                 note={note}
                 isVisible={visibleNoteIds.includes(note.id)}
-                isActive={activeIndex === index}
+                isActive={note.id === activeId}
               />
             )}
       </BodyWrapper>

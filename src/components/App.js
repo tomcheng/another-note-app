@@ -111,13 +111,15 @@ class App extends Component {
 
   handleKeyDown = evt => {
     const { notes } = this.props;
+    const { search } = this.state;
+    const numVisible = this.getVisibleIds(notes, search).length;
 
     if (evt.code === "ArrowDown") {
       this.setState(state => {
         const activeIndex =
-          state.activeIndex === null && notes.length > 0
+          state.activeIndex === null && numVisible > 0
             ? 0
-            : Math.min(state.activeIndex + 1, notes.length - 1);
+            : Math.min(state.activeIndex + 1, numVisible - 1);
         return { ...state, activeIndex };
       });
     } else if (evt.code === "ArrowUp") {
@@ -138,6 +140,8 @@ class App extends Component {
   render() {
     const { notesLoaded, notes } = this.props;
     const { appHeight, activeIndex, search } = this.state;
+    const visibleIds = this.getVisibleIds(notes, search);
+    const activeId = visibleIds[activeIndex];
 
     if (!notesLoaded) {
       return <noscript />;
@@ -165,9 +169,9 @@ class App extends Component {
             path="/"
             render={() =>
               <Notes
-                activeIndex={activeIndex}
+                activeId={activeId}
                 notes={notes}
-                visibleNoteIds={this.getVisibleIds(notes, search)}
+                visibleNoteIds={visibleIds}
               />}
           />
           <Route exact path="/:id" component={Show} />
