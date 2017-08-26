@@ -4,12 +4,32 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { actions, selectors } from "../reducer";
 import { Route, withRouter } from "react-router-dom";
+import { memoize } from "../utils/helpers";
 import AnimateHeight from "./AnimateHeight";
 import Search from "./Search";
 import ShowHeader from "./ShowHeader";
 import Notes from "./Notes";
 import Show from "./Show";
 import Edit from "./Edit";
+
+const matches = (note, search) => {
+  const processedSearch = search.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedTitle = note.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const processedBody =
+    note.type === "list"
+      ? note.checkedItems
+          .concat(note.uncheckedItems)
+          .map(item => item.value)
+          .join("")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+      : note.body.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  return (
+    processedTitle.indexOf(processedSearch) !== -1 ||
+    processedBody.indexOf(processedSearch) !== -1
+  );
+};
 
 const StyledContainer = styled.div`
   display: flex;
@@ -111,8 +131,12 @@ class App extends Component {
     }
   };
 
+  getVisibleIds = memoize((notes, search) =>
+    notes.filter(note => matches(note, search)).map(note => note.id)
+  );
+
   render() {
-    const { notesLoaded } = this.props;
+    const { notesLoaded, notes } = this.props;
     const { appHeight, activeIndex, search } = this.state;
 
     if (!notesLoaded) {
@@ -139,7 +163,12 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() => <Notes activeIndex={activeIndex} search={search} />}
+            render={() =>
+              <Notes
+                activeIndex={activeIndex}
+                notes={notes}
+                visibleNoteIds={this.getVisibleIds(notes, search)}
+              />}
           />
           <Route exact path="/:id" component={Show} />
           <Route exact path="/:id/edit" component={Edit} />
