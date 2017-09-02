@@ -97,8 +97,8 @@ class App extends Component {
     window.addEventListener("keydown", this.handleKeyDown);
   }
 
-  handleClearSearch = () => {
-    this.setState({ search: "" });
+  handleReset = () => {
+    this.setState({ search: "", activeIndex: null });
   };
 
   handleUpdateSearch = search => {
@@ -156,7 +156,7 @@ class App extends Component {
             component={Search}
             componentProps={{
               isActive: activeIndex === null,
-              onClearSearch: this.handleClearSearch,
+              onReset: this.handleReset,
               onUpdateSearch: this.handleUpdateSearch,
               search
             }}

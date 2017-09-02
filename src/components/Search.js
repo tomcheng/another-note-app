@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { actions, selectors } from "../reducer";
+import { actions } from "../reducer";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import IconWithText from "./IconWithText";
@@ -20,13 +20,13 @@ const StyledInput = styled.input`
   background-color: transparent;
 
   &::-webkit-input-placeholder {
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   &::-moz-placeholder {
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   &:-ms-input-placeholder {
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   &:focus {
     background-color: transparent;
@@ -48,7 +48,7 @@ class Search extends Component {
     search: PropTypes.string.isRequired,
     onAddList: PropTypes.func.isRequired,
     onAddNote: PropTypes.func.isRequired,
-    onClearSearch: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
     onUpdateSearch: PropTypes.func.isRequired
   };
 
@@ -56,6 +56,8 @@ class Search extends Component {
     if (this.props.isActive) {
       this.input.focus();
     }
+
+    this.props.onReset();
 
     // Needs to be keyup to not trigger change on edit screen
     this.input.addEventListener("keyup", this.handleKeyUp);
@@ -90,7 +92,7 @@ class Search extends Component {
   };
 
   handleClickClear = () => {
-    this.props.onClearSearch();
+    this.props.onReset();
   };
 
   handleClickAddNote = () => {
@@ -152,6 +154,6 @@ class Search extends Component {
 export default withRouter(
   connect(null, {
     onAddList: actions.requestAddList,
-    onAddNote: actions.requestAddNote,
+    onAddNote: actions.requestAddNote
   })(Search)
 );
