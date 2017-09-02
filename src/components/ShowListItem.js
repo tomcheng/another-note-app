@@ -6,6 +6,7 @@ import Checkbox from "./Checkbox";
 
 class ListItem extends Component {
   static propTypes = {
+    isActive: PropTypes.bool.isRequired,
     item: PropTypes.shape({
       id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,
@@ -20,6 +21,12 @@ class ListItem extends Component {
   };
 
   state = { isPendingCheck: false };
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isActive && this.props.isActive) {
+      this.container.focus();
+    }
+  }
 
   handleChange = ({ target }) => {
     const { onUncheckListItem, listId, item } = this.props;
@@ -60,7 +67,12 @@ class ListItem extends Component {
     const seemsChecked = item.checked || isPendingCheck;
 
     return (
-      <div>
+      <div
+        tabIndex={0}
+        ref={el => {
+          this.container = el;
+        }}
+      >
         {/* Wrap in div so AnimateHeight doesn't affect reordering animation */}
         <AnimateHeight isExpanded={!isPendingCheck} delay={250} duration={150}>
           <Checkbox

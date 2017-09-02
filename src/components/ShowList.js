@@ -43,12 +43,50 @@ class ShowList extends Component {
 
   state = {
     recentlyCheckedItemIds: [],
-    previousOrder: []
+    previousOrder: [],
+    activeIndex: null
   };
+
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
 
   componentWillUnmount() {
     clearTimeout(this.footerTimer);
+    window.removeEventListener("keydown", this.handleKeyDown);
   }
+
+  handleKeyDown = evt => {
+    switch (evt.code) {
+      case "ArrowDown":
+        this.selectNextItem();
+        break;
+      case "ArrowUp":
+        this.selectPreviousItem();
+        break;
+      default:
+        break;
+    }
+  };
+
+  selectNextItem = () => {
+    this.setState(state => ({
+      activeIndex:
+        state.activeIndex === null
+          ? 0
+          : Math.min(
+              state.activeIndex + 1,
+              this.props.list.uncheckedItems.length - 1
+            )
+    }));
+  };
+
+  selectPreviousItem = () => {
+    this.setState(state => ({
+      activeIndex:
+        state.activeIndex === null ? 0 : Math.max(state.activeIndex - 1, 0)
+    }));
+  };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     const { onUpdateNote, list } = this.props;
@@ -109,7 +147,7 @@ class ShowList extends Component {
 
   render() {
     const { list, onUncheckListItem } = this.props;
-    const { recentlyCheckedItemIds } = this.state;
+    const { recentlyCheckedItemIds, activeIndex } = this.state;
     const isShowingChecked = list.checkedItems.length > 0 && !list.hideChecked;
 
     return (
@@ -124,6 +162,7 @@ class ShowList extends Component {
               pressDelay={200}
               transitionDuration={200}
               helperClass="listItemDragging"
+              activeIndex={activeIndex}
             />
             <Link to={"/" + list.id + "/edit?focus=addItem"}>
               <Checkbox
@@ -198,7 +237,7 @@ class ShowList extends Component {
   }
 }
 
-const ShowListItems = SortableContainer(({ list, ...other }) =>
+const ShowListItems = SortableContainer(({ list, activeIndex, ...other }) =>
   <div>
     {list.uncheckedItems.map((item, index) =>
       <SortableListItem
@@ -207,6 +246,7 @@ const ShowListItems = SortableContainer(({ list, ...other }) =>
         item={item}
         listId={list.id}
         index={index}
+        isActive={index === activeIndex}
       />
     )}
   </div>
