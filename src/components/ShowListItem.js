@@ -22,11 +22,25 @@ class ListItem extends Component {
 
   state = { isPendingCheck: false };
 
+  componentDidMount() {
+    this.container.addEventListener("keydown", this.handleKeyDown);
+  }
+
   componentDidUpdate(prevProps) {
     if (!prevProps.isActive && this.props.isActive) {
       this.container.focus();
     }
   }
+
+  componentWillUnmount() {
+    this.container.removeEventListener("keydown", this.handleKeyDown)
+  }
+
+  handleKeyDown = evt => {
+    if (evt.code === "Space") {
+      this.actuallyCheckItem();
+    }
+  };
 
   handleChange = ({ target }) => {
     const { onUncheckListItem, listId, item } = this.props;
