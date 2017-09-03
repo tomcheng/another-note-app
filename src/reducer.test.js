@@ -1,62 +1,5 @@
 import reducer, { actions, selectors } from "./reducer";
 
-it("updates search", () => {
-  const state = reducer(undefined, actions.updateSearch({ search: "foo" }));
-
-  expect(selectors.getSearch(state)).toBe("foo");
-});
-
-it("updates visible notes based on search", () => {
-  let state = reducer(
-    undefined,
-    actions.loadNotes({
-      notes: [
-        { id: 1, title: "foo", body: "", updatedAt: "3" },
-        { id: 2, title: "bar", body: "", updatedAt: "2" },
-        { id: 3, title: "foo", body: "bar", updatedAt: "1" }
-      ]
-    })
-  );
-  state = reducer(state, actions.updateSearch({ search: "b" }));
-
-  expect(selectors.getVisibleNoteIds(state)).toEqual([2, 3]);
-});
-
-it("takes into account special characters when matching", () => {
-  let state = reducer(
-    undefined,
-    actions.loadNotes({
-      notes: [
-        { id: 1, title: "foo", body: "" },
-        { id: 2, title: "bar", body: "" }
-      ]
-    })
-  );
-  state = reducer(state, actions.updateSearch({ search: "b'" }));
-
-  expect(selectors.getVisibleNoteIds(state)).toEqual([2]);
-});
-
-it("Searches list items", () => {
-  let state = reducer(
-    undefined,
-    actions.loadNotes({
-      notes: [
-        {
-          id: 1,
-          title: "foo",
-          type: "list",
-          order: [1],
-          items: { 1: { id: 1, value: "foo" } }
-        }
-      ]
-    })
-  );
-  state = reducer(state, actions.updateSearch({ search: "foo" }));
-
-  expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
-});
-
 it("initializes with a list of empty notes", () => {
   const state = reducer(undefined, {});
 
@@ -234,5 +177,4 @@ it("handles loading lists", () => {
       order: [2, 1]
     }
   });
-  expect(selectors.getVisibleNoteIds(state)).toEqual([1]);
 });
