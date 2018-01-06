@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import CSSTransition from "react-addons-css-transition-group";
+import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { actions, selectors } from "../reducer";
@@ -189,7 +189,7 @@ class EditList extends Component {
 
     onUpdateNote({
       id: list.id,
-      updates: { title },
+      updates: { title }
     });
   };
 
@@ -244,14 +244,13 @@ class EditList extends Component {
               }
               body={
                 <div style={{ padding: "7px 15px 12px" }}>
-                  <CSSTransition
-                    transitionName="listItem"
-                    transitionEnterTimeout={600}
-                    transitionLeaveTimeout={600}
-                  >
-                    {list.uncheckedItems.map(item =>
+                  {list.uncheckedItems.map(item => (
+                    <CSSTransition
+                      key={item.id}
+                      classNames="listItem"
+                      timeout={600}
+                    >
                       <EditListItem
-                        key={item.id}
                         item={item}
                         listId={list.id}
                         onDeleteListItem={onDeleteListItem}
@@ -262,8 +261,8 @@ class EditList extends Component {
                           this["item-" + item.id] = el;
                         }}
                       />
-                    )}
-                  </CSSTransition>
+                    </CSSTransition>
+                  ))}
                   <Checkbox
                     checked={false}
                     label={
@@ -308,7 +307,7 @@ class EditList extends Component {
             >
               Cancel
             </Button>
-            {isAddingItem &&
+            {isAddingItem && (
               <Button
                 buttonStyle="ghost"
                 style={{ marginRight: 10 }}
@@ -316,7 +315,8 @@ class EditList extends Component {
                 disabled={addItemValue.trim() === ""}
               >
                 Add Another
-              </Button>}
+              </Button>
+            )}
             <Button buttonStyle="ghost" onClick={this.handleClickDone}>
               Done
             </Button>

@@ -196,6 +196,7 @@ class ShowList extends Component {
                     item={item}
                     listId={list.id}
                     onUncheckListItem={onUncheckListItem}
+                    isActive={false}
                   />
                 )}
               </div>
@@ -252,7 +253,7 @@ const ShowListItems = SortableContainer(({ list, activeIndex, ...other }) =>
   </div>
 );
 
-const SortableListItem = SortableElement(props => <ShowListItem {...props} />);
+const SortableListItem = SortableElement(ShowListItem);
 
 export default connect(null, {
   onCheckListItem: actions.requestCheckListItem,

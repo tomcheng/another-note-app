@@ -18,11 +18,11 @@
   transition: opacity 0.2s ease-in-out 0.2s, transform 0.2s ease-in-out 0.2s;
 }
 
-.modal-leave {
+.modal-exit {
   opacity: 1;
 }
 
-.modal-leave.modal-leave-active {
+.modal-exit.modal-exit-active {
   opacity: 0;
   transition: opacity 0.15s ease-in-out;
 }
